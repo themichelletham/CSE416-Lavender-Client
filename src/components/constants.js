@@ -1,1 +1,1 @@
-export const API_PATH = process.env.NODE_ENV === 'production'? 'https://lavender-sprout-backend.herokuapp.com': 'http://localhost:3001'
+export const API_PATH =  'https://lavender-sprout-backend.herokuapp.com'
