@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { makeStyles, styled } from '@material-ui/core/styles';
 import { Box, Button, FormControl, InputBase, TextField } from '@mui/material'
 import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import * as constants from '../components/constants'
+import * as constants from '../components/constants';
+import Questions from '../components/Questions';
 
 const useStyles = makeStyles((theme) => ({
   QuizContainer:{
@@ -49,9 +50,12 @@ export default function QuizCreate(props) {
   const [state, setState] = useState({
     quiz_name: '',
   })
+  const [questions, setQuestions] = useState([]);
   const classes = useStyles();
   const location = useLocation();
   const history = useHistory();
+  const questionsRef = useRef();
+
   const onSave = (e) => {
     axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/creator`, {
       quiz_fields: {...state}
@@ -60,13 +64,32 @@ export default function QuizCreate(props) {
     }).catch( err => {
       console.log('PUT on Save: ', err);
     })
+    let questions = questionsRef.current.getQuestions();
+    for ( let i = 0; i < questions.length; i++) {
+      console.log(questions[i])
+      axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/question`, {
+        question_fields: {
+          question_id: i,
+          quiz_id: props.match.params.quiz_id,
+          question_text: questions[i]
+        }
+      }).then( res => {
+        // TODO: DO something after udpate
+        
+      }).catch( err => {
+        console.log('PUT on Save: ', err);
+      })
+    }
   };
+
   const style = {
     backgroundColor: '#ACACE1',
     marginLeft: 10,
     marginBottom: 10,
     color: 'black'
   }
+
+
   const onDelete = (e) => {
     axios.delete(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
       .then( res => {
@@ -75,15 +98,18 @@ export default function QuizCreate(props) {
         console.log(err);
       })
   }
+
   const onTitleChange = (e) => {
     setState({...state, quiz_name:e.target.value});
   }
+  
+
   useEffect(() => {
     if(props.location.state == null){
       axios.get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
       .then( res => {
         //console.log(res);
-        setState({quiz_name: res.data.quiz_name})
+        setState({quiz_name: res.data.quiz.quiz_name})
       }).catch( err => {
         console.log(err);
       })
@@ -92,6 +118,7 @@ export default function QuizCreate(props) {
       setState({quiz_name: props.location.state.quiz.quiz_name})
     }
   }, [props]);
+
   return (
     <Box className={classes.QuizContainer}>
       <Box className={classes.Opt} mt={10} >
@@ -106,6 +133,7 @@ export default function QuizCreate(props) {
               marginTop:10}}}
           value={state.quiz_name}
           onChange={onTitleChange}/>
+          <Questions ref={props, questionsRef}/>      
       </FormControl>
     </Box>
   )
