@@ -59,7 +59,7 @@ function Questions(props, ref) {
       marginLeft: 10,
       marginBottom: 10,
       color: 'black',
-      float: "right"
+      
     }
       
     return(
@@ -80,10 +80,12 @@ function Questions(props, ref) {
             }}
           />
             <Button style={style} variant='contained' onClick={removeQuestion(index)}>X</Button>
-            <Answers ref={props, answersRef}/>     
+            <Answers ref={props, answersRef}/>  
+            <div className={classes.toolbar} />   
           </Box>
           );
         })}
+        <div className={classes.toolbar} />
         <Button style={style} variant='contained' onClick={addQuestion} >Add question</Button>
       </Box>
     );

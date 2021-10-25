@@ -121,7 +121,8 @@ export default function QuizCreate(props) {
 
   return (
     <Box className={classes.QuizContainer}>
-      <Box className={classes.Opt} mt={10} >
+      <h1>Platform Name</h1>
+      <Box className={classes.Opt} mt={5} >
         <div className={classes.duration}>Duration: INF</div>
         <Button size='small' variant='contained' style={style} className={classes.save}  onClick={onDelete}>Delete Quiz</Button>
         <Button size='small' variant='contained' style={style} className={classes.save}  onClick={onSave}>Save Quiz</Button>

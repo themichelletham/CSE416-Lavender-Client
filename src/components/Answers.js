@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop:10,
     width: '48vw',
   },
-  toolbar: theme.mixins.toolbar,
+//   toolbar: theme.mixins.toolbar,
 }));
 
 function Answers(props, ref) {
