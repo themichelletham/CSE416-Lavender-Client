@@ -133,7 +133,7 @@ export default function QuizCreate(props) {
               marginTop:10}}}
           value={state.quiz_name}
           onChange={onTitleChange}/>
-          <Questions ref={props, questionsRef}/>      
+          <Questions ref={props, questionsRef}/>     
       </FormControl>
     </Box>
   )

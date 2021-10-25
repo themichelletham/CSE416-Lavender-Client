@@ -2,6 +2,7 @@ import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } f
 import { makeStyles, styled } from '@material-ui/core/styles';
 import { Box, Button, FormControl, InputBase, TextField } from '@mui/material'
 import { useHistory, useLocation } from 'react-router-dom';
+import Answers from "./Answers"
 
 const useStyles = makeStyles((theme) => ({
   questionWrapper: {
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Questions(props, ref) {
   const classes = useStyles();
+  const answersRef = useRef();
 
   const [questions, setQuestions] = useState([]);
   const [question, setQuestionText] = useState({
@@ -78,6 +80,7 @@ function Questions(props, ref) {
             }}
           />
             <Button style={style} variant='contained' onClick={removeQuestion(index)}>X</Button>
+            <Answers ref={props, answersRef}/>     
           </Box>
           );
         })}
