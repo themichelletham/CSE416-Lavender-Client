@@ -2,39 +2,48 @@ import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } f
 import { makeStyles, styled } from '@material-ui/core/styles';
 import { Box, Button, FormControl, InputBase, TextField } from '@mui/material'
 import { useHistory, useLocation } from 'react-router-dom';
+import Answers from "./Answers"
+
+const useStyles = makeStyles((theme) => ({
+  questionWrapper: {
+    fontSize: 22,
+    paddingBottom: 10
+  },
+  questionText: {
+    textAlign: 'left',  
+    marginTop:10,
+    width: '50vw',
+  },
+  toolbar: theme.mixins.toolbar,
+}));
 
 function Questions(props, ref) {
-  
+  const classes = useStyles();
+  const answersRef = useRef();
 
-    const questionStyle = {
-        backgroundColor: '#ACACE1',
-        marginBottom: 10,
-        color: 'black'
-        
-      }
-      
-    const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState([]);
+  const [question, setQuestionText] = useState({
+    question_text: '',
+  })
 
-    const [question, setQuestionText] = useState({
-        question_text: '',
-    })
-
-    useImperativeHandle( ref, () => ({
-        getQuestions() {
-          return questions;
-        }
-      }));
-    //cretes new textbox
-    const addQuestion = (e) => {
-        let currentquestions = [...questions]
-        let newquestion = "New question";
-        currentquestions.push(newquestion);
-        setQuestions(currentquestions);
+  useImperativeHandle( ref, () => ({
+    getQuestions() {
+      return questions;
     }
-    const removeQuestion = index => e => {
-      let currentquestions = [...questions]
-      currentquestions.splice(index,1)
-      setQuestions(currentquestions);
+  }));
+  
+    //cretes new textbox
+  const addQuestion = (e) => {
+    let currentquestions = [...questions]
+    let newquestion = "New question";
+    currentquestions.push(newquestion);
+    setQuestions(currentquestions);
+  }
+
+  const removeQuestion = index => e => {
+    let currentquestions = [...questions]
+    currentquestions.splice(index,1)
+    setQuestions(currentquestions);
   }
 
     //updates list of questions
@@ -43,32 +52,42 @@ function Questions(props, ref) {
       setQuestionText({...question.question_text, question_text:e.target.value});
       tempQuestions[index] = e.target.value;
       setQuestions(tempQuestions);
-      }
+    }
+
+    const style = {
+      backgroundColor: '#ACACE1',
+      marginLeft: 10,
+      marginBottom: 10,
+      color: 'black',
+      
+    }
       
     return(
-        //<Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'start' }}>
-        <Box>
-        {
-            questions.map((question, index) =>{
-              return (
-              <Box key={index}> 
-              {index}. <TextField
-                inputProps={{min: 0, 
-                    style: { textAlign: 'center', fontSize: 22, paddingTop:0, paddingBottom:0,
-                    marginTop:10}}}
-                    key={index}
-                value={questions[index]}
-                onChange={onQuestionTextChange(index)}
-                />
-                <Button variant='contained' onClick={removeQuestion(index)}>X</Button>
-                </Box>);
-            })}
-      
-
-        <Button variant='contained' style={questionStyle} onClick={addQuestion} >Add question</Button>
-        
-        </Box>
-       // </Box>
+      <Box>
+      <div className={classes.toolbar} />
+      { questions.map((question, index) =>{
+          return (
+          <Box className={classes.questionWrapper} key={index}> 
+          {index+1}. <TextField className={classes.questionText}
+            key={index}
+            value={questions[index]}
+            onChange={onQuestionTextChange(index)}
+            inputProps={{
+              style: {
+                padding: 5,
+                fontSize: 20,
+              }
+            }}
+          />
+            <Button style={style} variant='contained' onClick={removeQuestion(index)}>X</Button>
+            <Answers ref={props, answersRef}/>  
+            <div className={classes.toolbar} />   
+          </Box>
+          );
+        })}
+        <div className={classes.toolbar} />
+        <Button style={style} variant='contained' onClick={addQuestion} >Add question</Button>
+      </Box>
     );
 }
 
