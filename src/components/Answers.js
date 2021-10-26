@@ -6,7 +6,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   answerWrapper: {
     paddingLeft: 50,
-    paddingRight: 40,
+    paddingRight: 31,
     paddingBottom: 10,
     fontSize: 22,
   },
@@ -54,10 +54,19 @@ function Answers(props, ref) {
       setAnswers(tempAnswers);
     }
 
-    const style = {
-      backgroundColor: '#ACACE1',
+    const deleteStyle = {
+      backgroundColor: '#8A8AEE',
       marginLeft: 10,
       marginBottom: 10,
+      color: 'black',
+      float: "right"
+    }
+
+    const addStyle = {
+      backgroundColor: '#8A8AEE',
+      marginLeft: 10,
+      marginBottom: 10,
+      marginRight: 10,
       color: 'black',
       float: "right"
     }
@@ -79,11 +88,11 @@ function Answers(props, ref) {
                 }
             }}
           />
-            <Button style={style} variant='contained' onClick={removeAnswer(index)}>X</Button>
+            <Button style={deleteStyle} variant='contained' onClick={removeAnswer(index)}>X</Button>
           </Box>
           );
         })}
-        <Button style={style} variant='contained' onClick={addAnswer} >Add answer</Button>
+        <Button style={addStyle} variant='contained' onClick={addAnswer} >+ Add answer</Button>
       </Box>
     );
 }
