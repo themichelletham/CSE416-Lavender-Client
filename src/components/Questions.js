@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   questionWrapper: {
     fontSize: 22,
     paddingBottom: 10,
-    paddingLeft: 10,
+    paddingLeft: 70,
   },
   questionText: {
     textAlign: 'left',  
@@ -65,6 +65,7 @@ function Questions(props, ref) {
       marginTop: 10,
       marginBottom: 10,
       color: 'black',
+      borderRadius: 50
     }
 
     const addStyle = {
@@ -73,6 +74,7 @@ function Questions(props, ref) {
       marginBottom: 10,
       color: 'black',
       width: "50vw",
+      borderRadius: 20
     }
       
     return(
