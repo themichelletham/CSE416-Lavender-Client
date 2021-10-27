@@ -1,3 +1,9 @@
+import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from 'react'
+import { makeStyles, styled } from '@material-ui/core/styles';
+import DeleteIcon from '@mui/icons-material/HighlightOff';
+import { Box, Button, FormControl, InputBase, TextField, IconButton, InputAdornment} from '@mui/material'
+import { useHistory, useLocation } from 'react-router-dom';
+
 const useStyles = makeStyles((theme) => ({
   answerWrapper: {
     paddingTop: 10, 
@@ -75,7 +81,7 @@ function Answers(props, ref) {
 
       
     return(
-      <Box className={classes.preset} disableElevation>
+      <Box>
         <div className={classes.toolbar} />
         {answers.map((answer, index) =>{
           return (
