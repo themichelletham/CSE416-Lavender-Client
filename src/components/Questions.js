@@ -3,6 +3,7 @@ import { makeStyles, styled } from '@material-ui/core/styles';
 import { Box, Button, FormControl, InputBase, TextField } from '@mui/material'
 import { useHistory, useLocation } from 'react-router-dom';
 import Answers from "./Answers"
+import { InputAdornment } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -61,7 +62,7 @@ function Questions(props, ref) {
 
     const deleteStyle = {
       backgroundColor: '#8A8AEE',
-      marginLeft: 10,
+      marginTop: 10,
       marginBottom: 10,
       color: 'black',
     }
@@ -84,6 +85,13 @@ function Questions(props, ref) {
             key={index}
             value={questions[index]}
             onChange={onQuestionTextChange(index)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end" variant='contained'>
+                   <Button style={deleteStyle} variant='contained' onClick={removeQuestion(index)}>X</Button>
+                </InputAdornment>
+              )
+            }}
             inputProps={{
               style: {
                 padding: 5,
@@ -91,7 +99,6 @@ function Questions(props, ref) {
               }
             }}
           />
-            <Button style={deleteStyle} variant='contained' onClick={removeQuestion(index)}>X</Button>
             <Answers ref={props, answersRef}/>  
             <div className={classes.toolbar} />   
           </Box>

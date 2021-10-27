@@ -1,19 +1,24 @@
 import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from 'react'
 import { makeStyles, styled } from '@material-ui/core/styles';
-import { Box, Button, FormControl, InputBase, TextField } from '@mui/material'
+import { Box, Button, FormControl, InputBase, TextField, InputAdornment, IconButton} from '@mui/material'
 import { useHistory, useLocation } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/HighlightOff';
 
 const useStyles = makeStyles((theme) => ({
   answerWrapper: {
+    paddingTop: 10, 
     paddingLeft: 50,
     paddingRight: 31,
-    paddingBottom: 10,
     fontSize: 22,
+    //fullWidth: 30,
+    borderRadius: '70px',
   },
   answerText: {
     textAlign: 'left',  
-    marginTop:10,
-    width: '48vw',
+    marginTop: 10,
+    marginLeft: 30,
+    width: '45vw'
+
   },
 //   toolbar: theme.mixins.toolbar,
 }));
@@ -59,40 +64,52 @@ function Answers(props, ref) {
       marginLeft: 10,
       marginBottom: 10,
       color: 'black',
-      float: "right"
+      float: "right",
+      borderRadius: 20
     }
 
     const addStyle = {
       backgroundColor: '#8A8AEE',
       marginLeft: 10,
+      marginTop: 10,
       marginBottom: 10,
       marginRight: 10,
       color: 'black',
-      float: "right"
+      float: "right",
+      borderRadius: 20
     }
+
       
     return(
-      <Box>
-      <div className={classes.toolbar} />
-      { answers.map((answer, index) =>{
+      <Box className={classes.preset} disableElevation>
+        <div className={classes.toolbar} />
+        {answers.map((answer, index) =>{
           return (
-          <Box className={classes.answerWrapper} key={index}> 
+          <Box className={classes.answerWrapper} key={index} disableElevation> 
             <TextField className={classes.answerText}
                 key={index}
                 value={answers[index]}
                 onChange={onAnswerTextChange(index)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end" variant='contained'>
+                      <IconButton onClick={removeAnswer(index)}>
+                         <DeleteIcon disableElevation/>
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
                 inputProps={{
                 style: {
-                    padding: 5,
-                    fontSize: 20,
-                }
+                    padding: 8,
+                    fontSize: 20, 
+                }, 
             }}
           />
-            <Button style={deleteStyle} variant='contained' onClick={removeAnswer(index)}>X</Button>
           </Box>
           );
         })}
-        <Button style={addStyle} variant='contained' onClick={addAnswer} >+ Add answer</Button>
+        <Button style={addStyle} variant='contained' onClick={addAnswer} disableElevation >+ Add answer</Button>
       </Box>
     );
 }
