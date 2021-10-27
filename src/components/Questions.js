@@ -13,8 +13,8 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 10,
   },
   questionText: {
-    textAlign: 'left',  
-    marginTop:10,
+    textAlign: 'left',
+    marginTop: 10,
     width: '50vw',
     backgroundColor: "#FFFFFF",
   },

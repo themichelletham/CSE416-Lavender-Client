@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 22,
   },
   answerText: {
-    textAlign: 'left',  
-    marginTop:10,
+    textAlign: 'left',
+    marginTop: 10,
     width: '48vw',
     backgroundColor: "#FFFFFF",
   },
