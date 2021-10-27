@@ -1,7 +1,7 @@
 import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from 'react'
 import { makeStyles, styled } from '@material-ui/core/styles';
+import { Box, Button, FormControl, InputBase, TextField, InputAdornment, IconButton } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/HighlightOff';
-import { Box, Button, FormControl, InputBase, TextField, IconButton, InputAdornment} from '@mui/material'
 import { useHistory, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -79,9 +79,8 @@ function Answers(props, ref) {
       borderRadius: 20
     }
 
-      
     return(
-      <Box>
+      <Box className={classes.preset} disableElevation>
         <div className={classes.toolbar} />
         {answers.map((answer, index) =>{
           return (
