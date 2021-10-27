@@ -1,12 +1,9 @@
 import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from 'react'
 import { makeStyles, styled } from '@material-ui/core/styles';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/HighlightOff';
 import { Box, Button, FormControl, InputBase, TextField, IconButton, InputAdornment} from '@mui/material'
 import { useHistory, useLocation } from 'react-router-dom';
 
 function Questions(props, ref) {
-  
 
     const questionStyle = {
         backgroundColor: '#ACACE1',
@@ -65,8 +62,6 @@ function Questions(props, ref) {
                 <Button variant='contained' onClick={removeQuestion(index)}>X</Button>
                 </Box>);
             })}
-      
-
         <Button variant='contained' style={questionStyle} onClick={addQuestion} >Add question</Button>
         
         </Box>
