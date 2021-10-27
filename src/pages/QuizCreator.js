@@ -7,36 +7,36 @@ import * as constants from '../components/constants';
 import Questions from '../components/Questions';
 
 const useStyles = makeStyles((theme) => ({
-  QuizContainer:{
+  QuizContainer: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     width: '60vw'
   },
-  Opt:{
+  Opt: {
     display: 'inline-block',
     width: '60vw',
     paddingLeft: 10,
     paddingRight: 10,
     alignItems: 'center'
   },
-  duration:{
+  duration: {
     display: 'inline-block',
     float: 'left',
     fontSize: 16,
     fontWeight: 'bold'
   },
-  save:{
+  save: {
     display: 'inline-block',
     float: 'right',
   },
-  title:{
-    borderTopLeftRadius: 15, 
-    borderTopRightRadius: 15, 
+  title: {
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
     height: 60,
     backgroundColor: "#7d65c0",
   },
-  quizForm:{
+  quizForm: {
     borderRadius: 15,
     borderTopLeftRadius: 15
   },
@@ -58,28 +58,27 @@ export default function QuizCreate(props) {
 
   const onSave = (e) => {
     axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/creator`, {
-      quiz_fields: {...state}
-    }).then( res => {
+      quiz_fields: { ...state }
+    }).then(res => {
       // TODO: DO something after udpate
-    }).catch( err => {
+    }).catch(err => {
       console.log('PUT on Save: ', err);
     })
     let questions = questionsRef.current.getQuestions();
-    for ( let i = 0; i < questions.length; i++) {
-      console.log(questions[i])
-      axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/question`, {
-        question_fields: {
-          question_id: i,
-          quiz_id: props.match.params.quiz_id,
-          question_text: questions[i]
-        }
-      }).then( res => {
-        // TODO: DO something after udpate
-        
-      }).catch( err => {
-        console.log('PUT on Save: ', err);
-      })
+    var questions_fields = [];
+    for (let i = 0; i < questions.length; i++) {
+      questions_fields.push({
+        quiz_id: props.match.params.quiz_id,
+        question_text: questions[i]
+      });
     }
+    axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/question`, {
+      questions_fields: questions_fields
+    }).then(res => {
+      // TODO: DO something after udpate
+    }).catch(err => {
+      console.log('PUT on Save: ', err);
+    })
   };
 
   const style = {
@@ -92,30 +91,30 @@ export default function QuizCreate(props) {
 
   const onDelete = (e) => {
     axios.delete(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
-      .then( res => {
+      .then(res => {
         history.goBack()
-      }).catch( err => {
+      }).catch(err => {
         console.log(err);
       })
   }
 
   const onTitleChange = (e) => {
-    setState({...state, quiz_name:e.target.value});
+    setState({ ...state, quiz_name: e.target.value });
   }
-  
+
 
   useEffect(() => {
-    if(props.location.state == null){
+    if (props.location.state == null) {
       axios.get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
-      .then( res => {
-        //console.log(res);
-        setState({quiz_name: res.data.quiz.quiz_name})
-      }).catch( err => {
-        console.log(err);
-      })
+        .then(res => {
+          //console.log(res);
+          setState({ quiz_name: res.data.quiz.quiz_name })
+        }).catch(err => {
+          console.log(err);
+        })
     }
-    else if(props.location.state){
-      setState({quiz_name: props.location.state.quiz.quiz_name})
+    else if (props.location.state) {
+      setState({ quiz_name: props.location.state.quiz.quiz_name })
     }
   }, [props]);
 
@@ -124,17 +123,21 @@ export default function QuizCreate(props) {
       <h1>Platform Name</h1>
       <Box className={classes.Opt} mt={5} >
         <div className={classes.duration}>Duration: INF</div>
-        <Button size='small' variant='contained' style={style} className={classes.save}  onClick={onDelete}>Delete Quiz</Button>
-        <Button size='small' variant='contained' style={style} className={classes.save}  onClick={onSave}>Save Quiz</Button>
+        <Button size='small' variant='contained' style={style} className={classes.save} onClick={onDelete}>Delete Quiz</Button>
+        <Button size='small' variant='contained' style={style} className={classes.save} onClick={onSave}>Save Quiz</Button>
       </Box>
       <FormControl className={classes.quizform}>
         <InputBase className={classes.title}
-          inputProps={{min: 0, 
-            style: { textAlign: 'center', fontSize: 22, paddingTop:0, paddingBottom:0,
-              marginTop:10}}}
+          inputProps={{
+            min: 0,
+            style: {
+              textAlign: 'center', fontSize: 22, paddingTop: 0, paddingBottom: 0,
+              marginTop: 10
+            }
+          }}
           value={state.quiz_name}
-          onChange={onTitleChange}/>
-          <Questions ref={props, questionsRef}/>     
+          onChange={onTitleChange} />
+        <Questions ref={props, questionsRef} />
       </FormControl>
     </Box>
   )

@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 10,
   },
   questionText: {
-    textAlign: 'left',  
-    marginTop:10,
+    textAlign: 'left',
+    marginTop: 10,
     width: '50vw',
     backgroundColor: "#FFFFFF",
   },
@@ -31,13 +31,16 @@ function Questions(props, ref) {
     question_text: '',
   })
 
-  useImperativeHandle( ref, () => ({
+  useImperativeHandle(ref, () => ({
     getQuestions() {
       return questions;
+    },
+    getAnswers() {
+      return answersRef.current.getAnswer();
     }
   }));
-  
-    //cretes new textbox
+
+  //cretes new textbox
   const addQuestion = (e) => {
     let currentquestions = [...questions]
     let newquestion = "New question";
@@ -47,60 +50,60 @@ function Questions(props, ref) {
 
   const removeQuestion = index => e => {
     let currentquestions = [...questions]
-    currentquestions.splice(index,1)
+    currentquestions.splice(index, 1)
     setQuestions(currentquestions);
   }
 
-    //updates list of questions
-    const onQuestionTextChange = index => e => {
-      let tempQuestions = [...questions];
-      setQuestionText({...question.question_text, question_text:e.target.value});
-      tempQuestions[index] = e.target.value;
-      setQuestions(tempQuestions);
-    }
+  //updates list of questions
+  const onQuestionTextChange = index => e => {
+    let tempQuestions = [...questions];
+    setQuestionText({ ...question.question_text, question_text: e.target.value });
+    tempQuestions[index] = e.target.value;
+    setQuestions(tempQuestions);
+  }
 
-    const deleteStyle = {
-      backgroundColor: '#8A8AEE',
-      marginLeft: 10,
-      marginBottom: 10,
-      color: 'black',
-    }
+  const deleteStyle = {
+    backgroundColor: '#8A8AEE',
+    marginLeft: 10,
+    marginBottom: 10,
+    color: 'black',
+  }
 
-    const addStyle = {
-      backgroundColor: '#8A8AEE',
-      left: "8%",
-      marginBottom: 10,
-      color: 'black',
-      width: "50vw",
-    }
-      
-    return(
-      <Box className={classes.box}>
+  const addStyle = {
+    backgroundColor: '#8A8AEE',
+    left: "8%",
+    marginBottom: 10,
+    color: 'black',
+    width: "50vw",
+  }
+
+  return (
+    <Box className={classes.box}>
       <div className={classes.toolbar} />
-      { questions.map((question, index) =>{
-          return (
-          <Box className={classes.questionWrapper} key={index}> 
-          {index+1}. <TextField className={classes.questionText}
-            key={index}
-            value={questions[index]}
-            onChange={onQuestionTextChange(index)}
-            inputProps={{
-              style: {
-                padding: 5,
-                fontSize: 20,
-              }
-            }}
-          />
+      {questions.map((question, index) => {
+        return (
+          <Box className={classes.questionWrapper} key={index}>
+            {index + 1}. <TextField className={classes.questionText}
+              key={index}
+              value={questions[index]}
+              onChange={onQuestionTextChange(index)}
+              inputProps={{
+                style: {
+                  padding: 5,
+                  fontSize: 20,
+                }
+              }}
+            />
             <Button style={deleteStyle} variant='contained' onClick={removeQuestion(index)}>X</Button>
-            <Answers ref={props, answersRef}/>  
-            <div className={classes.toolbar} />   
+            <Answers ref={props, answersRef} />
+            <div className={classes.toolbar} />
           </Box>
-          );
-        })}
-        <div className={classes.toolbar} />
-        <Button style={addStyle} variant='contained' onClick={addQuestion} >+ Add question</Button>
-      </Box>
-    );
+        );
+      })}
+      <div className={classes.toolbar} />
+      <Button style={addStyle} variant='contained' onClick={addQuestion} >+ Add question</Button>
+    </Box>
+  );
 }
 
 export default forwardRef(Questions);
