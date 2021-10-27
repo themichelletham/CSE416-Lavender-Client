@@ -1,6 +1,8 @@
 import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from 'react'
 import { makeStyles, styled } from '@material-ui/core/styles';
-import { Box, Button, FormControl, InputBase, TextField } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/HighlightOff';
+import { Box, Button, FormControl, InputBase, TextField, IconButton, InputAdornment} from '@mui/material'
 import { useHistory, useLocation } from 'react-router-dom';
 
 function Questions(props, ref) {
