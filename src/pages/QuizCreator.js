@@ -58,22 +58,20 @@ export default function QuizCreate(props) {
   const history = useHistory();
 
   const addQuestion = (e) => {
-    console.log("adding question")
-    let currentquestions = state.questions
+    let currentquestions = state.questions;
     let newquestion = "New question";
     currentquestions.push(newquestion);
-    console.log(currentquestions);
     setState( {...state, questions : currentquestions});
   }
 
   const removeQuestion = index => e => {
-    let currentquestions = [state.questions]
+    let currentquestions = state.questions;
     currentquestions.splice(index,1)
     setState( {...state, questions : currentquestions});
   }
 
   const questionCallback = key => e => {
-    var new_questions = [state.questions];
+    var new_questions = state.questions;
     new_questions[key] = e.target.value;
     setState({...state, questions:new_questions})
   }
