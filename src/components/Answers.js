@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',  
     marginTop:10,
     width: '48vw',
+    backgroundColor: "#FFFFFF",
   },
 }));
 

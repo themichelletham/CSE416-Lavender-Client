@@ -81,17 +81,15 @@ export default function QuizCreate(props) {
   }
 
   const addAnswer = question_index => (e) => {
-    console.log(question_index);
-    let currentanswers = state.answers[question_index];
-    // console.log(currentanswers);
+    let currentanswers = state.answers;
     let newanswer = "New answer";
-    currentanswers.push(newanswer);
+    currentanswers[question_index].push(newanswer);
     setState( {...state, answers : currentanswers});
   }
 
-  const removeAnswer = index => e => {
-    let currentanswers = state.answers[0];
-    currentanswers.splice(index,1)
+  const removeAnswer = (question_index, answer_index) => e => {
+    let currentanswers = state.answers[question_index];
+    currentanswers.splice(answer_index,1)
     setState( {...state, answers : currentanswers});
   }
 
@@ -234,15 +232,17 @@ export default function QuizCreate(props) {
               />
               <Button style={deleteQStyle} variant='contained' onClick={removeQuestion(question_index)}>x</Button>
               <div className={classes.toolbar} />  
-              {state.answers && state.answers.map((answer, answer_index) => {
-                <>
-                  <Answers key={answer_index} id={answer_index} callback={answerCallback} answertext={answer} />
-                  <Button style={deleteAnsStyle} variant="contained" onClick={removeAnswer(question_index, answer_index)}>X</Button>
-                </>
-              })}
+              {
+                state.answers && 
+                state.answers[question_index].map((answer, answer_index) => {
+                  return( <>
+                    <Answers key={answer_index} id={answer_index} callback={answerCallback} answertext={answer} />
+                    <Button style={deleteAnsStyle} variant="contained" onClick={removeAnswer(question_index, answer_index)}>X</Button>
+                  </>);
+                })
+              }
               <Button style={addAnsStyle} variant='contained' onClick={addAnswer(question_index)} >+ Add answer</Button> 
               <div className={classes.toolbar} />  
-
             </>
            );
           })}
