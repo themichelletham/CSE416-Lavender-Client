@@ -75,31 +75,31 @@ function Questions(props, ref) {
     }
       
     return(
-      <Box className={classes.box}>
-      <div className={classes.toolbar} />
-      { questions.map((question, index) =>{
-          return (
-          <Box className={classes.questionWrapper} key={index}> 
-          {index+1}. <TextField className={classes.questionText}
-            key={index}
-            value={questions[index]}
-            onChange={onQuestionTextChange(index)}
-            inputProps={{
-              style: {
-                padding: 5,
-                fontSize: 20,
-              }
-            }}
-          />
-            <Button style={deleteStyle} variant='contained' onClick={removeQuestion(index)}>X</Button>
+      // <Box className={classes.box}>
+      // <div className={classes.toolbar} />
+      // { questions.map((question, index) =>{
+      //     return (
+      <Box className={classes.questionWrapper} key={props.id}> 
+      {props.id}. <TextField className={classes.questionText}
+        key={props.id}
+        value={props.questiontext}
+        onChange={props.callback(props.id)}
+        inputProps={{
+          style: {
+            padding: 5,
+            fontSize: 20,
+          }
+        }}
+      />
+            {/* <Button style={deleteStyle} variant='contained' onClick={removeQuestion(index)}>X</Button>
             <Answers ref={props, answersRef}/>  
             <div className={classes.toolbar} />   
           </Box>
           );
         })}
         <div className={classes.toolbar} />
-        <Button style={addStyle} variant='contained' onClick={addQuestion} >+ Add question</Button>
-      </Box>
+      <Button style={addStyle} variant='contained' onClick={addQuestion} >+ Add question</Button> */}
+      </Box> 
     );
 }
 
