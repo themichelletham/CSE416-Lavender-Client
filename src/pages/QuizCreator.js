@@ -49,12 +49,32 @@ const useStyles = makeStyles((theme) => ({
 export default function QuizCreate(props) {
   const [state, setState] = useState({
     quiz_name: '',
+    questions: [],
+    answers: [[]],
   })
-  const [questions, setQuestions] = useState([]);
+  //const [questions, setQuestions] = useState([]);
   const classes = useStyles();
   const location = useLocation();
   const history = useHistory();
-  const questionsRef = useRef();
+
+  const addQuestion = (e) => {
+    let currentquestions = state.questions;
+    let newquestion = "New question";
+    currentquestions.push(newquestion);
+    setState( {...state, questions : currentquestions});
+  }
+
+  const removeQuestion = index => e => {
+    let currentquestions = state.questions;
+    currentquestions.splice(index,1)
+    setState( {...state, questions : currentquestions});
+  }
+
+  const questionCallback = key => e => {
+    var new_questions = state.questions;
+    new_questions[key] = e.target.value;
+    setState({...state, questions:new_questions})
+  }
 
   const onSave = (e) => {
     axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/creator`, {
@@ -64,7 +84,8 @@ export default function QuizCreate(props) {
     }).catch( err => {
       console.log('PUT on Save: ', err);
     })
-    let questions = questionsRef.current.getQuestions();
+    //let questions = questionsRef.current.getQuestions();
+    let questions = state.questions;
     for ( let i = 0; i < questions.length; i++) {
       console.log(questions[i])
       axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/question`, {
@@ -81,6 +102,9 @@ export default function QuizCreate(props) {
       })
     }
   };
+
+  /// questions ; []
+  /// questions: [[], newquestion]
 
   const style = {
     backgroundColor: '#ACACE1',
@@ -108,8 +132,17 @@ export default function QuizCreate(props) {
     if(props.location.state == null){
       axios.get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
       .then( res => {
-        //console.log(res);
-        setState({quiz_name: res.data.quiz.quiz_name})
+        console.log(res);
+        // setState({quiz_name: res.data.quiz.quiz_name})
+        const all_questions_data = res.data.questions;
+        const newquestions = []
+        for (let i = 0; i < all_questions_data.length; i++){
+            newquestions.push(all_questions_data[i].question_text)
+        }
+
+        console.log(newquestions)
+        setState({quiz_name: res.data.quiz.quiz_name, questions: newquestions, answers: [[]]})
+        console.log(state);
       }).catch( err => {
         console.log(err);
       })
@@ -133,8 +166,31 @@ export default function QuizCreate(props) {
             style: { textAlign: 'center', fontSize: 22, paddingTop:0, paddingBottom:0,
               marginTop:10}}}
           value={state.quiz_name}
-          onChange={onTitleChange}/>
-          <Questions ref={props, questionsRef}/>     
+          onChange={onTitleChange}
+        />
+        <Box className={classes.box}>
+          {/* <Questions ref={props, questionsRef}/>      */}
+          { state.questions && state.questions.map((question, index) => {
+            console.log(index)
+           return( <>
+              <Questions
+              key={index}
+              id = {index}
+              callback={questionCallback}
+              questiontext={question}
+              />
+              <Button //style={deleteStyle}
+               variant='contained' onClick={removeQuestion(index)}>x</Button>
+              {/* <Answers ref={props, answersRef}/>   */}
+              <div className={classes.toolbar} />  
+            </>
+           );
+          })
+
+          }
+          <Button //style={addStyle} 
+          variant='contained' onClick={addQuestion} >+ Add question</Button> 
+        </Box>
       </FormControl>
     </Box>
   )
