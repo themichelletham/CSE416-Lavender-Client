@@ -20,81 +20,39 @@ const useStyles = makeStyles((theme) => ({
 
 function Answers(props, ref) {
   const classes = useStyles();
-
-  const [answers, setAnswers] = useState([]);
-  const [answer, setAnswerText] = useState({
-    answer_text: '',
-  })
-
-  useImperativeHandle( ref, () => ({
-    getanswers() {
-      return answers;
-    }
-  }));
-  
-    //cretes new textbox
-  const addAnswer = (e) => {
-    let currentanswers = [...answers]
-    let newanswer = "New answer";
-    currentanswers.push(newanswer);
-    setAnswers(currentanswers);
+  const deleteStyle = {
+    backgroundColor: '#8A8AEE',
+    marginLeft: 10,
+    marginBottom: 10,
+    color: 'black',
+    float: "right"
   }
 
-  const removeAnswer = index => e => {
-    let currentanswers = [...answers]
-    currentanswers.splice(index,1)
-    setAnswers(currentanswers);
+  const addStyle = {
+    backgroundColor: '#8A8AEE',
+    marginLeft: 10,
+    marginBottom: 10,
+    marginRight: 10,
+    color: 'black',
+    float: "right"
   }
-
-    //updates list of answers
-    const onAnswerTextChange = index => e => {
-      let tempAnswers = [...answers];
-      setAnswerText({...answer.answer_text, answer_text:e.target.value});
-      tempAnswers[index] = e.target.value;
-      setAnswers(tempAnswers);
-    }
-
-    const deleteStyle = {
-      backgroundColor: '#8A8AEE',
-      marginLeft: 10,
-      marginBottom: 10,
-      color: 'black',
-      float: "right"
-    }
-
-    const addStyle = {
-      backgroundColor: '#8A8AEE',
-      marginLeft: 10,
-      marginBottom: 10,
-      marginRight: 10,
-      color: 'black',
-      float: "right"
-    }
       
-    return(
-      <Box>
-      <div className={classes.toolbar} />
-      { answers.map((answer, index) =>{
-          return (
-          <Box className={classes.answerWrapper} key={index}> 
-            <TextField className={classes.answerText}
-                key={index}
-                value={answers[index]}
-                onChange={onAnswerTextChange(index)}
-                inputProps={{
-                style: {
-                    padding: 5,
-                    fontSize: 20,
-                }
-            }}
-          />
-            <Button style={deleteStyle} variant='contained' onClick={removeAnswer(index)}>X</Button>
-          </Box>
-          );
-        })}
-        <Button style={addStyle} variant='contained' onClick={addAnswer} >+ Add answer</Button>
-      </Box>
-    );
+  return(
+    <Box className={classes.answerWrapper} key={index}> 
+      <TextField className={classes.answerText}
+          key={index}
+          value={answers[index]}
+          // onChange={onAnswerTextChange(index)}
+          onChange={e => props.callback(e, props.key)}
+          inputProps={{
+          style: {
+              padding: 5,
+              fontSize: 20,
+          }
+        }}
+      />
+    </Box>
+  );
 }
 
 export default forwardRef(Answers);

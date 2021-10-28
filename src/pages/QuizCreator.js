@@ -49,12 +49,13 @@ const useStyles = makeStyles((theme) => ({
 export default function QuizCreate(props) {
   const [state, setState] = useState({
     quiz_name: '',
+    questions: [],
+    answers: [[]],
   })
-  const [questions, setQuestions] = useState([]);
+
   const classes = useStyles();
   const location = useLocation();
   const history = useHistory();
-  const questionsRef = useRef();
 
   const onSave = (e) => {
     axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/creator`, {
@@ -89,6 +90,9 @@ export default function QuizCreate(props) {
     color: 'black'
   }
 
+  const answerCallback = (e, k) => {
+
+  }
 
   const onDelete = (e) => {
     axios.delete(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
@@ -102,7 +106,6 @@ export default function QuizCreate(props) {
   const onTitleChange = (e) => {
     setState({...state, quiz_name:e.target.value});
   }
-  
 
   useEffect(() => {
     if(props.location.state == null){
@@ -134,7 +137,7 @@ export default function QuizCreate(props) {
               marginTop:10}}}
           value={state.quiz_name}
           onChange={onTitleChange}/>
-          <Questions ref={props, questionsRef}/>     
+              
       </FormControl>
     </Box>
   )
