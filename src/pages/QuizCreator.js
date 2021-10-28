@@ -59,9 +59,10 @@ export default function QuizCreate(props) {
 
   const addQuestion = (e) => {
     console.log("adding question")
-    let currentquestions = [state.questions]
+    let currentquestions = state.questions
     let newquestion = "New question";
     currentquestions.push(newquestion);
+    console.log(currentquestions);
     setState( {...state, questions : currentquestions});
   }
 
