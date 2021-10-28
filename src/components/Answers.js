@@ -15,35 +15,17 @@ const useStyles = makeStyles((theme) => ({
     marginTop:10,
     width: '48vw',
   },
-//   toolbar: theme.mixins.toolbar,
 }));
 
 function Answers(props, ref) {
   const classes = useStyles();
-  const deleteStyle = {
-    backgroundColor: '#8A8AEE',
-    marginLeft: 10,
-    marginBottom: 10,
-    color: 'black',
-    float: "right"
-  }
-
-  const addStyle = {
-    backgroundColor: '#8A8AEE',
-    marginLeft: 10,
-    marginBottom: 10,
-    marginRight: 10,
-    color: 'black',
-    float: "right"
-  }
       
   return(
-    <Box className={classes.answerWrapper} key={index}> 
+    <Box className={classes.answerWrapper} key={props.id}> 
       <TextField className={classes.answerText}
-          key={index}
-          value={answers[index]}
-          // onChange={onAnswerTextChange(index)}
-          onChange={e => props.callback(e, props.key)}
+          key={props.id}
+          value={props.answerText}
+          onChange={e => props.callback(props.id)}
           inputProps={{
           style: {
               padding: 5,
