@@ -150,46 +150,6 @@ export default function QuizCreate(props) {
         console.log(err);
       })
   }
-  //delete question 
-  const deleteQStyle = {
-    backgroundColor: '#8A8AEE',
-    marginRight: 45,
-    marginTop: 20, 
-    float: 'right', 
-    color: 'black',
-    borderRadius: 20
-  }
-
-  const addQStyle = {
-    backgroundColor: '#8A8AEE',
-    left: "8%",
-    marginBottom: 10,
-    color: 'black',
-    width: "50vw",
-    borderRadius: 20,
-    marginTop: 10, 
-  }
-  //delete answer button
-  const deleteAnsStyle = {
-    backgroundColor: '#8A8AEE',
-    marginRight: 90,
-    marginTop: 11, 
-    marginBottom: 10,
-    color: 'black',
-    float: 'right',
-    borderRadius: 20 
-  }
-  //add answer button 
-  const addAnsStyle = {
-    backgroundColor: '#8A8AEE',
-    marginTop: 50, 
-    marginLeft: 10,
-    marginBottom: 10,
-    marginRight: 10,
-    color: 'black',
-    float: 'right',
-    borderRadius: 20,
-  }
 
   const onTitleChange = (e) => {
     let [new_title, new_questions, new_answers] = copyState();
