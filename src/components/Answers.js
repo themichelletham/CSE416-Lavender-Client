@@ -6,9 +6,18 @@ import DeleteIcon from '@mui/icons-material/HighlightOff';
 
 const useStyles = makeStyles((theme) => ({
   answerWrapper: {
+<<<<<<< Updated upstream
     paddingTop: 10, 
     paddingLeft: 50,
     paddingRight: 31,
+=======
+    display: 'inline-block',
+    paddingLeft: 50,
+    paddingRight: 31,
+    paddingBottom: 10,
+    marginTop: 10, 
+    marginLeft: 100,
+>>>>>>> Stashed changes
     fontSize: 22,
     //fullWidth: 30,
     borderRadius: '70px',
@@ -16,9 +25,14 @@ const useStyles = makeStyles((theme) => ({
   answerText: {
     textAlign: 'left',  
     marginTop: 10,
+<<<<<<< Updated upstream
     marginLeft: 30,
     width: '45vw'
 
+=======
+    width: '38vw',
+    backgroundColor: "#FFFFFF",
+>>>>>>> Stashed changes
   },
 //   toolbar: theme.mixins.toolbar,
 }));
