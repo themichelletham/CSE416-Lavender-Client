@@ -158,7 +158,6 @@ export default function QuizCreate(props) {
     borderRadius: 20
   }
 
-  //long bar at the bottom
   const addQStyle = {
     backgroundColor: '#8A8AEE',
     left: "8%",
@@ -248,6 +247,7 @@ export default function QuizCreate(props) {
           value={state.quiz_name}
           onChange={onTitleChange}
         />
+
         <Box className={classes.box}> 
         <div className={classes.quizbody} />  
            {state.questions && state.questions.map((question, question_index) => {
