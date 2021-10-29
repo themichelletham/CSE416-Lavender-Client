@@ -5,15 +5,18 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   answerWrapper: {
+    display: 'inline-block',
     paddingLeft: 50,
     paddingRight: 31,
     paddingBottom: 10,
+    marginTop: 10, 
+    marginLeft: 80,
     fontSize: 22,
   },
   answerText: {
     textAlign: 'left',  
-    marginTop:10,
-    width: '48vw',
+    marginTop: 10,
+    width: '38vw',
     backgroundColor: "#FFFFFF",
   },
 }));

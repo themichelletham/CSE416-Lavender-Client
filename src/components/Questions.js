@@ -8,19 +8,19 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#F9F9FF",
   },
   questionWrapper: {
+    display: 'inline-block',
     fontSize: 22,
-    paddingBottom: 10,
-    paddingLeft: 10,
+    marginLeft: 70,
+    marginTop: 20
   },
   questionText: {
-    textAlign: 'left',  
-    marginTop:10,
-    width: '50vw',
+    textAlign: 'left', 
+    marginTop: 10,
+    width: '45vw',
     backgroundColor: "#FFFFFF",
   },
-  toolbar: theme.mixins.toolbar,
+  //toolbar: theme.mixins.toolbar,
 }));
-
 function Questions(props, ref) {
   const classes = useStyles();
 

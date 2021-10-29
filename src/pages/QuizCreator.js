@@ -13,14 +13,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    width: '60vw'
+    width: '60vw', 
   },
   Opt:{
     display: 'inline-block',
     width: '60vw',
     paddingLeft: 10,
     paddingRight: 10,
-    alignItems: 'center'
+    alignItems: 'center', 
   },
   duration:{
     display: 'inline-block',
@@ -40,13 +40,16 @@ const useStyles = makeStyles((theme) => ({
   },
   quizForm:{
     borderRadius: 15,
-    borderTopLeftRadius: 15
+    borderTopLeftRadius: 15,  
   },
   noBorder: {
     border: 'none',
   },
-  toolbar: theme.mixins.toolbar,
-
+  quizbody:{ 
+    display: 'flex', 
+    backgroundColor: "#FFFFFF", 
+  }, 
+  //toolbar: theme.mixins.toolbar,
 }))
 
 
@@ -145,12 +148,14 @@ export default function QuizCreate(props) {
     marginBottom: 10,
     color: 'black'
   }
-
+  //delete question 
   const deleteQStyle = {
     backgroundColor: '#8A8AEE',
-    marginLeft: 10,
-    marginBottom: 10,
+    marginRight: 45,
+    marginTop: 20, 
+    float: 'right', 
     color: 'black',
+    borderRadius: 20
   }
 
   const addQStyle = {
@@ -159,23 +164,29 @@ export default function QuizCreate(props) {
     marginBottom: 10,
     color: 'black',
     width: "50vw",
+    borderRadius: 20,
+    marginTop: 10, 
   }
-
+  //delete answer button
   const deleteAnsStyle = {
     backgroundColor: '#8A8AEE',
-    marginLeft: 10,
+    marginRight: 90,
+    marginTop: 11, 
     marginBottom: 10,
     color: 'black',
-    float: "right"
+    float: 'right',
+    borderRadius: 20 
   }
-
+  //add answer button 
   const addAnsStyle = {
     backgroundColor: '#8A8AEE',
+    marginTop: 50, 
     marginLeft: 10,
     marginBottom: 10,
     marginRight: 10,
     color: 'black',
-    float: "right"
+    float: 'right',
+    borderRadius: 20,
   }
 
   const onDelete = (e) => {
@@ -223,46 +234,45 @@ export default function QuizCreate(props) {
   return (
     <Box className={classes.QuizContainer}>
       <h1>Platform Name</h1>
-      <Box className={classes.Opt} mt={5} >
+      <Box className={classes.Opt} mt={3} >
         <div className={classes.duration}>Duration: INF</div>
-        <Button size='small' variant='contained' style={style} className={classes.save}  onClick={onDelete}>Delete Quiz</Button>
-        <Button size='small' variant='contained' style={style} className={classes.save}  onClick={onSave}>Save Quiz</Button>
+        <Button size='small' variant='contained' style={style} className={classes.save}  onClick={onDelete} disableElevation>Delete Quiz</Button>
+        <Button size='small' variant='contained' style={style} className={classes.save}  onClick={onSave} disableElevation>Save Quiz</Button>
       </Box>
       <FormControl className={classes.quizform}>
         <InputBase className={classes.title}
           inputProps={{min: 0, 
-            style: { textAlign: 'center', fontSize: 22, paddingTop:0, paddingBottom:0,
+            style: { textAlign: 'center', fontSize: 22, paddingTop:0, paddingBottom:0,  
               marginTop:10}}}
           value={state.quiz_name}
           onChange={onTitleChange}
         />
-        <Box className={classes.box}>
-        <div className={classes.toolbar} />  
-          { state.questions && state.questions.map((question, question_index) => {
+
+        <Box className={classes.box}> 
+        <div className={classes.quizbody} />  
+           {state.questions && state.questions.map((question, question_index) => {
            return( <>
               <Questions
-              key={question_index}
-              id = {question_index}
-              callback={questionCallback}
-              questiontext={question}
+                key={question_index}
+                id = {question_index}
+                callback={questionCallback}
+                questiontext={question}
               />
-              <Button style={deleteQStyle} variant='contained' onClick={removeQuestion(question_index)}>x</Button>
-              <div className={classes.toolbar} />  
+                <Button style={deleteQStyle} variant='contained' onClick={removeQuestion(question_index)} disableElevation>x</Button>
               {
                 state.answers && state.answers[question_index] && 
                 state.answers[question_index].map((answer, answer_index) => {
                   return( <>
-                    <Answers key={answer_index} id={answer_index} callback={answerCallback} answertext={answer} />
-                    <Button style={deleteAnsStyle} variant="contained" onClick={removeAnswer(question_index, answer_index)}>X</Button>
+                    <Answers key={answer_index} id={answer_index} callback={answerCallback} answertext={answer} disableElevation/>
+                    <Button style={deleteAnsStyle} variant="contained" onClick={removeAnswer(question_index, answer_index)} disableElevation>X</Button>
                   </>);
                 })
               }
-              <Button style={addAnsStyle} variant='contained' onClick={addAnswer(question_index)} >+ Add answer</Button> 
-              <div className={classes.toolbar} />  
+              <Button style={addAnsStyle} variant='contained' onClick={addAnswer(question_index)} disableElevation >+ Add answer</Button> 
             </>
            );
           })}
-          <Button style={addQStyle} variant='contained' onClick={addQuestion} >+ Add question</Button> 
+          <Button style={addQStyle} variant='contained' onClick={addQuestion} disableElevation>+ Add question</Button> 
         </Box>
       </FormControl>
     </Box>
