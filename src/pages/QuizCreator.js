@@ -52,12 +52,11 @@ const useStyles = makeStyles((theme) => ({
   //toolbar: theme.mixins.toolbar,
 }))
 
-
 export default function QuizCreate(props) {
   const [state, setState] = useState({
     quiz_title: '',
     questions: [],
-    answers: [[]],
+    answers: [],
   })
 
   const copyState = () => {
@@ -78,17 +77,49 @@ export default function QuizCreate(props) {
     color: 'black'
   }
 
-  const addStyle = {
+  const addQStyle = {
     backgroundColor: '#8A8AEE',
     left: "8%",
     marginBottom: 10,
     color: 'black',
     width: "50vw",
+    borderRadius: 20,
+    marginTop: 10,
+  }
+
+  const deleteQStyle = {
+    backgroundColor: '#8A8AEE',
+    marginRight: 45,
+    marginTop: 20,
+    float: 'right',
+    color: 'black',
+    borderRadius: 20
+  }
+
+  const addAnsStyle = {
+    backgroundColor: '#8A8AEE',
+    marginTop: 50,
+    marginLeft: 10,
+    marginBottom: 10,
+    marginRight: 10,
+    color: 'black',
+    float: 'right',
+    borderRadius: 20,
+  }
+
+  const deleteAnsStyle = {
+    backgroundColor: '#8A8AEE',
+    marginRight: 90,
+    marginTop: 11,
+    marginBottom: 10,
+    color: 'black',
+    float: 'right',
+    borderRadius: 20
   }
 
   const onSave = (e) => {
     axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/creator`, {
-      quiz_fields: state.quiz_title,
+      quiz_fields: { quiz_name: state.quiz_title, }
     }).then(res => {
       // TODO: DO something after udpate
     }).catch(err => {
@@ -98,8 +129,12 @@ export default function QuizCreate(props) {
     var questions_fields = state.questions.map((q) => (
       { quiz_id: props.match.params.quiz_id, question_text: q }
     ));
+    var answers_fields = state.answers.map((ans_arr) => {
+      return ans_arr.map((ans) => ({ answer_text: ans, is_correct: false }));
+    });
     axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/question`, {
-      questions_fields: questions_fields
+      questions_fields: questions_fields,
+      answers_fields: answers_fields,
     }).then(res => {
       // TODO: DO something after udpate
     }).catch(err => {
@@ -237,8 +272,8 @@ export default function QuizCreate(props) {
           new_title = res.data.quiz.quiz_name;
           setState({
             quiz_title: new_title,
-            questions: new_questions,
-            answers: new_answers,
+            questions: [], //new_questions,
+            answers: []//new_answers,
           });
         }).catch(err => {
           console.log(err);
@@ -249,8 +284,8 @@ export default function QuizCreate(props) {
       new_title = props.location.state.quiz.quiz_name;
       setState({
         quiz_title: new_title,
-        questions: new_questions,
-        answers: new_answers,
+        questions: [],//new_questions,
+        answers: [],//new_answers,
       });
     }
   }, [props]);
@@ -275,28 +310,25 @@ export default function QuizCreate(props) {
           value={state.quiz_title}
           onChange={onTitleChange} />
         <Box className={classes.box}>
-          <div className={classes.toolbar} />
+          <div className={classes.quizbody} />
           {state.questions && state.questions.map((question, q_key) => (
             <div key={q_key}>
               <Questions
                 q_key={q_key}
                 q_callback={onQuestionChange}
-                qr_callback={removeQuestion}
                 q_text={question}
               />
-              <Box>
-                <div className={classes.toolbar} />
-                {state.answers[q_key].map((ans, a_key) => (
-                  <Answers key={a_key} a_key={a_key} q_key={q_key} ans_callback={onAnswerChange} 
-                  ansr_callback={removeAnswer} ans_text={ans} />
-                ))}
-                <Button style={addStyle} variant='contained' onClick={e => addAnswer(e, q_key)} >+ Add answer</Button>
-              </Box>
+              <Button style={deleteQStyle} variant='contained' onClick={e => removeQuestion(e, q_key)} disableElevation>X</Button>
+              {state.answers[q_key].map((ans, a_key) => (
+                <div>
+                  <Answers key={a_key} a_key={a_key} q_key={q_key} ans_callback={onAnswerChange} ans_text={ans} disableElevation />
+                  <Button style={deleteAnsStyle} variant='contained' onClick={e => removeAnswer(e, q_key, a_key)}>X</Button>
+                </div>
+              ))}
+              <Button style={addAnsStyle} variant='contained' onClick={e => addAnswer(e, q_key)} disableElevation>+ Add answer</Button>
             </div>
           ))}
-          <div className={classes.toolbar} />
-          <Button style={addStyle} variant='contained'
-            onClick={addQuestion} >+ Add question</Button>
+          <Button style={addQStyle} variant='contained' onClick={addQuestion} disableElevation>+ Add question</Button>
         </Box>
       </FormControl>
     </Box>

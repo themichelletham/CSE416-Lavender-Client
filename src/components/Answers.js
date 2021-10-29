@@ -23,28 +23,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Answers(props) {
   const classes = useStyles();
-  const deleteStyle = {
-    backgroundColor: '#8A8AEE',
-    marginLeft: 10,
-    marginBottom: 10,
-    color: 'black',
-    float: "right"
-  }
 
   return (
-    <Box className={classes.answerWrapper} >
-      <TextField className={classes.answerText}
-        key={props.a_key}
-        value={props.ans_text}
-        onChange={e => props.ans_callback(e, props.q_key, props.a_key)}
-        inputProps={{
-          style: {
-            padding: 5,
-            fontSize: 20,
-          }
-        }}
-      />
-      <Button style={deleteStyle} variant='contained' onClick={e => props.ansr_callback(e, props.q_key, props.a_key)}>X</Button>
-    </Box>
+    <>
+      <Box className={classes.answerWrapper} >
+        <TextField className={classes.answerText}
+          key={props.a_key}
+          value={props.ans_text}
+          onChange={e => props.ans_callback(e, props.q_key, props.a_key)}
+          inputProps={{
+            style: {
+              padding: 5,
+              fontSize: 20,
+            }
+          }}
+        />
+      </Box>
+    </>
   );
 }
