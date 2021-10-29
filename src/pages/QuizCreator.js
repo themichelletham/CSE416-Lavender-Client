@@ -62,10 +62,13 @@ export default function QuizCreate(props) {
   const history = useHistory();
 
   const addQuestion = (e) => {
+    let currentanswers = state.answers;
     let currentquestions = state.questions;
     let newquestion = "New question";
     currentquestions.push(newquestion);
-    setState( {...state, questions : currentquestions});
+    currentanswers.push([]);
+    setState( {...state, 
+      questions : currentquestions});
   }
 
   const removeQuestion = index => e => {
@@ -81,16 +84,24 @@ export default function QuizCreate(props) {
   }
 
   const addAnswer = question_index => (e) => {
-    let currentanswers = state.answers;
+    // let currentanswers = state.answers;
+    // let newanswer = "New answer";
+    // currentanswers[question_index].push(newanswer);
+    // setState( {...state, answers : currentanswers});
+    let currentanswers = state.answers[question_index];
+    let tempans = state.answers;
     let newanswer = "New answer";
-    currentanswers[question_index].push(newanswer);
-    setState( {...state, answers : currentanswers});
+    currentanswers.push(newanswer);
+    tempans[question_index] = currentanswers;
+    setState( {...state, answers : tempans});
   }
 
   const removeAnswer = (question_index, answer_index) => e => {
     let currentanswers = state.answers[question_index];
-    currentanswers.splice(answer_index,1)
-    setState( {...state, answers : currentanswers});
+    let tempans = state.answers;
+    currentanswers.splice(answer_index,1);
+    tempans[question_index] = currentanswers;
+    setState( {...state, answers : tempans});
   }
 
   const answerCallback = key => e => {
@@ -187,9 +198,14 @@ export default function QuizCreate(props) {
         console.log(res);
         // setState({quiz_name: res.data.quiz.quiz_name})
         const all_questions_data = res.data.questions;
-        const newquestions = []
+        const newquestions = [];
+        const all_answers_data = res.data.answers;
+        const newanswers = [[]];
         for (let i = 0; i < all_questions_data.length; i++){
-            newquestions.push(all_questions_data[i].question_text)
+          newquestions.push(all_questions_data[i].question_text)
+          for (let j = 0; j < all_answers_data.lengthl; j++) {
+            newanswers.push(all_answers_data[i][j].answer_text);
+          }
         }
 
         console.log(newquestions)
@@ -233,7 +249,7 @@ export default function QuizCreate(props) {
               <Button style={deleteQStyle} variant='contained' onClick={removeQuestion(question_index)}>x</Button>
               <div className={classes.toolbar} />  
               {
-                state.answers && 
+                state.answers && state.answers[question_index] && 
                 state.answers[question_index].map((answer, answer_index) => {
                   return( <>
                     <Answers key={answer_index} id={answer_index} callback={answerCallback} answertext={answer} />
