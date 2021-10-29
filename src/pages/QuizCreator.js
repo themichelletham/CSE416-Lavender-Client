@@ -5,6 +5,8 @@ import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import * as constants from '../components/constants';
 import Questions from '../components/Questions';
+import Answers from '../components/Answers';
+import { DoorBack } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
   QuizContainer:{
@@ -42,7 +44,9 @@ const useStyles = makeStyles((theme) => ({
   },
   noBorder: {
     border: 'none',
-  }
+  },
+  toolbar: theme.mixins.toolbar,
+
 }))
 
 
@@ -52,16 +56,19 @@ export default function QuizCreate(props) {
     questions: [],
     answers: [[]],
   })
-  //const [questions, setQuestions] = useState([]);
+
   const classes = useStyles();
   const location = useLocation();
   const history = useHistory();
 
   const addQuestion = (e) => {
+    let currentanswers = state.answers;
     let currentquestions = state.questions;
     let newquestion = "New question";
     currentquestions.push(newquestion);
-    setState( {...state, questions : currentquestions});
+    currentanswers.push([]);
+    setState( {...state, 
+      questions : currentquestions});
   }
 
   const removeQuestion = index => e => {
@@ -76,6 +83,33 @@ export default function QuizCreate(props) {
     setState({...state, questions:new_questions})
   }
 
+  const addAnswer = question_index => (e) => {
+    // let currentanswers = state.answers;
+    // let newanswer = "New answer";
+    // currentanswers[question_index].push(newanswer);
+    // setState( {...state, answers : currentanswers});
+    let currentanswers = state.answers[question_index];
+    let tempans = state.answers;
+    let newanswer = "New answer";
+    currentanswers.push(newanswer);
+    tempans[question_index] = currentanswers;
+    setState( {...state, answers : tempans});
+  }
+
+  const removeAnswer = (question_index, answer_index) => e => {
+    let currentanswers = state.answers[question_index];
+    let tempans = state.answers;
+    currentanswers.splice(answer_index,1);
+    tempans[question_index] = currentanswers;
+    setState( {...state, answers : tempans});
+  }
+
+  const answerCallback = key => e => {
+    var new_answers = state.answers;
+    new_answers[key] = e.target.value;
+    setState({...state, answers: new_answers})
+  }
+
   const onSave = (e) => {
     axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/creator`, {
       quiz_fields: {...state}
@@ -84,8 +118,10 @@ export default function QuizCreate(props) {
     }).catch( err => {
       console.log('PUT on Save: ', err);
     })
-    //let questions = questionsRef.current.getQuestions();
+
     let questions = state.questions;
+    let answers = state.answers;
+
     for ( let i = 0; i < questions.length; i++) {
       console.log(questions[i])
       axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/question`, {
@@ -103,9 +139,6 @@ export default function QuizCreate(props) {
     }
   };
 
-  /// questions ; []
-  /// questions: [[], newquestion]
-
   const style = {
     backgroundColor: '#ACACE1',
     marginLeft: 10,
@@ -113,6 +146,37 @@ export default function QuizCreate(props) {
     color: 'black'
   }
 
+  const deleteQStyle = {
+    backgroundColor: '#8A8AEE',
+    marginLeft: 10,
+    marginBottom: 10,
+    color: 'black',
+  }
+
+  const addQStyle = {
+    backgroundColor: '#8A8AEE',
+    left: "8%",
+    marginBottom: 10,
+    color: 'black',
+    width: "50vw",
+  }
+
+  const deleteAnsStyle = {
+    backgroundColor: '#8A8AEE',
+    marginLeft: 10,
+    marginBottom: 10,
+    color: 'black',
+    float: "right"
+  }
+
+  const addAnsStyle = {
+    backgroundColor: '#8A8AEE',
+    marginLeft: 10,
+    marginBottom: 10,
+    marginRight: 10,
+    color: 'black',
+    float: "right"
+  }
 
   const onDelete = (e) => {
     axios.delete(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
@@ -126,7 +190,6 @@ export default function QuizCreate(props) {
   const onTitleChange = (e) => {
     setState({...state, quiz_name:e.target.value});
   }
-  
 
   useEffect(() => {
     if(props.location.state == null){
@@ -135,9 +198,14 @@ export default function QuizCreate(props) {
         console.log(res);
         // setState({quiz_name: res.data.quiz.quiz_name})
         const all_questions_data = res.data.questions;
-        const newquestions = []
+        const newquestions = [];
+        const all_answers_data = res.data.answers;
+        const newanswers = [[]];
         for (let i = 0; i < all_questions_data.length; i++){
-            newquestions.push(all_questions_data[i].question_text)
+          newquestions.push(all_questions_data[i].question_text)
+          for (let j = 0; j < all_answers_data.lengthl; j++) {
+            newanswers.push(all_answers_data[i][j].answer_text);
+          }
         }
 
         console.log(newquestions)
@@ -169,27 +237,32 @@ export default function QuizCreate(props) {
           onChange={onTitleChange}
         />
         <Box className={classes.box}>
-          {/* <Questions ref={props, questionsRef}/>      */}
-          { state.questions && state.questions.map((question, index) => {
-            console.log(index)
+        <div className={classes.toolbar} />  
+          { state.questions && state.questions.map((question, question_index) => {
            return( <>
               <Questions
-              key={index}
-              id = {index}
+              key={question_index}
+              id = {question_index}
               callback={questionCallback}
               questiontext={question}
               />
-              <Button //style={deleteStyle}
-               variant='contained' onClick={removeQuestion(index)}>x</Button>
-              {/* <Answers ref={props, answersRef}/>   */}
+              <Button style={deleteQStyle} variant='contained' onClick={removeQuestion(question_index)}>x</Button>
+              <div className={classes.toolbar} />  
+              {
+                state.answers && state.answers[question_index] && 
+                state.answers[question_index].map((answer, answer_index) => {
+                  return( <>
+                    <Answers key={answer_index} id={answer_index} callback={answerCallback} answertext={answer} />
+                    <Button style={deleteAnsStyle} variant="contained" onClick={removeAnswer(question_index, answer_index)}>X</Button>
+                  </>);
+                })
+              }
+              <Button style={addAnsStyle} variant='contained' onClick={addAnswer(question_index)} >+ Add answer</Button> 
               <div className={classes.toolbar} />  
             </>
            );
-          })
-
-          }
-          <Button //style={addStyle} 
-          variant='contained' onClick={addQuestion} >+ Add question</Button> 
+          })}
+          <Button style={addQStyle} variant='contained' onClick={addQuestion} >+ Add question</Button> 
         </Box>
       </FormControl>
     </Box>
