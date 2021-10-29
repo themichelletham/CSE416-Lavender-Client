@@ -1,7 +1,6 @@
-import React, { forwardRef } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, TextField } from '@mui/material'
-import Answers from "./Answers"
+import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle, useCallback } from 'react'
+import { makeStyles, styled } from '@material-ui/core/styles';
+import { Box, Button, FormControl, InputBase, TextField } from '@mui/material'
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -21,25 +20,25 @@ const useStyles = makeStyles((theme) => ({
   },
   //toolbar: theme.mixins.toolbar,
 }));
-function Questions(props, ref) {
+
+export default function Questions(props) {
   const classes = useStyles();
 
-  return(
-    <Box className={classes.questionWrapper} key={props.id}> 
-      {props.id + 1}. 
-      <TextField className={classes.questionText}
-        key={props.id}
-        value={props.questiontext}
-        onChange={props.callback(props.id)}
-        inputProps={{
-          style: {
-            padding: 5,
-            fontSize: 20,
-          }
-        }}
-      />
-    </Box> 
+  return (
+    <>
+      <Box className={classes.questionWrapper} key={props.q_key}>
+        {props.q_key + 1}. <TextField className={classes.questionText}
+          key={props.q_key}
+          value={props.q_text}
+          onChange={e => props.q_callback(e, props.q_key)}
+          inputProps={{
+            style: {
+              padding: 5,
+              fontSize: 20,
+            }
+          }}
+        />
+      </Box>
+    </>
   );
 }
-
-export default forwardRef(Questions);

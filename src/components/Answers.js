@@ -21,24 +21,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Answers(props, ref) {
+export default function Answers(props) {
   const classes = useStyles();
-      
-  return(
-    <Box className={classes.answerWrapper} key={props.id}> 
-      <TextField className={classes.answerText}
-          key={props.id}
-          value={props.answerText}
-          onChange={e => props.callback(props.id)}
+
+  return (
+    <>
+      <Box className={classes.answerWrapper} >
+        <TextField className={classes.answerText}
+          key={props.a_key}
+          value={props.ans_text}
+          onChange={e => props.ans_callback(e, props.q_key, props.a_key)}
           inputProps={{
-          style: {
+            style: {
               padding: 5,
               fontSize: 20,
-          }
-        }}
-      />
-    </Box>
+            }
+          }}
+        />
+      </Box>
+    </>
   );
 }
-
-export default forwardRef(Answers);
