@@ -263,27 +263,27 @@ export default function QuizCreate(props) {
     });
   }
 
+  const parseToState = (res) => {
+    const title = res.data.quiz.quiz_name;
+    const questions = res.data.questions.map(q_obj => q_obj.question_text)
+    const answers = res.data.answers.map(ans_list => (
+      ans_list.map(ans_obj => ans_obj.answer_text)
+    ));
+    return { quiz_title: title, questions: questions, answers: answers };
+  }
   useEffect(() => {
     if (props.location.state == null) {
       axios.get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
         .then(res => {
           console.log(res);
-          let [new_title, new_questions, new_answers] = copyState();
-          new_title = res.data.quiz.quiz_name;
-          setState({
-            quiz_title: new_title,
-            questions: [], //new_questions,
-            answers: []//new_answers,
-          });
+          setState(parseToState(res));
         }).catch(err => {
           console.log(err);
         })
     }
     else if (props.location.state) {
-      let [new_title, new_questions, new_answers] = copyState();
-      new_title = props.location.state.quiz.quiz_name;
       setState({
-        quiz_title: new_title,
+        quiz_title: props.location.state.quiz.quiz_name,
         questions: [],//new_questions,
         answers: [],//new_answers,
       });
@@ -320,8 +320,8 @@ export default function QuizCreate(props) {
               />
               <Button style={deleteQStyle} variant='contained' onClick={e => removeQuestion(e, q_key)} disableElevation>X</Button>
               {state.answers[q_key].map((ans, a_key) => (
-                <div>
-                  <Answers key={a_key} a_key={a_key} q_key={q_key} ans_callback={onAnswerChange} ans_text={ans} disableElevation />
+                <div key={a_key}>
+                  <Answers a_key={a_key} q_key={q_key} ans_callback={onAnswerChange} ans_text={ans} disableElevation />
                   <Button style={deleteAnsStyle} variant='contained' onClick={e => removeAnswer(e, q_key, a_key)}>X</Button>
                 </div>
               ))}
