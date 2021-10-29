@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Answers(props, ref) {
+export default function Answers(props) {
   const classes = useStyles();
   const deleteStyle = {
     backgroundColor: '#8A8AEE',
@@ -33,7 +33,7 @@ export default function Answers(props, ref) {
       <TextField className={classes.answerText}
         key={props.a_key}
         value={props.ans_text}
-        onChange={e => props.ans_callback(e, props.q_k, props.a_k)}
+        onChange={e => props.ans_callback(e, props.q_key, props.a_key)}
         inputProps={{
           style: {
             padding: 5,
@@ -41,7 +41,7 @@ export default function Answers(props, ref) {
           }
         }}
       />
-      <Button style={deleteStyle} variant='contained' onClick={e => props.ansr_callback(e, props.q_k, props.a_k)}>X</Button>
+      <Button style={deleteStyle} variant='contained' onClick={e => props.ansr_callback(e, props.q_key, props.a_key)}>X</Button>
     </Box>
   );
 }
