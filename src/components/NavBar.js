@@ -6,9 +6,12 @@ import sproutLogo from "../images/sprout.png";
 import googleLogin from "../images/google-login-button.png";
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
 import SearchBar from 'material-ui-search-bar'
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { grey } from '@material-ui/core/colors';
 import Home from "../pages/Home"
 import Leaderboard from "../pages/Leaderboard"
+import Platform from '../pages/Platform';
 import QuizCreate from '../pages/QuizCreator';
 import * as constants from '../components/constants';
 
@@ -46,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 export default function NavBar() {
   const classes = useStyles();
   const history = useHistory();
+  
   const onCreateQuiz = (e) => {
     e.preventDefault();
     axios.post(`${constants.API_PATH}/quiz`, {
@@ -66,6 +70,16 @@ export default function NavBar() {
       console.log('Create Quiz Button: ', err);
     })
   }
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openProfileMenu = Boolean(anchorEl);
+  const handleProfileClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseProfileMenu = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'start' }}>
       <div className={classes.toolbar} />
@@ -79,15 +93,37 @@ export default function NavBar() {
           <Link to='/leaderboard'>
             <Button className={classes.leader}>Leaderboard</Button>
           </Link>
-          <IconButton className={classes.google}>
+          <Button className={classes.google} 
+            aria-controls="basic-menu"
+            aria-haspopup="true"
+            aria-expanded={openProfileMenu ? 'true' : undefined}
+            onClick={handleProfileClick}>
             <img width="155" height="35" alt="google-signin" src={googleLogin} />
-          </IconButton>
+          </Button>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={openProfileMenu}
+            onClose={handleCloseProfileMenu}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            <Link to='/profile'>
+              <MenuItem onClick={handleCloseProfileMenu}>View Profile</MenuItem>
+            </Link>
+            <Link to='/platform'>
+              <MenuItem onClick={handleCloseProfileMenu}> My Platform</MenuItem>
+            </Link>
+            <MenuItem onClick={handleCloseProfileMenu}>Logout</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/leaderboard" exact component={Leaderboard} />
+          <Route path="/platform" exact component={Platform} />
           <Route path='/quiz/creator/:quiz_id' component={QuizCreate} />
         </Switch>
       </Box>
