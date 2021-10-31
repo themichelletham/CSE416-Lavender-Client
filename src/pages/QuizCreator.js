@@ -6,7 +6,7 @@ import axios from 'axios';
 import * as constants from '../components/constants';
 import Questions from '../components/Questions';
 import Answers from '../components/Answers';
-import { DoorBack } from '@mui/icons-material';
+import { DoorBack, Login } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
   QuizContainer: {
@@ -57,13 +57,15 @@ export default function QuizCreate(props) {
     quiz_title: '',
     questions: [],
     answers: [],
+    correct_answers: [],
   })
 
   const copyState = () => {
     let new_title = state.quiz_title;
     let new_questions = [...state.questions];
     let new_answers = state.answers.map((arr) => arr.slice());
-    return [new_title, new_questions, new_answers];
+    let new_correct_answers = state.correct_answers;
+    return [new_title, new_questions, new_answers, new_correct_answers];
   }
 
   const classes = useStyles();
@@ -129,9 +131,11 @@ export default function QuizCreate(props) {
     var questions_fields = state.questions.map((q) => (
       { quiz_id: props.match.params.quiz_id, question_text: q }
     ));
-    var answers_fields = state.answers.map((ans_arr) => {
-      return ans_arr.map((ans) => ({ answer_text: ans, is_correct: false }));
+    var answers_fields = state.answers.map((ans_arr,index) => {
+      return ans_arr.map((ans) => (
+        { answer_text: ans, is_correct: state.correct_answers[index][0] === ans }));
     });
+
     axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/question`, {
       questions_fields: questions_fields,
       answers_fields: answers_fields,
@@ -152,74 +156,106 @@ export default function QuizCreate(props) {
   }
 
   const onTitleChange = (e) => {
-    let [new_title, new_questions, new_answers] = copyState();
+    let [new_title, new_questions, new_answers, new_correct_answers] = copyState();
     new_title = e.target.value;
     setState({
       quiz_title: new_title,
       questions: new_questions,
       answers: new_answers,
+      correct_answers: new_correct_answers,
     });
   }
 
   const onQuestionChange = (e, q_k) => {
-    let [new_title, new_questions, new_answers] = copyState();
+    let [new_title, new_questions, new_answers, new_correct_answers] = copyState();
     new_questions[q_k] = e.target.value;
     setState({
       quiz_title: new_title,
       questions: new_questions,
       answers: new_answers,
+      correct_answers: new_correct_answers,
     });
   }
 
   const addQuestion = (e) => {
-    let [new_title, new_questions, new_answers] = copyState();
+    let [new_title, new_questions, new_answers, new_correct_answers] = copyState();
     new_questions.push('New question');
     new_answers.push([]);
+    new_correct_answers.push([]);
     setState({
       quiz_title: new_title,
       questions: new_questions,
       answers: new_answers,
+      correct_answers: new_correct_answers,
     });
   }
 
   const removeQuestion = (e, q_k) => {
-    let [new_title, new_questions, new_answers] = copyState();
+    let [new_title, new_questions, new_answers, new_correct_answers] = copyState();
     new_questions.splice(q_k, 1);
     new_answers.splice(q_k, 1);
+    new_correct_answers.splice(q_k, 1);
     setState({
       quiz_title: new_title,
       questions: new_questions,
       answers: new_answers,
+      correct_answers: new_correct_answers,
     });
   }
 
   const onAnswerChange = (e, q_k, a_k) => {
-    let [new_title, new_questions, new_answers] = copyState();
+    let [new_title, new_questions, new_answers, new_correct_answers] = copyState();
+    if ( new_answers[q_k][a_k] === new_correct_answers[q_k][0]){
+      new_correct_answers[q_k][0] = e.target.value;
+    }
     new_answers[q_k][a_k] = e.target.value;
+
+   
+
     setState({
       quiz_title: new_title,
       questions: new_questions,
       answers: new_answers,
+      correct_answers: new_correct_answers,
     });
   }
 
   const addAnswer = (e, q_k) => {
-    let [new_title, new_questions, new_answers] = copyState();
+    let [new_title, new_questions, new_answers, new_correct_answers] = copyState();
     new_answers[q_k].push('New answer');
+    if (new_correct_answers[q_k].length === 0){
+      new_correct_answers[q_k].push('New answer');
+    }
     setState({
       quiz_title: new_title,
       questions: new_questions,
       answers: new_answers,
+      correct_answers: new_correct_answers,
+    });
+  }
+
+  //adds/changes correct answer
+  //this list will be used to compare with the other answers in the list to see which is correct
+  const makeCorrect = (e, q_k, a_k) => {
+    let [new_title, new_questions, new_answers,new_correct_answers] = copyState();
+    new_correct_answers[q_k] = [new_answers[q_k][a_k]];
+    setState({
+      quiz_title: new_title,
+      questions: new_questions,
+      answers: new_answers,
+      correct_answers: new_correct_answers,
     });
   }
 
   const removeAnswer = (e, q_k, a_k) => {
-    let [new_title, new_questions, new_answers] = copyState();
+    let [new_title, new_questions, new_answers,new_correct_answers] = copyState();
     new_answers[q_k].splice(a_k, 1);
+    new_correct_answers[q_k].splice(a_k, 1);
     setState({
       quiz_title: new_title,
       questions: new_questions,
       answers: new_answers,
+      correct_answers: new_correct_answers,
     });
   }
 
@@ -229,7 +265,10 @@ export default function QuizCreate(props) {
     const answers = res.data.answers.map(ans_list => (
       ans_list.map(ans_obj => ans_obj.answer_text)
     ));
-    return { quiz_title: title, questions: questions, answers: answers };
+    const correct_answers = res.data.answers.map(ans_list => (
+      ans_list.filter(ans_obj => ans_obj.is_correct).map(ans_objb => ans_objb.answer_text)
+    ));
+    return { quiz_title: title, questions: questions, answers: answers, correct_answers:correct_answers};
   }
   useEffect(() => {
     if (props.location.state == null) {
@@ -246,6 +285,7 @@ export default function QuizCreate(props) {
         quiz_title: props.location.state.quiz.quiz_name,
         questions: [],//new_questions,
         answers: [],//new_answers,
+        correct_answers: [], //new correct answers,
       });
     }
   }, [props]);
@@ -281,7 +321,8 @@ export default function QuizCreate(props) {
               <Button style={deleteQStyle} variant='contained' onClick={e => removeQuestion(e, q_key)} disableElevation>X</Button>
               {state.answers[q_key].map((ans, a_key) => (
                 <div key={a_key}>
-                  <Answers a_key={a_key} q_key={q_key} ans_callback={onAnswerChange} ans_text={ans} disableElevation />
+                  <Answers a_key={a_key} q_key={q_key} ans_callback={onAnswerChange} ans_text={ans} correct_ans={state.correct_answers[q_key]}disableElevation />
+                  {ans === state.correct_answers[q_key][0] ? "" : <Button style={deleteAnsStyle} variant='contained' onClick={e => makeCorrect(e, q_key, a_key)}>O</Button>}
                   <Button style={deleteAnsStyle} variant='contained' onClick={e => removeAnswer(e, q_key, a_key)}>X</Button>
                 </div>
               ))}

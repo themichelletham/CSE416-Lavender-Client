@@ -19,6 +19,12 @@ const useStyles = makeStyles((theme) => ({
     width: '38vw',
     backgroundColor: "#FFFFFF",
   },
+  correctAns:{
+    textAlign: 'left',  
+    marginTop: 10,
+    width: '38vw',
+    backgroundColor: "#8ef5c7",
+  }
 }));
 
 export default function Answers(props) {
@@ -27,7 +33,7 @@ export default function Answers(props) {
   return (
     <>
       <Box className={classes.answerWrapper} >
-        <TextField className={classes.answerText}
+        <TextField className={props.ans_text === props.correct_ans ? classes.correctAns : classes.answerText}
           key={props.a_key}
           value={props.ans_text}
           onChange={e => props.ans_callback(e, props.q_key, props.a_key)}
