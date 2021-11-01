@@ -1,6 +1,7 @@
 import React from 'react'
+import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
-import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch, Link, useHistory} from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import { List, ListItem, ListItemText, ListItemIcon, Toolbar, Divider, Typography } from '@material-ui/core';
@@ -8,6 +9,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Profile from "../pages/Profile"
 import Platform from "../pages/Platform"
+import * as constants from '../components/constants';
 
 const drawerWidth = 205;
 
@@ -39,10 +41,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Sidebar() {
     const classes = useStyles();
-    
+    const history = useHistory();
+
+    // const onCreatePlatform = (e) => {
+        
+    // }
+
     return (
         <Box className={classes.mainbox}>
-            <Router>
                 <Drawer variant="permanent" className={classes.drawer}>
                     <Toolbar/>
                     <Box>
@@ -58,7 +64,7 @@ export default function Sidebar() {
                                 </ListItem>
                             </Link>
                             <Link to="/platform">
-                                <ListItem button key={"Create Platform"}>
+                                <ListItem button key={"Create Platform"} >
                                     <ListItemIcon>
                                         <AddCircleOutlineIcon/>
                                     </ListItemIcon>
@@ -84,11 +90,9 @@ export default function Sidebar() {
                     <Typography paragraph>Quizzes and Platforms</Typography>
                 </Box>
                 <Switch>
-                    <Toolbar/>
                     <Route path="/profile" exact component={Profile}/>
-                    <Route path="/platform" exact component={Platform}/>
+                    <Route path="/platform/:platform_id" component={Platform}/>
                 </Switch>
-            </Router>
         </Box>
     )
 }
