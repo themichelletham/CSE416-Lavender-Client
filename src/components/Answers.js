@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 10,
     marginTop: 10, 
     marginLeft: 80,
-    backgroundColor: "#7d65c0",
+    backgroundColor: '#cacaff',
   },
   answerText: {
     textAlign: 'left',  

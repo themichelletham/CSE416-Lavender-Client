@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles, styled } from '@material-ui/core/styles';
-import { Box, Button, FormControl, InputBase, TextField, Grid, ListItem } from '@mui/material'
+import { Box, Button, FormControl, InputBase, Grid } from '@mui/material'
 import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import * as constants from '../components/constants';
@@ -27,18 +27,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     fontWeight: 'bold'
   },
-  save: {
-    display: 'inline-block',
-    float: 'right',
-  },
   title: {
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     height: 60,
     backgroundColor: "#7d65c0",
-    '& input:disabled': {
-      color: '#000000',
-    }
   },
   quizForm: {
     borderRadius: 15,
@@ -51,11 +44,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     backgroundColor: "#FFFFFF",
   },
-  textField: {
-    '& input:disabled': {
-      color: '#000000',
-    }
-  },
   answerWrapper: {
     display: 'inline-block',
     paddingLeft: 50,
@@ -65,8 +53,17 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 80,
     fontSize: 22,
   },
-  //toolbar: theme.mixins.toolbar,
 }))
+
+const submitStyle = {
+  backgroundColor: '#8A8AEE',
+  left: "8%",
+  marginBottom: 10,
+  color: 'black',
+  width: "50vw",
+  borderRadius: 20,
+  marginTop: 10,
+}
 
 export default function QuizTake(props) {
   const [state, setState] = useState({
@@ -84,7 +81,7 @@ export default function QuizTake(props) {
     ret.questions = state.questions.slice(0);
     ret.answers = state.answers.map(arr => arr.slice(0));
     ret.correct_answers = state.correct_answers.slice(0);
-    ret.selected_answers = state.selected_answers;
+    ret.selected_answers = state.selected_answers.slice(0);
     return ret;
   }
 
@@ -105,26 +102,16 @@ export default function QuizTake(props) {
   }
 
   useEffect(() => {
-    if (props.location.state == null) {
-      axios.get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
-        .then(res => {
-          console.log(res);
-          let s = parseToState(res);
-          s.selected_answers = s.questions.map(q => -1);
-          setState(s);
-        }).catch(err => {
-          console.log(err);
-        })
-    }
-    else if (props.location.state) {
-      setState({
-        quiz_title: props.location.state.quiz.quiz_name,
-        questions: [],//new_questions,
-        answers: [],//new_answers,
-        correct_answers: [], //new correct answers,
-      });
-    }
-  }, [props]);
+    axios.get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
+      .then(res => {
+        console.log(res);
+        let s = parseToState(res);
+        s.selected_answers = s.questions.map(q => -1);
+        setState(s);
+      }).catch(err => {
+        console.log(err);
+      })
+  }, []);
 
   const onSelect = (e, q_k, a_k) => {
     e.preventDefault();
@@ -141,6 +128,11 @@ export default function QuizTake(props) {
       </Grid>
     );
   }
+
+  const onSubmit = (e) => {
+    console.log('yes');
+  }
+
   return (
     <Box className={classes.QuizContainer}>
       <h1>Platform Name</h1>
@@ -173,6 +165,7 @@ export default function QuizTake(props) {
               </Grid>
             </div>
           ))}
+          <Button style={submitStyle} variant='contained' onClick={onSubmit} disableElevation>Submit</Button>
         </Box>
       </FormControl>
     </Box>
