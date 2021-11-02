@@ -31,14 +31,14 @@ export default function Platform(props) {
                 <PlatformProfile/>
                 <PlatformLead/>
             </Router>
-            <Box className={classes.edit}>
-                <Link to="/platform/creator">
-                    <Button>Edit Platform</Button>
-                </Link>
+            <Link to="/platform/creator">
+                <Button>Edit Platform</Button>
+            </Link>
+            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
+                <Switch>
+                    <Route path="/platform/creator" component={PlatformCreator}/>
+                </Switch>
             </Box>
-            <Switch>
-                <Route path="/platform/creator" component={PlatformCreator}/>
-            </Switch>
         </Box>
     )
 }
