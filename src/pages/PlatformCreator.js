@@ -1,9 +1,13 @@
 import { Button, makeStyles } from '@material-ui/core'
-import { Box } from '@mui/system';
-import React from 'react'
+import {Box} from '@material-ui/core'
 import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
+  PlatformCreatorContainer: {
+    display: "flex",
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
   Opt: {
     display: 'inline-block',
     width: '60vw',
@@ -28,9 +32,11 @@ export default function PlatformCreator() {
 
   return (
     <Box className={classes.PlatformCreatorContainer}>
-      <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
-      <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
-      <h1>helllooOOOOOooOo</h1>
+      <Box className={classes.Opt}>
+        <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
+        <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
+
+      </Box>
     </Box>
   )
 }

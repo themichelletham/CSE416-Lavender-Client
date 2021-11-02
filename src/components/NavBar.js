@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Box, IconButton, Button, Toolbar } from '@material-ui/core';
+import { AppBar, Box, IconButton, Button, Toolbar, Divider } from '@material-ui/core';
 import sproutLogo from "../images/sprout.png";
 import googleLogin from "../images/google-login-button.png";
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { grey } from '@material-ui/core/colors';
 import Home from "../pages/Home"
 import Leaderboard from "../pages/Leaderboard"
-import Platform from '../pages/Platform';
+import PlatformCreator from '../pages/PlatformCreator';
 import QuizCreate from '../pages/QuizCreator';
 import * as constants from '../components/constants';
 
@@ -71,6 +71,25 @@ export default function NavBar() {
     })
   }
 
+  const onCreatePlatform = (e) => {
+    e.preventDefault();
+    axios.post(`${constants.API_PATH}/platform`, {
+        platform_fields: {
+            platform_name: 'Untitled Platform',
+        }
+    }).then(res => {
+        console.log(res)
+        if (res.status == 201) {
+            console.log('yes owo')
+            history.push('/platform/' + res.data.platform_id + '/creator', {
+            platform: { ...res.data }
+        });
+    }
+    }).catch(err => {
+        console.log('Sidebar Create Platform Button: ', err);
+    })
+  } 
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openProfileMenu = Boolean(anchorEl);
   const handleProfileClick = (event) => {
@@ -112,9 +131,8 @@ export default function NavBar() {
             <Link to='/profile'>
               <MenuItem onClick={handleCloseProfileMenu}>View Profile</MenuItem>
             </Link>
-            <Link to='/platform'>
-              <MenuItem onClick={handleCloseProfileMenu}> My Platform</MenuItem>
-            </Link>
+            <MenuItem onClick={handleCloseProfileMenu, onCreatePlatform}> My Platform</MenuItem>
+            <Divider/>
             <MenuItem onClick={handleCloseProfileMenu}>Logout</MenuItem>
           </Menu>
         </Toolbar>
@@ -123,7 +141,7 @@ export default function NavBar() {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/leaderboard" exact component={Leaderboard} />
-          <Route path="/platform" exact component={Platform} />
+          <Route path="/platform/:platform_id/creator" component={PlatformCreator} />
           <Route path='/quiz/creator/:quiz_id' component={QuizCreate} />
         </Switch>
       </Box>
