@@ -42,7 +42,7 @@ function Home(props) {
           <Grid container spacing={10} className={classes.gridContainer}>
             {state.quizzes?state.quizzes.map( quiz => (
               <Grid item className={classes.gridItem}  key={quiz.quiz_id}>
-                <Link to={{pathname: `/quiz/creator/${quiz.quiz_id}`, 
+                <Link to={{pathname: `/quiz/${quiz.quiz_id}`, 
                   quiz_id: quiz.quiz_id}} >{quiz.quiz_name}</Link>
               </Grid>
             )):<Grid item></Grid>}

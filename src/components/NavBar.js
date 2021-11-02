@@ -13,6 +13,7 @@ import Home from "../pages/Home"
 import Leaderboard from "../pages/Leaderboard"
 import Platform from '../pages/Platform';
 import QuizCreate from '../pages/QuizCreator';
+import QuizTake from '../pages/QuizTaking';
 import * as constants from '../components/constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -125,6 +126,7 @@ export default function NavBar() {
           <Route path="/leaderboard" exact component={Leaderboard} />
           <Route path="/platform" exact component={Platform} />
           <Route path='/quiz/creator/:quiz_id' component={QuizCreate} />
+          <Route path='/quiz/:quiz_id' component={QuizTake} />
         </Switch>
       </Box>
     </Box>
