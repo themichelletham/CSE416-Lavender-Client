@@ -53,7 +53,7 @@ export default function Sidebar() {
         }).then(res => {
             console.log(res)
             if (res.status == 201) {
-                console.log('yes uwu')
+                // console.log(res.data)
                 history.push('/platform/' + res.data.platform_id + '/creator', {
                 platform: { ...res.data }
             });
@@ -79,7 +79,7 @@ export default function Sidebar() {
                                 </ListItemText>
                             </ListItem>
                         </Link>
-                        <ListItem button key={"Create Platform"} onclick={onCreatePlatform}>
+                        <ListItem button key={"Create Platform"} onClick={onCreatePlatform}>
                             <ListItemIcon>
                                 <AddCircleOutlineIcon/>
                             </ListItemIcon>
