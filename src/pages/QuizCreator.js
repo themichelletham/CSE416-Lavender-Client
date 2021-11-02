@@ -210,8 +210,6 @@ export default function QuizCreate(props) {
     }
     new_answers[q_k][a_k] = e.target.value;
 
-   
-
     setState({
       quiz_title: new_title,
       questions: new_questions,
