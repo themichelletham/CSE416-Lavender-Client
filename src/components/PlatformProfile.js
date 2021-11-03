@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
 
   },
   bannerBox: {
-    height: "250px",
+    height: "200px",
     width: "100%",
     overflow: "hidden",
     zIndex: "10",

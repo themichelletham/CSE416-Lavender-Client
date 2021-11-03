@@ -7,6 +7,8 @@ import * as constants from '../components/constants';
 import Questions from '../components/Questions';
 import Answers from '../components/Answers';
 import { DoorBack, Login } from '@mui/icons-material';
+import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   QuizContainer: {
@@ -17,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   Opt: {
     display: 'inline-block',
-    width: '60vw',
+    width: theme.spacing(115),
     paddingLeft: 10,
     paddingRight: 10,
     alignItems: 'center', 
@@ -49,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex', 
     backgroundColor: "#FFFFFF", 
   }, 
+  answer: { 
+    display: 'flex',
+  }
   //toolbar: theme.mixins.toolbar,
 }))
 
@@ -71,6 +76,8 @@ export default function QuizCreate(props) {
   const classes = useStyles();
   const location = useLocation();
   const history = useHistory();
+  const theme = createTheme();
+  theme.spacing(1); // `${8 * 2}px` = '16px'
 
   const style = {
     backgroundColor: '#ACACE1',
@@ -86,13 +93,13 @@ export default function QuizCreate(props) {
     color: 'black',
     width: "50vw",
     borderRadius: 20,
-    marginTop: 10,
+    marginTop: theme.spacing(1),
   }
 
   const deleteQStyle = {
     backgroundColor: '#8A8AEE',
     marginRight: 45,
-    marginTop: 20,
+    marginTop: theme.spacing(2),
     float: 'right',
     color: 'black',
     borderRadius: 20
@@ -100,10 +107,10 @@ export default function QuizCreate(props) {
 
   const addAnsStyle = {
     backgroundColor: '#8A8AEE',
-    marginTop: 50,
-    marginLeft: 10,
-    marginBottom: 10,
-    marginRight: 10,
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(5),
+    //marginBottom: 10,
+    //marginRight: theme.spacing(5),
     color: 'black',
     float: 'right',
     borderRadius: 20,
@@ -111,9 +118,15 @@ export default function QuizCreate(props) {
 
   const deleteAnsStyle = {
     backgroundColor: '#8A8AEE',
-    marginRight: 90,
-    marginTop: 11,
-    marginBottom: 10,
+    marginTop: theme.spacing(1), 
+    color: 'black',
+    float: 'right',
+    borderRadius: 20, 
+  }
+
+  const correctAnsStyle = { 
+    backgroundColor: '#8A8AEE',
+    marginTop: theme.spacing(1), 
     color: 'black',
     float: 'right',
     borderRadius: 20
@@ -318,9 +331,9 @@ export default function QuizCreate(props) {
               />
               <Button style={deleteQStyle} variant='contained' onClick={e => removeQuestion(e, q_key)} disableElevation>X</Button>
               {state.answers[q_key].map((ans, a_key) => (
-                <div key={a_key}>
+                <div className = {classes.answer} key={a_key}>
                   <Answers a_key={a_key} q_key={q_key} ans_callback={onAnswerChange} ans_text={ans} correct_ans={state.correct_answers[q_key]}disableElevation />
-                  {ans === state.correct_answers[q_key][0] ? "" : <Button style={deleteAnsStyle} variant='contained' onClick={e => makeCorrect(e, q_key, a_key)}>O</Button>}
+                  {ans === state.correct_answers[q_key][0] ? "" : <Button style={correctAnsStyle} variant='contained' onClick={e => makeCorrect(e, q_key, a_key)}>O</Button>}
                   <Button style={deleteAnsStyle} variant='contained' onClick={e => removeAnswer(e, q_key, a_key)}>X</Button>
                 </div>
               ))}
