@@ -36,7 +36,8 @@ export default function PlatformProfile() {
         <img className={classes.banner} src={Banner}/>
       </Box>
       <img className={classes.icon} src={PlatformIcon}/>
-      <Typography variant="h2">Platform Name</Typography>
+      <Typography variant="h2">Platform Name  feifehi</Typography>
+  
     </Box>
   )
 }

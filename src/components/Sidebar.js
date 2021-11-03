@@ -49,11 +49,11 @@ export default function Sidebar() {
         axios.post(`${constants.API_PATH}/platform`, {
             platform_fields: {
                 platform_name: 'Untitled Platform',
+                user_id: 1,
             }
         }).then(res => {
             console.log(res)
             if (res.status == 201) {
-                // console.log(res.data)
                 history.push('/platform/' + res.data.platform_id + '/creator', {
                 platform: { ...res.data }
             });
