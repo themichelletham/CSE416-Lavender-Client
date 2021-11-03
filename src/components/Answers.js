@@ -30,13 +30,13 @@ const useStyles = makeStyles((theme) => ({
   answerText: {
     textAlign: 'left',  
     marginTop: 10,
-    width: '38vw',
+    //width: '38vw',
     backgroundColor: "#FFFFFF",
   },
   correctAns:{
     textAlign: 'left',  
     marginTop: 10,
-    width: '38vw',
+    //width: '38vw',
     backgroundColor: "#8ef5c7",
   }
 }));
