@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import * as constants from '../components/constants';
-import { makeStyles } from '@material-ui/core'
-import { Box, Button, FormControl, InputBase, TextField } from '@mui/material'
-import { useHistory } from 'react-router';
+import { makeStyles } from '@material-ui/core';
+import { Box, Button, FormControl,Grid, InputBase, TextField, Link } from '@mui/material';
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import PlatformProfile from '../components/PlatformProfile.js';
 import PlatformLead from "../components/PlatformLead.js";
+import QuizCreate from '../pages/QuizCreator';
 
 const useStyles = makeStyles((theme) => ({
   PlatformCreatorContainer: {
@@ -35,12 +36,26 @@ const useStyles = makeStyles((theme) => ({
 export default function PlatformCreator(props) {
   const [state, setState] = useState({
     platform_name: '',
+    quizzes: null,
   })
 
   const copyState = () => {
     let new_name = state.platform_name;
     return [new_name];
   }
+
+  useEffect(() => {
+    axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}/quizzes`)
+    .then( res => {
+      console.log(res);
+      console.log("hello quizzerjwei")
+      setState({platform_name: state.platform_name, quizzes: res.data});
+    }).catch( err => {
+      console.log(err);
+      console.log("notworkign")
+    })
+    console.log("why not");
+  }, []);
 
   const classes = useStyles();
   const history = useHistory();
@@ -93,6 +108,16 @@ export default function PlatformCreator(props) {
           onChange={onTitleChange}
         />
       </FormControl>
+      <Box>
+          <Grid container spacing={10} className={classes.gridContainer}>
+            {state.quizzes?state.quizzes.map( quiz => (
+              <Grid item className={classes.gridItem}  key={quiz.quiz_id}>
+                <Link to={{pathname: `/quiz/${quiz.quiz_id}`, 
+                  quiz_id: quiz.quiz_id}} >{quiz.quiz_name}</Link>
+              </Grid>
+            )):<Grid item></Grid>}
+          </Grid>
+        </Box>
     </Box>
   )
 }
