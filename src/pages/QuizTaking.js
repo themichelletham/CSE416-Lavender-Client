@@ -67,20 +67,20 @@ const submitStyle = {
 
 export default function QuizTake(props) {
   const [state, setState] = useState({
+    platform_id: 0,
     platform_title: '',
     quiz_title: '',
     questions: [],
     answers: [],
-    correct_answers: [],
     selected_answers: [],
   })
   const copyState = () => {
     let ret = {};
+    ret.platform_id = state.platform_id;
     ret.platform_title = state.platform_title;
     ret.quiz_title = state.quiz_title;
     ret.questions = state.questions.slice(0);
     ret.answers = state.answers.map(arr => arr.slice(0));
-    ret.correct_answers = state.correct_answers.slice(0);
     ret.selected_answers = state.selected_answers.slice(0);
     return ret;
   }
@@ -90,15 +90,16 @@ export default function QuizTake(props) {
   const history = useHistory();
 
   const parseToState = (res) => {
+    const platform_id = res.data.quiz.platform_id;
     const title = res.data.quiz.quiz_name;
     const questions = res.data.questions.map(q_obj => q_obj.question_text)
     const answers = res.data.answers.map(ans_list => (
       ans_list.map(ans_obj => ans_obj.answer_text)
     ));
-    const correct_answers = res.data.answers.map(ans_list => (
-      ans_list.filter(ans_obj => ans_obj.is_correct).map(ans_objb => ans_objb.answer_text)
-    ));
-    return { quiz_title: title, questions: questions, answers: answers, correct_answers: correct_answers, selected_answers: [] };
+    //const correct_answers = res.data.answers.map(ans_list => (
+    //  ans_list.filter(ans_obj => ans_obj.is_correct).map(ans_objb => ans_objb.answer_text)
+    //));
+    return { platform_id: platform_id, platform_title: '', quiz_title: title, questions: questions, answers: answers, selected_answers: [] };
   }
 
   useEffect(() => {
@@ -130,7 +131,16 @@ export default function QuizTake(props) {
   }
 
   const onSubmit = (e) => {
-    console.log('yes');
+    axios.post(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/results`, {
+      user_id: 1,
+      platform_id: state.platform_id,
+      selected_answers: state.selected_answers.slice(0),
+      duration: null,
+    }).then(res => {
+      console.log('Posted to server');
+      console.log(res);
+    });
+    history.goBack();
   }
 
   return (
@@ -165,7 +175,8 @@ export default function QuizTake(props) {
               </Grid>
             </div>
           ))}
-          <Button style={submitStyle} variant='contained' onClick={onSubmit} disableElevation>Submit</Button>
+          <Button style={submitStyle} variant='contained' onClick={onSubmit} disableElevation
+            disabled={state.selected_answers.includes(-1)}>Submit</Button>
         </Box>
       </FormControl>
     </Box>

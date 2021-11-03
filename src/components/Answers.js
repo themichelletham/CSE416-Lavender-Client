@@ -21,16 +21,22 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 80,
     backgroundColor: '#cacaff',
   },
-  answerText: {
+  select: {
     textAlign: 'left',  
     marginTop: 10,
     //width: '38vw',
     backgroundColor: "#FFFFFF",
   },
+  answerText: {
+    textAlign: 'left',  
+    marginTop: 10,
+    width: '38vw',
+    backgroundColor: "#FFFFFF",
+  },
   correctAns:{
     textAlign: 'left',  
     marginTop: 10,
-    //width: '38vw',
+    width: '38vw',
     backgroundColor: "#8ef5c7",
   }
 }));
@@ -40,10 +46,10 @@ export default function Answers(props) {
 
   let cn;
   if(props.variant==='select')
-    cn = classes.answerText;
+    cn = classes.select;
   else if(props.variant==='selected')
     cn = classes.selected;
-  else if(props.variant==='edit')
+  else 
     cn = props.ans===props.correct_ans?classes.correctAns:classes.answerText
   return (
     <>
