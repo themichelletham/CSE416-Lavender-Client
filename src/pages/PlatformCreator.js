@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import * as constants from '../components/constants';
 import { makeStyles } from '@material-ui/core';
-import { Box, Button, FormControl,Grid, InputBase, TextField, Link } from '@mui/material';
-import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
+import { Box, Button, FormControl,Grid, InputBase, TextField } from '@mui/material';
+import { BrowserRouter as Router, Route, Link, Switch, useHistory } from 'react-router-dom';
 import PlatformProfile from '../components/PlatformProfile.js';
 import PlatformLead from "../components/PlatformLead.js";
 import QuizCreate from '../pages/QuizCreator';
