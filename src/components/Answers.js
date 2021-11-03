@@ -11,18 +11,32 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 10,
     marginTop: 10, 
     marginLeft: 80,
-    fontSize: 22,
+  },
+  selected:{
+    display: 'inline-block',
+    paddingLeft: 50,
+    paddingRight: 31,
+    paddingBottom: 10,
+    marginTop: 10, 
+    marginLeft: 80,
+    backgroundColor: '#cacaff',
+  },
+  select: {
+    textAlign: 'left',  
+    marginTop: 10,
+    //width: '38vw',
+    backgroundColor: "#FFFFFF",
   },
   answerText: {
     textAlign: 'left',  
     marginTop: 10,
-    width: '38vw',
+    //width: '38vw',
     backgroundColor: "#FFFFFF",
   },
   correctAns:{
     textAlign: 'left',  
     marginTop: 10,
-    width: '38vw',
+    //width: '38vw',
     backgroundColor: "#8ef5c7",
   }
 }));
@@ -30,19 +44,28 @@ const useStyles = makeStyles((theme) => ({
 export default function Answers(props) {
   const classes = useStyles();
 
+  let cn;
+  if(props.variant==='select')
+    cn = classes.select;
+  else if(props.variant==='selected')
+    cn = classes.selected;
+  else 
+    cn = props.ans===props.correct_ans?classes.correctAns:classes.answerText
   return (
     <>
       <Box className={classes.answerWrapper} >
-        <TextField className={props.ans_text === props.correct_ans ? classes.correctAns : classes.answerText}
+        <TextField className={cn}
           key={props.a_key}
           value={props.ans_text}
           onChange={e => props.ans_callback(e, props.q_key, props.a_key)}
           inputProps={{
+            readOnly: props.readOnly,
             style: {
               padding: 5,
-              fontSize: 20,
+              fontSize: 16,
             }
           }}
+          onClick={props.onClick}
         />
       </Box>
     </>

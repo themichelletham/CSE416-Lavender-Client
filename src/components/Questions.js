@@ -32,9 +32,10 @@ export default function Questions(props) {
           value={props.q_text}
           onChange={e => props.q_callback(e, props.q_key)}
           inputProps={{
+            readOnly: props.readOnly,
             style: {
               padding: 5,
-              fontSize: 20,
+              fontSize: 16,
             }
           }}
         />

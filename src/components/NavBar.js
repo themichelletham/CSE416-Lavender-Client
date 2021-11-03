@@ -11,8 +11,10 @@ import MenuItem from '@mui/material/MenuItem';
 import { grey } from '@material-ui/core/colors';
 import Home from "../pages/Home"
 import Leaderboard from "../pages/Leaderboard"
+import Platform from '../pages/Platform';
 import PlatformCreator from '../pages/PlatformCreator';
 import QuizCreate from '../pages/QuizCreator';
+import QuizTake from '../pages/QuizTaking';
 import * as constants from '../components/constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +56,7 @@ export default function NavBar() {
     e.preventDefault();
     axios.post(`${constants.API_PATH}/quiz`, {
       quiz_fields: {
-        platform_id: 0,
+        platform_id: 1,
         quiz_name: 'Untitled',
         time_limit: null
       }
@@ -143,7 +145,9 @@ export default function NavBar() {
           <Route path="/" exact component={Home} />
           <Route path="/leaderboard" exact component={Leaderboard} />
           <Route path="/platform/:platform_id/creator" component={PlatformCreator} />
+          <Route path='/platform/:platform_id' component={Platform} />
           <Route path='/quiz/creator/:quiz_id' component={QuizCreate} />
+          <Route path='/quiz/:quiz_id' component={QuizTake} />
         </Switch>
       </Box>
     </Box>
