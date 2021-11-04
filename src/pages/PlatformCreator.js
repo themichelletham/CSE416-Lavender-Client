@@ -73,7 +73,7 @@ export default function PlatformCreator(props) {
   const onDelete = (e) => {
     axios.delete(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
     .then(res => {
-      history.goBack()
+      history.goBack().goBack();
     }).catch(err => {
       console.log(err);
     })
