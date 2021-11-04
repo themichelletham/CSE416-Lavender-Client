@@ -19,23 +19,17 @@ const useStyles = makeStyles((theme) => ({
     width: '60vw',
     paddingLeft: 10,
     paddingRight: 10,
-    alignItems: 'center', 
+    alignItems: 'left',
   },
   editPlatform: {
     borderRadius: 15,
     borderTopLeftRadius: 15,  
   },
-  title: {
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    height: 60,
-    backgroundColor: "#7d65c0",
-  },
 }));
 
 export default function PlatformCreator(props) {
   const [state, setState] = useState({
-    platform_name: '',
+    platform_name: 'Untitled Platform',
     quizzes: null,
   })
 
@@ -91,16 +85,12 @@ export default function PlatformCreator(props) {
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile/>
       <PlatformLead/>
-      <Box className={classes.Opt} mt={3}>
-        <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
-        <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
-      </Box>
       <FormControl className={classes.editPlatform}>
         <InputBase className={classes.title}
           inputProps={{
             min: 0,
             style: {
-              textAlign: 'center', fontSize: 22, paddingTop: 0, paddingBottom: 0,
+              fontSize: 32, paddingTop: 0, paddingBottom: 0,
               marginTop: 10
             }
           }}
@@ -108,6 +98,10 @@ export default function PlatformCreator(props) {
           onChange={onTitleChange}
         />
       </FormControl>
+      <Box className={classes.Opt} mt={3}>
+        <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
+        <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
+      </Box>
       <Box>
           <Grid container spacing={10} className={classes.gridContainer}>
             {state.quizzes?state.quizzes.map( quiz => (
