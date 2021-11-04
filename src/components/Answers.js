@@ -1,42 +1,34 @@
 import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from 'react'
-import { makeStyles, styled } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button, FormControl, InputBase, TextField } from '@mui/material'
 import { useHistory, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   answerWrapper: {
     display: 'inline-block',
-    paddingLeft: 50,
-    paddingRight: 31,
-    paddingBottom: 10,
-    marginTop: 10, 
-    marginLeft: 80,
+    paddingLeft: theme.spacing(18),
+    marginTop: theme.spacing(1), 
+    marginRight: theme.spacing(2), 
   },
   selected:{
     display: 'inline-block',
-    paddingLeft: 50,
-    paddingRight: 31,
-    paddingBottom: 10,
-    marginTop: 10, 
-    marginLeft: 80,
     backgroundColor: '#cacaff',
   },
   select: {
+    display: 'inline-block',
     textAlign: 'left',  
-    marginTop: 10,
-    //width: '38vw',
     backgroundColor: "#FFFFFF",
   },
   answerText: {
+    display: 'inline-block',
     textAlign: 'left',  
-    marginTop: 10,
-    //width: '38vw',
+    width: '38vw',
     backgroundColor: "#FFFFFF",
   },
   correctAns:{
+    display: 'inline-block',
     textAlign: 'left',  
-    marginTop: 10,
-    //width: '38vw',
+    width: '38vw',
     backgroundColor: "#8ef5c7",
   }
 }));
