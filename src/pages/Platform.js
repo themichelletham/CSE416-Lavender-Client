@@ -8,24 +8,31 @@ import PlatformCreator from './PlatformCreator.js';
 import PlatformProfile from '../components/PlatformProfile.js';
 import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import { styled } from '@mui/material/styles';
+import { purple } from '@mui/material/colors'
 
-const theme = createTheme();
-theme.spacing(1); // `${8 * 2}px` = '16px'
+const ttheme = createTheme();
+ttheme.spacing(1); // `${8 * 2}px` = '16px'
+const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#7519BD"),
+      backgroundColor: "#7519BD",
+      "&:hover": {
+        backgroundColor: purple[900]
+      }
+  }));
 
 const useStyles = makeStyles((theme) => ({
     PlatformContainer: {
-        
-    },
-    PlatformIcon: {
-        //marginLeft: theme.spacing(5), 
-        borderRadius: 20,
-        float: "left",
-        zIndex: "tooltip",
-        width: "1",
-        height: "1",
-        overflow:'hidden'
-    },
-    edit: {
+        display: "flex",
+        overflow:'hidden', 
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'left', 
+        width: ttheme.spacing(200), 
+    }, 
+    editPlat: {
+        marginTop: ttheme.spacing(25), 
+        marginLeft: ttheme.spacing(140)
     }
 })); 
 
@@ -39,7 +46,7 @@ export default function Platform(props) {
                 <PlatformLead/>
             </Router>
             <Link to="/platform/creator">
-                <Button>Edit Platform</Button>
+                <ColorButton className={classes.editPlat}>Edit Platform</ColorButton>
             </Link>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
                 <Switch>
