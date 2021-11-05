@@ -57,7 +57,7 @@ export default function NavBar() {
     e.preventDefault();
     axios.post(`${constants.API_PATH}/quiz`, {
       quiz_fields: {
-        platform_id: 1,
+        platform_id: 5,
         quiz_name: 'Untitled',
         time_limit: null
       }
