@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     position: 'absolute',
     top: 0,
+    left: 0, 
     zIndex: 'modal',
   },
   icon: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   title:{ 
     //display: 'inline-block',
     paddingTop: theme.spacing(35),
-    paddingLeft : theme.spacing(5), 
+    paddingLeft : theme.spacing(2), 
   }
 }));
 
