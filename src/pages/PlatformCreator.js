@@ -32,9 +32,8 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(200), 
   },
   Opt: {
-    display: 'inline-block',
+    //display: 'inline-block',
     width: theme.spacing(200),
-    paddingTop: theme.spacing(25), 
     paddingLeft: theme.spacing(117),
     paddingBottom: theme.spacing(.5), 
     alignItems: 'left', 
@@ -118,7 +117,7 @@ export default function PlatformCreator(props) {
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile/>
       <PlatformLead/>
-      <Box className={classes.Opt} mt={3} ml={3} mr={1}>
+      <Box className={classes.Opt} ml={3} mr={1}>
         <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
         <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
       </Box>

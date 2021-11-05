@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     marginLeft: theme.spacing(8), 
     marginTop: theme.spacing(10),
-    marginBottom: theme.spacing(5), 
+    //marginBottom: theme.spacing(5), 
     height: theme.spacing(22),
     width: theme.spacing(22),
     borderRadius: "100%",
@@ -33,16 +33,15 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 'tooltip'
   }, 
   title:{ 
-    display: 'inline-block',
-    paddingLeft : theme.spacing(2), 
+    //display: 'inline-block',
+    paddingTop: theme.spacing(35),
+    paddingLeft : theme.spacing(5), 
   }
 }));
 
 export default function PlatformProfile() {
   const classes = useStyles();
-
-  return (
-    
+  return ( 
     <Box className={classes.PlatformProfileContainer}>
         <img className={classes.banner} src={Banner}/>
         <img className={classes.icon} src={PlatformIcon}/>

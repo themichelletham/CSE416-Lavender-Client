@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         
     },
     PlatformIcon: {
-        marginLeft: theme.spacing(5), 
+        //marginLeft: theme.spacing(5), 
         borderRadius: 20,
         float: "left",
         zIndex: "tooltip",
