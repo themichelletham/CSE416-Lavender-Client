@@ -138,12 +138,10 @@ export default function QuizTake(props) {
       selected_answers: state.selected_answers.slice(0),
       duration: null,
     }).then(res => {
-      console.log('Posted to server');
-      console.log(res);
+      history.push(`/quiz/${props.match.params.quiz_id}/results`)
     }).catch(err => {
       console.log(err);
     });
-    history.goBack();
   }
 
   return (
