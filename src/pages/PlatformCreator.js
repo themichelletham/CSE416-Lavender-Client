@@ -135,10 +135,6 @@ export default function PlatformCreator(props) {
           onChange={onTitleChange}
         />
       </FormControl>
-      <Box className={classes.Opt} mt={3}>
-        <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
-        <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
-      </Box>
       <Box>
           <Grid container spacing={10} ml={1} className={classes.gridContainer}>
             {state.quizzes?state.quizzes.map( quiz => (
