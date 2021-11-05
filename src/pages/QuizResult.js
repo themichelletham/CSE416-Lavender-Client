@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const submitStyle = {
+const returnStyle = {
   backgroundColor: '#8A8AEE',
   left: "8%",
   marginBottom: 10,
@@ -65,10 +65,10 @@ const submitStyle = {
   marginTop: 10,
 }
 
-export default function QuizTake(props) {
+export default function QuizResult(props) {
   const [state, setState] = useState({
-    platform_id: 0,
-    platform_name: '',
+    platform_id: '',
+    platform_title: '',
     quiz_title: '',
     questions: [],
     answers: [],
@@ -77,10 +77,12 @@ export default function QuizTake(props) {
   const copyState = () => {
     let ret = {};
     ret.platform_id = state.platform_id;
-    ret.platform_name = state.platform_name;
+    ret.platform_title = state.platform_title;
     ret.quiz_title = state.quiz_title;
     ret.questions = state.questions.slice(0);
-    ret.answers = state.answers.map(arr => arr.slice(0));
+    ret.answers = state.answers.map(answer_list => (
+      answer_list.map(ans => { return { ...ans } })
+    ))
     ret.selected_answers = state.selected_answers.slice(0);
     return ret;
   }
@@ -90,65 +92,59 @@ export default function QuizTake(props) {
   const history = useHistory();
 
   const parseToState = (res) => {
-    const platform_id = res.data.quiz.platform_id;
-    const platform_name = res.data.platform.platform_name;
+    const platform_id = res.data.platform.platform_id;
+    const platform_title = res.data.platform.platform_name;
     const title = res.data.quiz.quiz_name;
     const questions = res.data.questions.map(q_obj => q_obj.question_text)
-    const answers = res.data.answers.map(ans_list => (
-      ans_list.map(ans_obj => ans_obj.answer_text)
+    //const answers = res.data.answers.map(ansrs => { return { ...ansrs } });
+    const answers = res.data.answers.map(answer_list => (
+      answer_list.map(ans => { return { ...ans } })
     ));
-    //const correct_answers = res.data.answers.map(ans_list => (
-    //  ans_list.filter(ans_obj => ans_obj.is_correct).map(ans_objb => ans_objb.answer_text)
-    //));
-    return { platform_id: platform_id, platform_name: platform_name, quiz_title: title, questions: questions, answers: answers, selected_answers: [] };
+    const selected_answers = res.data.selected_answers.slice(0);
+    console.log(answers)
+    return {
+      platform_id: platform_id,
+      platform_title: platform_title,
+      quiz_title: title,
+      questions: questions,
+      answers: answers,
+      selected_answers: selected_answers
+    };
   }
 
   useEffect(() => {
-    axios.get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
-      .then(res => {
-        console.log(res);
-        let s = parseToState(res);
-        s.selected_answers = s.questions.map(q => -1);
-        setState(s);
-      }).catch(err => {
-        console.log(err);
-      })
+    axios.post(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/view-results`, {
+      user_id: 1,
+    }).then(res => {
+      console.log(res);
+      let s = parseToState(res);
+      //s.selected_answers = s.questions.map(q => -1);
+      setState(s);
+    }).catch(err => {
+      console.log(err);
+    })
   }, []);
 
-  const onSelect = (e, q_k, a_k) => {
-    e.preventDefault();
-    let s = copyState();
-    s.selected_answers[q_k] = a_k;
-    setState(s);
-  }
-
   const ansMap = (ans, q_key, a_key) => {
-    let v = a_key === state.selected_answers[q_key] ? 'selected' : 'select';
+    let v = 'show-neutral';
+    if (state.answers[q_key][a_key].is_correct)
+      v = 'show-correct';
+    else if (state.selected_answers[q_key] == a_key)
+      v = 'show-incorrect';
     return (
       <Grid container item>
-        <Answers a_key={a_key} q_key={q_key} ans_text={ans} onClick={e => onSelect(e, q_key, a_key)} variant={v} readOnly disableElevation />
+        <Answers a_key={a_key} q_key={q_key} ans_text={ans} variant={v} readOnly disableElevation />
       </Grid>
     );
   }
 
-  const onSubmit = (e) => {
-    axios.post(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/results`, {
-      user_id: 1,
-      platform_id: state.platform_id,
-      selected_answers: state.selected_answers.slice(0),
-      duration: null,
-    }).then(res => {
-      console.log('Posted to server');
-      console.log(res);
-    }).catch(err => {
-      console.log(err);
-    });
-    history.goBack();
+  const onReturn = (e) => {
+    history.push(`/platform/${state.platform_id}`);
   }
 
   return (
     <Box className={classes.QuizContainer}>
-      <h1>{state.platform_name}</h1>
+      <h1>Platform Name</h1>
       <Box className={classes.Opt} mt={3} >
         <div className={classes.duration}>Duration: INF</div>
       </Box>
@@ -160,7 +156,7 @@ export default function QuizTake(props) {
             style: {
               textAlign: 'center', fontSize: 22, paddingTop: 0, paddingBottom: 0,
               marginTop: 10,
-            }
+            },
           }}
           value={state.quiz_title} />
         <Box className={classes.box}>
@@ -170,16 +166,18 @@ export default function QuizTake(props) {
               <Questions q_key={q_key} q_text={question} readOnly />
               <Grid direction='row' container >
                 <Grid direction='column' container item sm={6}>
-                  {state.answers[q_key].slice(0, parseInt((state.answers[q_key].length + 1) / 2, 10)).map((ans, a_key) => ansMap(ans, q_key, a_key))}
+                  {state.answers[q_key].slice(0, parseInt((state.answers[q_key].length + 1) / 2, 10))
+                    .map((ans, a_key) => ansMap(ans.answer_text, q_key, a_key))}
                 </Grid>
                 <Grid direction='column' container item sm={6}>
-                  {state.answers[q_key].slice(parseInt((state.answers[q_key].length + 1) / 2, 10)).map((ans, a_key) => ansMap(ans, q_key, a_key + parseInt((state.answers[q_key].length + 1) / 2, 10)))}
+                  {state.answers[q_key].slice(parseInt((state.answers[q_key].length + 1) / 2, 10))
+                    .map((ans, a_key) => ansMap(ans.answer_text, q_key, a_key + parseInt((state.answers[q_key].length + 1) / 2, 10)))}
                 </Grid>
               </Grid>
             </div>
           ))}
-          <Button style={submitStyle} variant='contained' onClick={onSubmit} disableElevation
-            disabled={state.selected_answers.includes(-1)}>Submit</Button>
+          <Button style={returnStyle} variant='contained' onClick={onReturn} disableElevation
+            disabled={state.selected_answers.includes(-1)}>Return to Platform</Button>
         </Box>
       </FormControl>
     </Box>
