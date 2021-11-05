@@ -30,12 +30,15 @@ const useStyles = makeStyles((theme) => ({
 export default function PlatformCreator(props) {
   const [state, setState] = useState({
     platform_name: 'Untitled Platform',
-    quizzes: null,
+    quizzes: [],
   })
 
   const copyState = () => {
     let new_name = state.platform_name;
-    return [new_name];
+    let new_quizzes = [...state.quizzes];
+    return [new_name
+      , new_quizzes
+    ];
   }
 
   useEffect(() => {
@@ -43,7 +46,9 @@ export default function PlatformCreator(props) {
     .then( res => {
       console.log(res);
       console.log("hello quizzerjwei")
-      setState({platform_name: state.platform_name, quizzes: res.data});
+      setState({platform_name: state.platform_name
+        , quizzes: res.data
+      });
     }).catch( err => {
       console.log(err);
       console.log("notworkign")
@@ -56,7 +61,9 @@ export default function PlatformCreator(props) {
 
   const onSave = (e) => {
     axios.put(`${constants.API_PATH}/platform/${props.match.params.platform_id}/creator`, {
-      platform_fields: { platform_name: state.platform_name, }
+      platform_fields: { platform_name: state.platform_name
+        , quizzes: state.quizzes 
+      }
     }).then(res => {
       // TODO: DO something after udpate
     }).catch(err => {
@@ -74,12 +81,39 @@ export default function PlatformCreator(props) {
   }
 
   const onTitleChange = (e) => {
-    let [new_name] = copyState();
+    let [new_name, new_quizzes] = copyState();
     new_name = e.target.value;
     setState({
       platform_name: new_name,
+      quizzes: new_quizzes,
     });
   }
+
+  const parseToState = (res) => {
+    const title = res.data.platform_name;
+    const quizzes = res.data.quizzes.map(q_obj => q_obj.quiz_name)
+    return { platform_name: title
+      , quizzes: quizzes
+    };
+  }
+
+  useEffect(() => {
+    if (props.location.state == null) {
+      axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
+        .then(res => {
+          console.log(res);
+          setState(parseToState(res));
+        }).catch(err => {
+          console.log(err);
+        })
+    }
+    else if (props.location.state) {
+      setState({
+        platform_name: props.location.state.platform_name,
+        quizzes: [],
+      });
+    }
+  }, [props]);
 
   return (
     <Box className={classes.PlatformCreatorContainer}>
