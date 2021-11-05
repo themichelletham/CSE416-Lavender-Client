@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 'modal',
   },
   icon: {
+    float: 'left', 
     marginLeft: theme.spacing(8), 
     marginTop: theme.spacing(10),
     marginBottom: theme.spacing(5), 
