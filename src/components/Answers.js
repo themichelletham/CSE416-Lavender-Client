@@ -25,6 +25,21 @@ const useStyles = makeStyles((theme) => ({
     width: '38vw',
     backgroundColor: "#FFFFFF",
   },
+  show_correct: {
+    display: 'inline-block',
+    textAlign: 'left',  
+    backgroundColor: '#cbffca'
+  },
+  show_incorrect: {
+    display: 'inline-block',
+    textAlign: 'left',  
+    backgroundColor: '#ffcccc'
+  },
+  show_neutral: {
+    display: 'inline-block',
+    textAlign: 'left',  
+    backgroundColor: "#FFFFFF",
+  },
   correctAns:{
     display: 'inline-block',
     textAlign: 'left',  
@@ -41,6 +56,12 @@ export default function Answers(props) {
     cn = classes.select;
   else if(props.variant==='selected')
     cn = classes.selected;
+  else if(props.variant==='show-correct')
+    cn = classes.show_correct;
+  else if(props.variant==='show-incorrect')
+    cn = classes.show_incorrect;
+  else if(props.variant==='show-neutral')
+    cn = classes.show_neutral;
   else 
     cn = props.ans===props.correct_ans?classes.correctAns:classes.answerText
   return (

@@ -7,24 +7,59 @@ import { BrowserRouter as Router, Route, Link, Switch, useHistory } from 'react-
 import PlatformProfile from '../components/PlatformProfile.js';
 import PlatformLead from "../components/PlatformLead.js";
 import QuizCreate from '../pages/QuizCreator';
+import { styled } from '@mui/material/styles';
+import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { purple } from '@mui/material/colors'
+
+const theme = createTheme();
+theme.spacing(1); // `${8 * 2}px` = '16px'
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText("#7519BD"),
+    backgroundColor: "#7519BD",
+    "&:hover": {
+      backgroundColor: purple[900]
+    }
+}));
 
 const useStyles = makeStyles((theme) => ({
   PlatformCreatorContainer: {
     display: "flex",
+    overflow:'hidden', 
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    alignItems: 'left', 
+    width: theme.spacing(200), 
   },
   Opt: {
     display: 'inline-block',
-    width: '60vw',
-    paddingLeft: 10,
-    paddingRight: 10,
-    alignItems: 'left',
+    width: theme.spacing(200),
+    paddingLeft: theme.spacing(117),
+    paddingTop: theme.spacing(10),
+    paddingBottom: theme.spacing(.5), 
+    alignItems: 'left', 
   },
   editPlatform: {
     borderRadius: 15,
     borderTopLeftRadius: 15,  
   },
+
+  title: {
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    height: theme.spacing(7.5),
+    backgroundColor: "#7519BD",
+    width: theme.spacing(155), 
+    marginLeft: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+    //marginTop: theme.spacing(30)
+  },
+  quiz:{ 
+    color: "#FFFFFF", 
+    width: theme.spacing(15), 
+    height: theme.spacing(10), 
+    textAlign: 'center', 
+  }
 }));
 
 export default function PlatformCreator(props) {
@@ -119,29 +154,30 @@ export default function PlatformCreator(props) {
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile/>
       <PlatformLead/>
+      <Box className={classes.Opt} ml={3} mr={1} mt={20}>
+        <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
+        <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
+      </Box>
       <FormControl className={classes.editPlatform}>
         <InputBase className={classes.title}
           inputProps={{
             min: 0,
             style: {
-              fontSize: 32, paddingTop: 0, paddingBottom: 0,
-              marginTop: 10
+              textAlign: 'center', fontSize: 22, paddingTop: 0, paddingBottom: 0,
+              marginTop: 10, 
             }
           }}
           value={state.platform_name}
           onChange={onTitleChange}
         />
       </FormControl>
-      <Box className={classes.Opt} mt={3}>
-        <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
-        <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
-      </Box>
       <Box>
-          <Grid container spacing={10} className={classes.gridContainer}>
+          <Grid container spacing={10} ml={1} className={classes.gridContainer}>
             {state.quizzes?state.quizzes.map( quiz => (
               <Grid item className={classes.gridItem}  key={quiz.quiz_id}>
-                <Link to={{pathname: `/quiz/${quiz.quiz_id}`, 
-                  quiz_id: quiz.quiz_id}} >{quiz.quiz_name}</Link>
+                  <Link to={{pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id}}>
+                    <ColorButton className={classes.quiz} variant='contained' disableElevation>{quiz.quiz_name}</ColorButton>
+                  </Link>
               </Grid>
             )):<Grid item></Grid>}
           </Grid>

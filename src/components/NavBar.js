@@ -16,6 +16,7 @@ import PlatformCreator from '../pages/PlatformCreator';
 import QuizCreate from '../pages/QuizCreator';
 import QuizTake from '../pages/QuizTaking';
 import * as constants from '../components/constants';
+import QuizResult from '../pages/QuizResult';
 
 const useStyles = makeStyles((theme) => ({
   AppBar: {
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 export default function NavBar() {
   const classes = useStyles();
   const history = useHistory();
-  
+
   const onCreateQuiz = (e) => {
     e.preventDefault();
     axios.post(`${constants.API_PATH}/quiz`, {
@@ -63,9 +64,9 @@ export default function NavBar() {
     }).then(res => {
       console.log(res)
       if (res.status == 201) {
-        console.log('yes')
-        history.push('/quiz/creator/' + res.data.quiz_id, {
-          quiz: { ...res.data }
+        history.push('/quiz/creator/' + res.data.quiz.quiz_id, {
+          quiz: { ...res.data.quiz },
+          platform: { ...res.data.platform }
         });
       }
     }).catch(err => {
@@ -76,22 +77,22 @@ export default function NavBar() {
   const onCreatePlatform = (e) => {
     e.preventDefault();
     axios.post(`${constants.API_PATH}/platform`, {
-        platform_fields: {
-            platform_name: 'Untitled Platform',
-            user_id: 1,
-        }
+      platform_fields: {
+        platform_name: 'Untitled Platform',
+        user_id: 1,
+      }
     }).then(res => {
-        console.log(res)
-        if (res.status == 201) {
-            console.log('yes owo')
-            history.push('/platform/' + res.data.platform_id + '/creator', {
-            platform: { ...res.data }
+      console.log(res)
+      if (res.status == 201) {
+        console.log('yes owo')
+        history.push('/platform/' + res.data.platform_id + '/creator', {
+          platform: { ...res.data }
         });
-    }
+      }
     }).catch(err => {
-        console.log('Sidebar Create Platform Button: ', err);
+      console.log('Sidebar Create Platform Button: ', err);
     })
-  } 
+  }
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openProfileMenu = Boolean(anchorEl);
@@ -115,7 +116,7 @@ export default function NavBar() {
           <Link to='/leaderboard'>
             <Button className={classes.leader}>Leaderboard</Button>
           </Link>
-          <Button className={classes.google} 
+          <Button className={classes.google}
             aria-controls="basic-menu"
             aria-haspopup="true"
             aria-expanded={openProfileMenu ? 'true' : undefined}
@@ -135,7 +136,7 @@ export default function NavBar() {
               <MenuItem onClick={handleCloseProfileMenu}>View Profile</MenuItem>
             </Link>
             <MenuItem onClick={handleCloseProfileMenu, onCreatePlatform}> My Platform</MenuItem>
-            <Divider/>
+            <Divider />
             <MenuItem onClick={handleCloseProfileMenu}>Logout</MenuItem>
           </Menu>
         </Toolbar>
@@ -147,6 +148,7 @@ export default function NavBar() {
           <Route path="/platform/:platform_id/creator" component={PlatformCreator} />
           <Route path='/platform/:platform_id' component={Platform} />
           <Route path='/quiz/creator/:quiz_id' component={QuizCreate} />
+          <Route path='/quiz/:quiz_id/results' component={QuizResult} />
           <Route path='/quiz/:quiz_id' component={QuizTake} />
         </Switch>
       </Box>
