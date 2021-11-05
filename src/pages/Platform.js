@@ -6,17 +6,24 @@ import React from 'react'
 import PlatformLead from "../components/PlatformLead.js";
 import PlatformCreator from './PlatformCreator.js';
 import PlatformProfile from '../components/PlatformProfile.js';
+import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+
+const theme = createTheme();
+theme.spacing(1); // `${8 * 2}px` = '16px'
 
 const useStyles = makeStyles((theme) => ({
     PlatformContainer: {
         
     },
     PlatformIcon: {
-        borderRadius: "50%",
+        marginLeft: theme.spacing(5), 
+        borderRadius: 20,
         float: "left",
-        zIndex: "1201",
+        zIndex: "tooltip",
         width: "1",
-        height: "1"
+        height: "1",
+        overflow:'hidden'
     },
     edit: {
     }
