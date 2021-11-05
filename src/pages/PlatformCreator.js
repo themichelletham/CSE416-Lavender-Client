@@ -32,9 +32,10 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(200), 
   },
   Opt: {
-    //display: 'inline-block',
+    display: 'inline-block',
     width: theme.spacing(200),
     paddingLeft: theme.spacing(117),
+    paddingTop: theme.spacing(10),
     paddingBottom: theme.spacing(.5), 
     alignItems: 'left', 
   },
@@ -50,7 +51,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#7519BD",
     width: theme.spacing(155), 
     marginLeft: theme.spacing(3),
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
+    //marginTop: theme.spacing(30)
   },
   quiz:{ 
     color: "#FFFFFF", 
@@ -118,7 +120,7 @@ export default function PlatformCreator(props) {
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile/>
       <PlatformLead/>
-      <Box className={classes.Opt} ml={3} mr={1}>
+      <Box className={classes.Opt} ml={3} mr={1} mt={20}>
         <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
         <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
       </Box>

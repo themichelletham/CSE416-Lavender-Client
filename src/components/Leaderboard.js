@@ -21,18 +21,18 @@ function createData(playerName, points) {
   ];
 
   const useStyles = makeStyles((theme) => ({
-        table:{ 
-            minWidth: 1300,
-            padding: 70,
-            margin:'auto'
-        },
-        head: {
-            backgroundColor: "#7D65C0",
-            textDecorationColor: "#FFFFFF",
-        },
-        body:{ 
-            backgroundColor: "#FFFFFF"
-        }
+    table:{ 
+      minWidth: 1300,
+      padding: 70,
+      margin:'auto'
+    },
+    head: {
+      backgroundColor: "#7D65C0",
+      textDecorationColor: "#FFFFFF",
+    },
+    body:{ 
+      backgroundColor: "#FFFFFF"
+    }
   })); 
   
   export default function Leaderboard() {

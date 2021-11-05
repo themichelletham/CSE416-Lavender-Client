@@ -24,31 +24,21 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     marginLeft: theme.spacing(8), 
     marginTop: theme.spacing(10),
-    //marginBottom: theme.spacing(5), 
+    marginBottom: theme.spacing(5), 
     height: theme.spacing(22),
     width: theme.spacing(22),
     borderRadius: "100%",
     position: 'absolute',
-    //bottom: 40,
-    //left: '40%',
     zIndex: 'tooltip'
   }, 
-  title:{ 
-    //display: 'inline-block',
-    paddingTop: theme.spacing(35),
-    paddingLeft : theme.spacing(2), 
-  }
 }));
 
 export default function PlatformProfile() {
   const classes = useStyles();
   return ( 
     <Box className={classes.PlatformProfileContainer}>
-        <img className={classes.banner} src={Banner}/>
-        <img className={classes.icon} src={PlatformIcon}/>
-      <div className={classes.title}>
-        <Typography variant="h3">Platform Name</Typography>
-      </div>
+      <img className={classes.banner} src={Banner}/>
+      <img className={classes.icon} src={PlatformIcon}/>
     </Box>
   )
 }
