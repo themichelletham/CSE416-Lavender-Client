@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function QuizCreate(props) {
   const [state, setState] = useState({
+    platform_name: '',
     quiz_title: '',
     questions: [],
     answers: [],
@@ -271,6 +272,7 @@ export default function QuizCreate(props) {
   }
 
   const parseToState = (res) => {
+    const platform_name = res.data.platform.platform_name;
     const title = res.data.quiz.quiz_name;
     const questions = res.data.questions.map(q_obj => q_obj.question_text)
     const answers = res.data.answers.map(ans_list => (
@@ -279,13 +281,12 @@ export default function QuizCreate(props) {
     const correct_answers = res.data.answers.map(ans_list => (
       ans_list.filter(ans_obj => ans_obj.is_correct).map(ans_objb => ans_objb.answer_text)
     ));
-    return { quiz_title: title, questions: questions, answers: answers, correct_answers:correct_answers};
+    return { platform_name: platform_name, quiz_title: title, questions: questions, answers: answers, correct_answers:correct_answers};
   }
   useEffect(() => {
     if (props.location.state == null) {
       axios.get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
         .then(res => {
-          console.log(res);
           setState(parseToState(res));
         }).catch(err => {
           console.log(err);
@@ -293,6 +294,7 @@ export default function QuizCreate(props) {
     }
     else if (props.location.state) {
       setState({
+        platform_name: props.location.state.platform.platform_name,
         quiz_title: props.location.state.quiz.quiz_name,
         questions: [],//new_questions,
         answers: [],//new_answers,
@@ -303,7 +305,7 @@ export default function QuizCreate(props) {
 
   return (
     <Box className={classes.QuizContainer}>
-      <h1>Platform Name</h1>
+      <h1>{state.platform_name}</h1>
       <Box className={classes.Opt} mt={3} >
         <div className={classes.duration}>Duration: INF</div>
         <Button size='small' variant='contained' style={style} className={classes.save}  onClick={onDelete} disableElevation>Delete Quiz</Button>
