@@ -139,6 +139,8 @@ export default function QuizTake(props) {
     }).then(res => {
       console.log('Posted to server');
       console.log(res);
+    }).catch(err => {
+      console.log(err);
     });
     history.goBack();
   }
@@ -167,10 +169,10 @@ export default function QuizTake(props) {
               <Questions q_key={q_key} q_text={question} readOnly />
               <Grid direction='row' container >
                 <Grid direction='column' container item sm={6}>
-                  {state.answers[q_key].slice(0, (state.answers[q_key].length + 1) / 2).map((ans, a_key) => ansMap(ans, q_key, a_key))}
+                  {state.answers[q_key].slice(0, parseInt((state.answers[q_key].length + 1) / 2, 10)).map((ans, a_key) => ansMap(ans, q_key, a_key))}
                 </Grid>
                 <Grid direction='column' container item sm={6}>
-                  {state.answers[q_key].slice((state.answers[q_key].length + 1) / 2).map((ans, a_key) => ansMap(ans, q_key, a_key + (state.answers[q_key].length + 1) / 2))}
+                  {state.answers[q_key].slice(parseInt((state.answers[q_key].length + 1) / 2, 10)).map((ans, a_key) => ansMap(ans, q_key, a_key + parseInt((state.answers[q_key].length + 1) / 2, 10)))}
                 </Grid>
               </Grid>
             </div>

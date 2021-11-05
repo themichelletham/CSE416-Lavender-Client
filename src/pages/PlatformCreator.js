@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 15,
     borderTopLeftRadius: 15,  
   },
+
   title: {
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PlatformCreator(props) {
   const [state, setState] = useState({
-    platform_name: '',
+    platform_name: 'Untitled Platform',
     quizzes: null,
   })
 
@@ -100,7 +101,7 @@ export default function PlatformCreator(props) {
   const onDelete = (e) => {
     axios.delete(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
     .then(res => {
-      history.goBack()
+      history.goBack().goBack();
     }).catch(err => {
       console.log(err);
     })
@@ -135,6 +136,10 @@ export default function PlatformCreator(props) {
           onChange={onTitleChange}
         />
       </FormControl>
+      <Box className={classes.Opt} mt={3}>
+        <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
+        <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
+      </Box>
       <Box>
           <Grid container spacing={10} ml={1} className={classes.gridContainer}>
             {state.quizzes?state.quizzes.map( quiz => (
