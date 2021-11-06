@@ -25,14 +25,15 @@ const useStyles = makeStyles(theme => ({
 function Home(props) {
   const [state, setState] = useState({
     quizzes: null,
+    platforms: null,
   })
   const classes = useStyles();
   const history = useHistory();
-  const onNavigate = (e, quiz_id) => {
+  const onNavigateQuiz  = (e, quiz_id) => {
     axios.post(`${constants.API_PATH}/quiz/${quiz_id}/history`, {
       user_id: 1
     }).then(res => {
-      console.log(res);
+      //console.log(res);
       if (res.data.history) {
         history.push(`/quiz/${quiz_id}/results`);
       }
@@ -41,22 +42,43 @@ function Home(props) {
       }
     })
   }
+
+  const onNavigatePlatform  = (e, platform_id) => {
+    axios.get(`${constants.API_PATH}/platform/${platform_id}/`, {
+      user_id: 1
+    }).then(res => {
+      //console.log(res);
+      
+      history.push(`/platform/${platform_id}/results`);
+      
+    })
+  }
+
   useEffect(() => {
-    axios.get(constants.API_PATH + '/quiz')
+    axios.get(constants.API_PATH + '/platform')
       .then(res => {
         console.log(res);
-        setState({ quizzes: res.data });
+        setState({ quizzes: res.data.quizzes, platforms: res.data.platforms });
       }).catch(err => {
-        //console.log(err);
-      })
+        console.log(err);
+      });
   }, []);
   return (
     <Box className="homePage">
       <Sidebar className={classes.drawer} />
       <Grid container spacing={10} className={classes.gridContainer}>
+        QUIZZES
         {state.quizzes ? state.quizzes.map(quiz => (
           <Grid item className={classes.gridItem} key={quiz.quiz_id}>
-            <Button onClick={e => onNavigate(e, quiz.quiz_id)}>{quiz.quiz_name}</Button>
+            <Button onClick={e => onNavigateQuiz(e, quiz.quiz_id)}>{quiz.quiz_name}</Button>
+          </Grid>
+        )) : <Grid item></Grid>}
+      </Grid>
+      <Grid container spacing={10} className={classes.gridContainer}>
+        PLATFORMS
+        {state.platforms ? state.platforms.map(platform => (
+          <Grid item className={classes.gridItem} key={platform.platform_id}>
+            <Button onClick={e => onNavigatePlatform(e, platform.platform_id)}>{platform.platform_name}</Button>
           </Grid>
         )) : <Grid item></Grid>}
       </Grid>

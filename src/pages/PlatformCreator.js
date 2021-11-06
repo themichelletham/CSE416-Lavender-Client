@@ -80,15 +80,13 @@ export default function PlatformCreator(props) {
     axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}/quizzes`)
     .then( res => {
       console.log(res);
-      console.log("hello quizzerjwei")
       setState({platform_name: state.platform_name
         , quizzes: res.data
       });
     }).catch( err => {
       console.log(err);
-      console.log("notworkign")
+      
     })
-    console.log("why not");
   }, []);
 
   const classes = useStyles();
