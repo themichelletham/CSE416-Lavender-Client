@@ -141,6 +141,14 @@ export default function NavBar() {
     }
   }
 
+  const handleSignOut = (e) => {
+    logout();
+    setState({
+      authenticated: false,
+      user: null,
+      anchorEl: null,
+    })
+  };
   const logout = async () => {
     const res = await axios.get(`${constants.API_PATH}/auth/google/logout`, {
       withCredentials: true
@@ -203,7 +211,7 @@ export default function NavBar() {
             </Link>
             <MenuItem onClick={handleCloseProfileMenu, onCreatePlatform}> My Platform</MenuItem>
             <Divider />
-            <MenuItem onClick={handleCloseProfileMenu}>Logout</MenuItem>
+            <MenuItem onClick={handleSignOut}>Logout</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
