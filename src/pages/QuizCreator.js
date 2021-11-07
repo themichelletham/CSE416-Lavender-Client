@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    width: '60vw', 
+    width: theme.spacing(115), 
   },
   Opt: {
     display: 'inline-block',
