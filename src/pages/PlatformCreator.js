@@ -2,11 +2,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import * as constants from '../components/constants';
 import { makeStyles } from '@material-ui/core';
-import { Box, Button, FormControl,Grid, InputBase, TextField } from '@mui/material';
+import { Box, Button, FormControl,Grid, InputBase, Input } from '@mui/material';
 import { BrowserRouter as Router, Route, Link, Switch, useHistory } from 'react-router-dom';
 import PlatformProfile from '../components/PlatformProfile.js';
 import PlatformLead from "../components/PlatformLead.js";
-import QuizCreate from '../pages/QuizCreator';
 import { styled } from '@mui/material/styles';
 import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
@@ -59,7 +58,14 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(15), 
     height: theme.spacing(10), 
     textAlign: 'center', 
-  }
+  },
+  editThumbnail: {
+    display: 'inline-block',
+    width: theme.spacing(200),
+    paddingLeft: theme.spacing(37),
+    paddingTop: theme.spacing(20),
+    paddingBottom: theme.spacing(.5),
+  },
 }));
 
 export default function PlatformCreator(props) {
@@ -67,6 +73,9 @@ export default function PlatformCreator(props) {
     platform_name: 'Untitled Platform',
     quizzes: [],
   })
+
+  const [image, setImage] = useState("");
+  const [url, setUrl] = useState("");
 
   const copyState = () => {
     let new_name = state.platform_name;
@@ -150,10 +159,30 @@ export default function PlatformCreator(props) {
     }
   }, [props]);
 
+  const uploadImage = () => {
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_present", "qoipcud5");
+    data.append("cloud_name", "lavender-sprout-herokuapp-com");
+    fetch("	https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload", {
+      method: "post",
+      body: data
+    })
+    .then(res => res.json())
+    .then(data => {
+      setUrl(data.url)
+    })
+    .catch( err => console.log(err))
+  }
+
   return (
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile/>
       <PlatformLead/>
+      <Box className={classes.editThumbnail}>
+        <Input type="file" name="image" accept="image/*" multiple={false} onChange={(e) => setImage(e.target.files[0])}></Input>
+        <Button className={classes.thumbnailButton} onClick={uploadImage}>Edit Platform Thumbnail</Button>
+      </Box>
       <Box className={classes.Opt} ml={3} mr={1} mt={20}>
         <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
         <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
