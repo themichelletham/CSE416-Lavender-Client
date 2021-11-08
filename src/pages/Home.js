@@ -49,7 +49,7 @@ function Home(props) {
     }).then(res => {
       //console.log(res);
       
-      history.push(`/platform/${platform_id}/results`);
+      history.push(`/platform/${platform_id}`);
       
     })
   }
