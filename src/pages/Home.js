@@ -69,7 +69,7 @@ function Home(props) {
   }, []);
   return (
     <Box className="homePage">
-      <Sidebar className={classes.drawer} />
+      <Sidebar className={classes.drawer} user_id={props.user_id}/>
       <Grid container spacing={10} className={classes.gridContainer}>
         QUIZZES
         {state.quizzes ? state.quizzes.map(quiz => (

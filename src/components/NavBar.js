@@ -18,6 +18,8 @@ import QuizCreate from '../pages/QuizCreator';
 import QuizTake from '../pages/QuizTaking';
 import QuizResult from '../pages/QuizResult';
 import LoginSucess from '../pages/loginSuccess';
+import Profile from '../pages/Profile';
+
 import * as constants from '../components/constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -217,7 +219,7 @@ export default function NavBar() {
       </AppBar>
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
         <Switch>
-          <Route path="/" exact component={Home} />
+          <Route path="/" exact render={(props) => <Home user_id={state.user && state.user.user_id} />}/>
           <Route path="/leaderboard" exact component={Leaderboard} />
           <Route path="/platform/:platform_id/creator" component={PlatformCreator} />
           <Route path='/platform/:platform_id' component={Platform} />
@@ -225,6 +227,7 @@ export default function NavBar() {
           <Route path='/quiz/:quiz_id/results' component={QuizResult} />
           <Route path='/quiz/:quiz_id' component={QuizTake} />
           <Route path='/login/success' component={LoginSucess} />
+          <Route path='/profile/:user_id' component={Profile} />
         </Switch>
       </Box>
     </Box>
