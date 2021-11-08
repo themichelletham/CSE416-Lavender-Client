@@ -135,7 +135,9 @@ export default function PlatformCreator(props) {
       axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
         .then(res => {
           console.log(res);
-          setState(parseToState(res));
+          setState({platform_name: res.data.platform_name,
+            quizzes: res.data.quizzes,
+         });
         }).catch(err => {
           console.log(err);
         })
