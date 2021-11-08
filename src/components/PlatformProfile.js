@@ -2,8 +2,9 @@ import React from 'react'
 import { Box } from '@mui/system';
 import Banner from "../images/banner.png";
 import PlatformIcon from "../images/platformicon.jpeg"
-import { Typography } from '@material-ui/core';
+import { InputBase, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
+import {Button } from '@mui/material';
 import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
@@ -32,14 +33,18 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     zIndex: 'tooltip'
   }, 
+  title:{
+    color: '#000000',
+  }
 }));
 
-export default function PlatformProfile() {
+export default function PlatformProfile(props) {
   const classes = useStyles();
   return ( 
     <Box className={classes.PlatformProfileContainer}>
       <img className={classes.banner} src={Banner}/>
       <img className={classes.icon} src={PlatformIcon}/>
+      <Button className={classes.title}> {props.platform_name} </Button>
     </Box>
   )
 }
