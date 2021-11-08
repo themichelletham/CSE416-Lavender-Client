@@ -15,10 +15,6 @@ import PlatformCreator from '../pages/PlatformCreator';
 const drawerWidth = 205;
 
 const useStyles = makeStyles((theme) => ({
-    homeMain: {
-        flexGrow: 1, 
-        p: 3,
-    },
     mainbox: {
         display: "flex",
     },
@@ -100,9 +96,6 @@ export default function Sidebar() {
                     </List>
                 </Box>
             </Drawer>
-            <Box component="main" classname="homeMain">
-                <Typography paragraph>Quizzes and Platforms</Typography>
-            </Box>
             <Switch>
                 <Route path="/profile" exact component={Profile}/>
                 <Route path="/platform/:platform_id/creator" component={PlatformCreator}/>
