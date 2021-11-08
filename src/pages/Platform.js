@@ -55,11 +55,11 @@ export default function Platform(props) {
       }
     
       useEffect(() => {
-        axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}/quizzes`)
+        axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
         .then( res => {
           console.log(res);
-          setState({platform_name: state.platform_name
-            , quizzes: res.data
+          setState({platform_name: res.data.platform_name,
+             quizzes: res.data.quizzes,
           });
         }).catch( err => {
           console.log(err);
@@ -70,10 +70,10 @@ export default function Platform(props) {
     return (
         <Box className={classes.PlatformContainer}>
             <Router>
-                <PlatformProfile/>
+                <PlatformProfile platform_name={state.platform_name}/>
                 <PlatformLead/>
             </Router>
-            <Link to="/platform/creator">
+            <Link to={`/platform/${props.match.params.platform_id}/creator`}>
                 <ColorButton className={classes.editPlat}>Edit Platform</ColorButton>
             </Link>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
