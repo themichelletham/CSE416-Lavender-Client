@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
 import { Box, Grid, Button } from '@material-ui/core'
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 import { makeStyles } from '@material-ui/core/styles';
 import Sidebar from '../components/Sidebar.js';
 import * as constants from '../components/constants';
+import PlatformIcon from '../images/platformicon.jpeg'
 
 const useStyles = makeStyles(theme => ({
   homePage: {
@@ -49,7 +53,7 @@ function Home(props) {
     }).then(res => {
       //console.log(res);
       
-      history.push(`/platform/${platform_id}/results`);
+      history.push(`/platform/${platform_id}`);
       
     })
   }
@@ -70,7 +74,10 @@ function Home(props) {
         QUIZZES
         {state.quizzes ? state.quizzes.map(quiz => (
           <Grid item className={classes.gridItem} key={quiz.quiz_id}>
-            <Button onClick={e => onNavigateQuiz(e, quiz.quiz_id)}>{quiz.quiz_name}</Button>
+            <Button onClick={e => onNavigateQuiz(e, quiz.quiz_id)}>
+              <Card><CardContent>{quiz.quiz_name}
+              </CardContent></Card>
+            </Button>
           </Grid>
         )) : <Grid item></Grid>}
       </Grid>
@@ -78,7 +85,12 @@ function Home(props) {
         PLATFORMS
         {state.platforms ? state.platforms.map(platform => (
           <Grid item className={classes.gridItem} key={platform.platform_id}>
-            <Button onClick={e => onNavigatePlatform(e, platform.platform_id)}>{platform.platform_name}</Button>
+            <Button onClick={e => onNavigatePlatform(e, platform.platform_id)}>
+              <Card>
+                <CardMedia component="img" height="140" image={PlatformIcon}/>
+                <CardContent>{platform.platform_name}</CardContent>
+              </Card>
+            </Button>
           </Grid>
         )) : <Grid item></Grid>}
       </Grid>
