@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block',
     width: theme.spacing(200),
     paddingLeft: theme.spacing(117),
-    paddingTop: theme.spacing(10),
+    //paddingTop: theme.spacing(10),
     paddingBottom: theme.spacing(.5), 
     alignItems: 'left', 
   },
@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 15,
     borderTopLeftRadius: 15,  
   },
-
   title: {
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
@@ -63,8 +62,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block',
     width: theme.spacing(200),
     paddingLeft: theme.spacing(37),
-    paddingTop: theme.spacing(20),
-    paddingBottom: theme.spacing(.5),
+    //paddingTop: theme.spacing(20),
+    //paddingBottom: theme.spacing(.5),
   },
 }));
 
@@ -183,7 +182,7 @@ export default function PlatformCreator(props) {
         <Input type="file" name="image" accept="image/*" multiple={false} onChange={(e) => setImage(e.target.files[0])}></Input>
         <Button className={classes.thumbnailButton} onClick={uploadImage}>Edit Platform Thumbnail</Button>
       </Box>
-      <Box className={classes.Opt} ml={3} mr={1} mt={20}>
+      <Box className={classes.Opt} ml={3} mr={1} mt={2}>
         <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
         <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
       </Box>
