@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import Alert from '@mui/material/Alert';
 import { Button, Box, Grid, Typography, ImageListItem, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core';
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
@@ -63,6 +64,7 @@ export default function Profile(props) {
   });
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [usernameExist, setUsernameExist] = useState(false);
 
   const copyState = () => {
     let new_user = state.user;
@@ -92,22 +94,25 @@ export default function Profile(props) {
       // TODO: afterupdate
     }).catch(err => {
       console.log('PUT on Save: ', err);
+      if (err.status == 200) {
+        setUsernameExist(true);
+      }
     })
 
     setOpen(false);
   };
 
-  // useEffect(() => {
-  //   axios.get(`${constants.API_PATH}/users/${props.match.params.user_id}`)
-  //     .catch(err => {
-  //       console.log('Profile: ', err);
-  //     }).then(res => {
-  //       console.log(res)
-  //       if (res.status == 200) {
-  //         setState({ user: { ...res.data.user }, points: [...res.data.points] });
-  //       }
-  //     })
-  // }, [props]);
+  useEffect(() => {
+    axios.get(`${constants.API_PATH}/users/${props.match.params.user_id}`)
+      .catch(err => {
+        console.log('Profile: ', err);
+      }).then(res => {
+        console.log(res)
+        if (res.status == 200) {
+          setState({ user: { ...res.data.user }, points: [...res.data.points] });
+        }
+      })
+  }, [props]);
 
   return (
     <Box className={classes.profilePage}>
@@ -120,6 +125,9 @@ export default function Profile(props) {
           <DialogTitle>Edit Username</DialogTitle>
           <DialogContent>
             <TextField autoFocus margin="dense" id="name" label="Username" type="name" fullWidth variant="standard"/> 
+            { 
+              usernameExist && <Alert severity="error">Username is already taken</Alert>
+            }
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
