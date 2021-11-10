@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/styles';
 import * as constants from '../components/constants';
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
@@ -32,8 +32,12 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'left', 
         width: ttheme.spacing(200), 
     }, 
+    gridContainer:{ 
+      marginBottom: ttheme.spacing(40),
+      marginLeft: ttheme.spacing(10), 
+      width: ttheme.spacing(200), 
+    }, 
     editPlat: {
-        //marginTop: ttheme.spacing(25), 
         marginLeft: ttheme.spacing(140)
     }
 })); 
@@ -81,8 +85,8 @@ export default function Platform(props) {
                     <Route path="/platform/creator" component={PlatformCreator}/>
                 </Switch>
             </Box>
-            <Box>
-          <Grid container spacing={10} ml={1} className={classes.gridContainer}>
+            <Box sx={{display: 'flex',flexWrap: 'wrap', maxWidth: ttheme.spacing(150)}}>
+            <Grid container spacing={3} ml={1} mt={1} className={classes.gridContainer}>
             {state.quizzes?state.quizzes.map( quiz => (
               <Grid item className={classes.gridItem}  key={quiz.quiz_id}>
                   <Link to={{pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id}}>
@@ -92,6 +96,6 @@ export default function Platform(props) {
             )):<Grid item></Grid>}
           </Grid>
         </Box>
-        </Box>
+      </Box>
     )
 }
