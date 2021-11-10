@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         width: ttheme.spacing(200), 
     }, 
     editPlat: {
-        marginTop: ttheme.spacing(25), 
+        //marginTop: ttheme.spacing(25), 
         marginLeft: ttheme.spacing(140)
     }
 })); 

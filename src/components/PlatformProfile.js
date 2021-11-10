@@ -1,10 +1,10 @@
 import React from 'react'
-import { Box } from '@mui/system';
+import Box from '@mui/material/Box';
 import Banner from "../images/banner.png";
 import PlatformIcon from "../images/platformicon.jpeg"
 import { InputBase, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
-import {Button } from '@mui/material';
+import Button from '@mui/material/Button';
 import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
@@ -12,6 +12,9 @@ const theme = createTheme();
 theme.spacing(1); // `${8 * 2}px` = '16px'
 
 const useStyles = makeStyles((theme) => ({
+  PlatformProfileContainer:{ 
+    display: 'flex', 
+  },
   banner: {
     width: theme.spacing(166.5),
     height: theme.spacing(30),
@@ -34,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 'tooltip'
   }, 
   title:{
-    color: '#000000',
+    paddingTop: theme.spacing(23), 
+    marginLeft: theme.spacing(30),  
   }
 }));
 
@@ -44,7 +48,9 @@ export default function PlatformProfile(props) {
     <Box className={classes.PlatformProfileContainer}>
       <img className={classes.banner} src={Banner}/>
       <img className={classes.icon} src={PlatformIcon}/>
-      <Button className={classes.title}> {props.platform_name} </Button>
+      <Box className={classes.title}>
+        <Button size='large'> {props.platform_name}</Button>
+      </Box>
     </Box>
   )
 }
