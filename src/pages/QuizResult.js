@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
   Opt: {
     display: 'inline-block',
     width: '60vw',
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
     alignItems: 'center',
   },
   duration: {
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    height: 60,
+    height: theme.spacing(8),
     backgroundColor: "#7d65c0",
   },
   quizForm: {

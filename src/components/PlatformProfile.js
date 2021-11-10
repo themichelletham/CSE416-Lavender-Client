@@ -14,6 +14,11 @@ theme.spacing(1); // `${8 * 2}px` = '16px'
 const useStyles = makeStyles((theme) => ({
   PlatformProfileContainer:{ 
     display: 'flex', 
+    overflow:'hidden', 
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'left', 
+    width: theme.spacing(150), 
   },
   banner: {
     width: theme.spacing(166.5),
@@ -27,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     float: 'left', 
-    marginLeft: theme.spacing(8), 
+    marginLeft: theme.spacing(5), 
     marginTop: theme.spacing(10),
     marginBottom: theme.spacing(5), 
     height: theme.spacing(22),
