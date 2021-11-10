@@ -2,7 +2,7 @@ import React from 'react'
 import Box from '@mui/material/Box';
 import Banner from "../images/banner.png";
 import PlatformIcon from "../images/platformicon.jpeg"
-import { InputBase, Typography } from '@material-ui/core';
+import Typography from '@mui/material/Typography';
 import { makeStyles } from '@material-ui/core';
 import Button from '@mui/material/Button';
 import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
@@ -49,7 +49,7 @@ export default function PlatformProfile(props) {
       <img className={classes.banner} src={Banner}/>
       <img className={classes.icon} src={PlatformIcon}/>
       <Box className={classes.title}>
-        <Button size='large'> {props.platform_name}</Button>
+        <Typography variant='h4' ml={2} mt={2}> {props.platform_name}</Typography>
       </Box>
     </Box>
   )
