@@ -124,14 +124,14 @@ export default function Profile(props) {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Edit Username</DialogTitle>
           <DialogContent>
-            <TextField autoFocus margin="dense" id="name" label="Username" type="name" fullWidth variant="standard"/> 
+            <TextField autoFocus margin="dense" id="username" label="username" type="username" fullWidth variant="standard" onChange={onUsernameChange}/> 
             { 
               usernameExist && <Alert severity="error">Username is already taken</Alert>
             }
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={onUsernameChange, handleSaveEditName}>Save</Button>
+            <Button onClick={handleSaveEditName}>Save</Button>
           </DialogActions>
         </Dialog>
       </Box>
