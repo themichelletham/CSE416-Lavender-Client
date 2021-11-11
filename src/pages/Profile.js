@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Alert from '@mui/material/Alert';
+import PointCard from '../components/PointCard'
 import { Button, Box, Grid, Typography, ImageListItem, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core';
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
@@ -49,11 +50,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(35),
     //marginLeft: theme.spacing(140)
   },
-  totalPoints: {
-
-  },
   pointsContainer: {
-
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  pointsRow: {
+    display: 'flex',
+    flexDirection: 'row',
   }
 }));
 
@@ -89,7 +92,7 @@ export default function Profile(props) {
   };
   const handleSaveEditName = () => {
     axios.put(`${constants.API_PATH}/users/${props.match.params.user_id}`, {
-      user_fields: {username: state.user.username}
+      user_fields: { username: state.user.username }
     }).then(res => {
       setOpen(false);
     }).catch(err => {
@@ -135,19 +138,19 @@ export default function Profile(props) {
         <Typography>Total Points: {state.user && state.user.points}</Typography>
       </Box>
       <Box className={classes.pointsContianer}>
-        {/*state.points.length && state.points.reduce((pairs, value, key) => {
+        {state.points.length ? state.points.reduce((pairs, value, key) => {
           return (key % 2 === 0 ? pairs.push([key]) : pairs[pairs.length - 1].push(key)) && pairs;
         }).map((pair) => {
-          // Trying to display left and right side
           const ret = (
-            <Box className={classes.totalPoints}>
-              <Typography>
-                {`Platform_id:${state.points[pair[0]].platform_id} Points:${state.points[pair[0]].points}`}
-              </Typography>
+            <Box className={classes.pointRow}>
+              <PointCard points={state.points[pair[0]].points} platform_id={state.points[pair[0]].platform_id} />
+              {pair.length === 2 ?
+                <PointCard points={state.points[pair[1]].points} platform_id={state.points[pair[1]].platform_id} />
+                : <></>}
             </Box>
           )
-        })
-      */}
+          return ret;
+        }) : <></>}
       </Box>
     </Box>
   )
