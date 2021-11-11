@@ -72,8 +72,10 @@ export default function PlatformCreator(props) {
     quizzes: [],
   })
 
+  const [previewSource, setPreviewSource] = useState();
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
+
 
   const copyState = () => {
     let new_name = state.platform_name;
@@ -142,6 +144,7 @@ export default function PlatformCreator(props) {
       axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
         .then(res => {
           console.log(res);
+          setPreviewSource(res.data.icon_photo)
           setState({platform_name: res.data.platform_name,
             quizzes: res.data.quizzes,
          });
@@ -157,31 +160,58 @@ export default function PlatformCreator(props) {
     }
   }, [props]);
 
-  const uploadImage = () => {
-    const data = new FormData();
-    data.append("file", image);
-    data.append("upload_present", "qoipcud5");
-    data.append("cloud_name", "lavender-sprout-herokuapp-com");
-    fetch("	https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload", {
-      method: "post",
-      body: data
-    })
-    .then(res => res.json())
-    .then(data => {
-      setUrl(data.url)
-    })
-    .catch( err => console.log(err))
+  
+  
+  const handleFileInputChange = (e) => {
+    const file = (e.target.files[0]);
+    if (!file) return;
+    previewFile(file);
   }
+
+  const previewFile = (file) =>{
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    }
+  }
+
+  const handleSubmitFile = (e) =>{
+    e.preventDefault();
+    if (!previewSource) return;
+    uploadImage(previewSource);
+  }
+
+  const uploadImage = async (base64EncodedImage) =>{
+    console.log(base64EncodedImage);
+    if (!base64EncodedImage){
+      return;
+    }
+    axios.put(`${constants.API_PATH}/platform/${props.match.params.platform_id}/image-upload`, {
+      platform_fields: { icon_photo: base64EncodedImage,
+      }
+  
+    }).then(res => {
+      //stuff
+      console.log(res);
+      console.log("image sent");
+      return;
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
 
   return (
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile/>
       <PlatformLead/>
       <Box className={classes.editThumbnail}>
-      <Input type="file" name="image" accept="image/*" multiple={false} onChange={(e) => setImage(e.target.files[0])}></Input>
-        <Button className={classes.thumbnailButton} size='large' onClick={uploadImage} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button>
+      <Input type="file" name="image" accept=".jpg .png .jpeg" multiple={false} onChange={handleFileInputChange}></Input>
+        <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button>
       </Box>
-      <Box className={classes.Opt} ml={1} mt={3}>
+      {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)}
+      <Box className={classes.Opt} ml={3} mr={1} mt={3}>
         <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
         <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
       </Box>
