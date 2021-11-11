@@ -106,6 +106,9 @@ export default function NavBar() {
   const handleProfileClick = (event) => {
     setState({ ...state, anchorEl: event.currentTarget });
   };
+  const onViewProfile = (e) => {
+    history.push(`/profile/${state.user.user_id}`)
+  }
 
   const handleCloseProfileMenu = () => {
     setState({ ...state, anchorEl: null });
@@ -208,9 +211,7 @@ export default function NavBar() {
               'aria-labelledby': 'basic-button',
             }}
           >
-            <Link to='/profile'>
-              <MenuItem onClick={handleCloseProfileMenu}>View Profile</MenuItem>
-            </Link>
+            <MenuItem onClick={onViewProfile}>View Profile</MenuItem>
             <MenuItem onClick={handleCloseProfileMenu, onCreatePlatform}> My Platform</MenuItem>
             <Divider />
             <MenuItem onClick={handleSignOut}>Logout</MenuItem>
@@ -219,15 +220,15 @@ export default function NavBar() {
       </AppBar>
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
         <Switch>
-          <Route path="/" exact render={(props) => <Home user_id={state.user && state.user.user_id} />} />
+          <Route path="/" exact render={(props) => <Home user_id={state.user && state.user.user_id} {...props} />} />
           <Route path="/leaderboard" exact component={Leaderboard} />
           <Route path="/platform/:platform_id/creator" component={PlatformCreator} />
-          <Route path='/platform/:platform_id' component={Platform} />
+          <Route path='/platform/:platform_id' render={(props) => <Platform user_id={state.user && state.user.user_id} {...props} />} />
           <Route path='/quiz/creator/:quiz_id' component={QuizCreate} />
           <Route path='/quiz/:quiz_id/results' component={QuizResult} />
           <Route path='/quiz/:quiz_id' component={QuizTake} />
           <Route path='/login/success' component={LoginSucess} />
-          <Route path='/profile/:user_id' render={(props) => <Profile user_id={state.user && state.user.user_id} />} />
+          <Route path='/profile/:user_id' component={Profile} />
         </Switch>
       </Box>
     </Box>
