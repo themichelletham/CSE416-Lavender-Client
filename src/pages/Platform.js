@@ -52,6 +52,7 @@ export default function Platform(props) {
     platform_name: 'Untitled Platform',
     quizzes: [],
   })
+  const [previewSource, setPreviewSource] = useState();
 
   const copyState = () => {
     let new_name = state.platform_name;
@@ -90,6 +91,7 @@ export default function Platform(props) {
           platform_name: res.data.platform_name,
           quizzes: res.data.quizzes,
         });
+        setPreviewSource(res.data.icon_photo);
       }).catch(err => {
         console.log(err);
 
@@ -105,6 +107,7 @@ export default function Platform(props) {
       <Link to={`/platform/${props.match.params.platform_id}/creator`}>
         <ColorButton className={classes.editPlat}>Edit Platform</ColorButton>
       </Link>
+      {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)}
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
         <Switch>
           <Route path="/platform/creator" component={PlatformCreator} />

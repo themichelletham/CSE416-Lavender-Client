@@ -144,7 +144,7 @@ export default function PlatformCreator(props) {
       axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
         .then(res => {
           console.log(res);
-          setPreviewSource(res.data.icon_photo)
+          setPreviewSource(res.data.icon_photo);
           setState({platform_name: res.data.platform_name,
             quizzes: res.data.quizzes,
          });
@@ -176,6 +176,7 @@ export default function PlatformCreator(props) {
     }
   }
 
+
   const handleSubmitFile = (e) =>{
     e.preventDefault();
     if (!previewSource) return;
@@ -183,6 +184,7 @@ export default function PlatformCreator(props) {
   }
 
   const uploadImage = async (base64EncodedImage) =>{
+    console.log(typeof base64EncodedImage);
     console.log(base64EncodedImage);
     if (!base64EncodedImage){
       return;
