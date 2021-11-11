@@ -180,7 +180,7 @@ export default function NavBar() {
               {state.user.username}
               <IconButton
                 sx={{ ml: 'auto' }}
-                size='large'
+                size='medium'
                 edge='end'
                 aria-owns={openProfileMenu}
                 aria-haspopup='true'

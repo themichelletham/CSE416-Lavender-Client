@@ -9,13 +9,13 @@ const useStyles = makeStyles((theme) => ({
   questionWrapper: {
     display: 'inline-block',
     fontSize: 22,
-    marginLeft: 70,
-    marginTop: 20
+    marginLeft: theme.spacing(8),
+    marginTop: theme.spacing(3)
   },
   questionText: {
     textAlign: 'left', 
-    marginTop: 10,
-    width: '45vw',
+    marginTop: theme.spacing(5),
+    width: theme.spacing(95),
     backgroundColor: "#FFFFFF",
   },
   //toolbar: theme.mixins.toolbar,
