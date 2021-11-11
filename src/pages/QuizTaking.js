@@ -74,7 +74,7 @@ export default function QuizTake(props) {
     answers: [],
     selected_answers: [],
   })
-  // const [previewSource, setPreviewSource] = useState();
+  const [previewSource, setPreviewSource] = useState();
 
   const copyState = () => {
     let ret = {};
@@ -112,7 +112,8 @@ export default function QuizTake(props) {
         let s = parseToState(res);
         s.selected_answers = s.questions.map(q => -1);
         setState(s);
-        // setPreviewSource(res.data.icon_photo);
+        setPreviewSource(res.data.quiz.icon_photo);
+        console.log(previewSource);
       }).catch(err => {
         console.log(err);
       })
@@ -150,7 +151,7 @@ export default function QuizTake(props) {
   return (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_name}</h1>
-      {/* <img className={classes.icon} src={previewSource}/> */}
+      <img className={classes.icon} src={previewSource}/>
       <Box className={classes.Opt} mt={3} >
         <div className={classes.duration}>Duration: INF</div>
       </Box>
