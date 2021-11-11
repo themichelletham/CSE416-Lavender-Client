@@ -148,7 +148,7 @@ export default function QuizResult(props) {
 
   return (
     <Box className={classes.QuizContainer}>
-      <h1>Platform Name</h1>
+      <h1>{state.platform_title}</h1>
       <img className={classes.icon} src={previewSource}/>
       <Box className={classes.Opt} mt={3} >
         <div className={classes.duration}>Duration: INF</div>
