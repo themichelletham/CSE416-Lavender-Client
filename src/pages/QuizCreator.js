@@ -295,6 +295,7 @@ export default function QuizCreate(props) {
     if (props.location.state == null) {
       axios.get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
         .then(res => {
+          
           setState(parseToState(res));
         }).catch(err => {
           console.log(err);

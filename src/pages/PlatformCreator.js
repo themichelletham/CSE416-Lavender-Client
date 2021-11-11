@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import * as constants from '../components/constants';
 import { makeStyles } from '@material-ui/core';
+import { Card, CardContent, CardMedia } from '@material-ui/core';
 import { Box, Button, FormControl, InputBase, Input, Grid } from '@mui/material';
 import { BrowserRouter as Router, Route, Link, Switch, useHistory } from 'react-router-dom';
 import PlatformProfile from '../components/PlatformProfile.js';
@@ -236,7 +237,10 @@ export default function PlatformCreator(props) {
             {state.quizzes?state.quizzes.map( quiz => (
               <Grid item className={classes.gridItem}  key={quiz.quiz_id}>
                   <Link to={{pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id}}>
-                    <ColorButton className={classes.quiz} variant='contained' disableElevation>{quiz.quiz_name}</ColorButton>
+                    <Card>
+                      <CardMedia component="img" height="140" image={quiz.icon_photo}/>
+                      <CardContent>{quiz.quiz_name}</CardContent>
+                    </Card>
                   </Link>
               </Grid>
             )):<Grid item></Grid>}
