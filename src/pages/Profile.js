@@ -91,15 +91,11 @@ export default function Profile(props) {
     axios.put(`${constants.API_PATH}/users/${props.match.params.user_id}`, {
       user_fields: {username: state.user.username}
     }).then(res => {
-      // TODO: afterupdate
+      setOpen(false);
     }).catch(err => {
       console.log('PUT on Save: ', err);
-      if (err.status == 200) {
-        setUsernameExist(true);
-      }
+      setUsernameExist(true);
     })
-
-    setOpen(false);
   };
 
   useEffect(() => {
@@ -125,10 +121,10 @@ export default function Profile(props) {
           <DialogTitle>Edit Username</DialogTitle>
           <DialogContent>
             <TextField autoFocus margin="dense" id="username" label="username" type="username" fullWidth variant="standard" onChange={onUsernameChange}/> 
-            { 
-              usernameExist && <Alert severity="error">Username is already taken</Alert>
-            }
           </DialogContent>
+          { 
+            usernameExist == true ? <Alert severity="error">Username is already taken</Alert> : <p></p>
+          }
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
             <Button onClick={handleSaveEditName}>Save</Button>
