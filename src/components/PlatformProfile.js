@@ -14,7 +14,7 @@ theme.spacing(1); // `${8 * 2}px` = '16px'
 const useStyles = makeStyles((theme) => ({
   PlatformProfileContainer:{ 
     display: 'flex', 
-    overflow:'hidden', 
+    overflow: 'hidden', 
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'left', 

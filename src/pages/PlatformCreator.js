@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   PlatformCreatorContainer: {
     display: "flex",
     flexDirection: 'column',
+    overflow: 'hidden', 
     justifyContent: 'flex-start',
     alignItems: 'left', 
     flexGrow: 1, 
