@@ -70,7 +70,7 @@ export default function Platform(props) {
         time_limit: null
       },
       user_id: props.user_id
-    }).then(res => {
+    }, { withCredentials: true }).then(res => {
       console.log(res)
       if (res.status == 201) {
         history.push('/quiz/creator/' + res.data.quiz.quiz_id, {
@@ -84,6 +84,7 @@ export default function Platform(props) {
   }
 
   useEffect(() => {
+    console.log(props.user_id)
     axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
       .then(res => {
         console.log(res);
@@ -100,24 +101,19 @@ export default function Platform(props) {
 
   return (
     <Box className={classes.PlatformContainer}>
-      <Router>
-        <PlatformProfile platform_name={state.platform_name} />
-        <PlatformLead />
-      </Router>
+      <PlatformProfile platform_name={state.platform_name} />
+      <PlatformLead />
       <Link to={`/platform/${props.match.params.platform_id}/creator`}>
         <ColorButton className={classes.editPlat}>Edit Platform</ColorButton>
       </Link>
       {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)}
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
-        <Switch>
-          <Route path="/platform/creator" component={PlatformCreator} />
-        </Switch>
       </Box>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', maxWidth: ttheme.spacing(150) }}>
         <Grid container spacing={3} ml={1} mt={1} className={classes.gridContainer}>
           {props.user_id ?
             (<Grid item className={classes.gridItem} key={'Create quiz'}>
-              <ColorButton className={classes.createQuiz} onClick={onCreateQuiz}>Create Quiz</ColorButton>
+             <ColorButton className={classes.createQuiz} onClick={onCreateQuiz}>Create Quiz</ColorButton>
             </Grid>) : <></>}
           {state.quizzes ? state.quizzes.map(quiz => (
             <Grid item className={classes.gridItem} key={quiz.quiz_id}>
