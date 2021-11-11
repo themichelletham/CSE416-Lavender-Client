@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Alert from '@mui/material/Alert';
 import PointCard from '../components/PointCard'
-import { Button, Box, Grid, Typography, ImageListItem, TextField } from '@material-ui/core'
+import { Button, Box, Grid, Typography, ImageListItem, TextField } from '@mui/material'
 import { makeStyles } from '@material-ui/core';
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
 import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
@@ -13,6 +13,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { ThemeProvider } from '@material-ui/styles';
 import * as constants from '../components/constants';
+import EditIcon from '@mui/icons-material/Edit';
+import IconButton from '@mui/material/IconButton';
+
 
 const theme = createTheme();
 theme.spacing(1);
@@ -37,16 +40,17 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     float: 'center',
-    marginTop: 10,
+    //marginTop: 10,
     marginLeft: theme.spacing(0),
     marginTop: theme.spacing(10),
-    marginBottom: theme.spacing(5),
+    marginBottom: theme.spacing(),
     height: theme.spacing(22),
     width: theme.spacing(22),
     borderRadius: '100%',
     position: 'absolute',
   },
   username: {
+    display: 'inline-block',
     marginTop: theme.spacing(35),
     //marginLeft: theme.spacing(140)
   },
@@ -57,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   pointsRow: {
     display: 'flex',
     flexDirection: 'row',
-  }
+  }, 
 }));
 
 export default function Profile(props) {
@@ -133,12 +137,12 @@ export default function Profile(props) {
       <Box className={classes.banner} />
       <img className={classes.icon} src={state.user && state.user.picture} />
       <Box className={classes.username}>
-        <Typography>{state.user && state.user.username}</Typography>
-        <Button variant="outlined" onClick={handleClickOpen}>Edit Username</Button>
+          <Typography variant="h5" align="center" mb={1}>{state.user && state.user.username}</Typography>
+          <Button variant="outlined" onClick={handleClickOpen} endIcon={<EditIcon />}>Edit Username</Button>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Edit Username</DialogTitle>
           <DialogContent>
-            <TextField autoFocus margin="dense" id="username" label="username" type="username" fullWidth variant="standard" onChange={onUsernameChange} />
+            <TextField autoFocus margin="dense" id="username" label="Username" type="username" fullWidth variant="standard" onChange={onUsernameChange} />
           </DialogContent>
           {
             usernameExist == true ? <Alert severity="error">Username is already taken</Alert> : <p></p>
@@ -149,10 +153,10 @@ export default function Profile(props) {
           </DialogActions>
         </Dialog>
       </Box>
-      <Box className={classes.totalPoints}>
+      <Box className={classes.totalPoints}  mt={1}>
         <Typography>Total Points: {state.user && state.user.points}</Typography>
       </Box>
-      <Box className={classes.pointsContianer}>
+      <Box className={classes.pointsContainer}>
         {state.points.length ? state.points.map((pair) => {
           const ret = (
             <Box className={classes.pointRow}>

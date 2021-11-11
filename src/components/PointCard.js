@@ -6,7 +6,7 @@ import * as constants from '../components/constants';
 
 const useStyles = makeStyles((theme) => ({
   totalPoints: {
-
+   
   },
 }));
 
@@ -31,10 +31,9 @@ export default function PointCard(props) {
       })
   }, []);
   return (
-    <Box className={classes.totalPoints}>
-      <Typography>
-        {`Platform_id:${state.platform_name} Points:${props.points}`}
-      </Typography>
+    <Box className={classes.totalPoints} align="center">
+      <Typography>{`Platform_id:${state.platform_name}`}</Typography>
+      <Typography>{`Points:${props.points}`}</Typography>
     </Box>
   );
 };
