@@ -73,8 +73,12 @@ export default function PlatformCreator(props) {
     quizzes: [],
   })
 
+  const [fileInputState, setFileInputState] = useState("");
+  const [selectedFile, setSelectedFile] = useState("");
+  const [previewSource, setPreviewSource] = useState();
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
+
 
   const copyState = () => {
     let new_name = state.platform_name;
@@ -158,20 +162,96 @@ export default function PlatformCreator(props) {
     }
   }, [props]);
 
-  const uploadImage = () => {
+  
+  
+  const handleFileInputChange = (e) => {
+    const file = (e.target.files[0]);
+    if (!file) return;
+    previewFile(file);
+    // const data = new FormData();
+    // data.append("file", image);
+    // data.append("upload_present", "qoipcud5");
+    // data.append("cloud_name", "lavender-sprout-herokuapp-com");
+    // fetch("	https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload", {
+    //   method: "post",
+    //   body: data
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    //   setUrl(data.url)
+    // })
+    // .catch( err => console.log(err))
+  }
+
+  const previewFile = (file) =>{
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    }
+  }
+
+  const handleSubmitFile = (e) =>{
+    e.preventDefault();
+    if (!previewSource) return;
+    // const reader = new FileReader();
+    // reader.readAsDataURL(selectedFile);
+    uploadImage(previewSource);
+  }
+
+  const uploadImage = async (base64EncodedImage) =>{
+    console.log(base64EncodedImage);
+    if (base64EncodedImage){
+      
+    }
+    axios.post(`${constants.API_PATH}/image/image-upload`, {
+      data: JSON.stringify(base64EncodedImage),  
+    }).then(res => {
+      //stuff
+      console.log(res);
+      console.log("image sent");
+      return;
+    }).catch(err => {
+      console.log(err);
+    });
+    // try {
+    //   await fetch ('/image/image-upload',{
+    //     method:'POST',
+    //     body: JSON.stringify({data: base64EncodedImage}),
+    //     headers: {'Content-type': 'applicaiton/json'}
+    //   })
+
+    // }catch (error){
+    //   console.error(error);
+    // }
+  }
+
+  const handleImageUpload = (e) => {
+    if (!image) {
+      return;
+    }
+    console.log(image);
+    
     const data = new FormData();
-    data.append("file", image);
-    data.append("upload_present", "qoipcud5");
-    data.append("cloud_name", "lavender-sprout-herokuapp-com");
-    fetch("	https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload", {
-      method: "post",
-      body: data
-    })
-    .then(res => res.json())
-    .then(data => {
-      setUrl(data.url)
-    })
-    .catch( err => console.log(err))
+    data.append("image", image);
+    // uploadImage(data)
+    // .then(uploadedImage=>{
+    //   console.log(uploadedImage)
+    // })
+    // .catch(_ => {
+    //   console.log("image upload went wrong")
+    // })
+    // data.append("upload_present", "qoipcud5");
+    // data.append("cloud_name", "lavender-sprout-herokuapp-com");
+    // fetch("	https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload", {
+    //   method: "post",
+    //   body: data
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    //   setUrl(data.url)
+    // })
+    // .catch( err => console.log(err))
   }
 
   return (
@@ -179,9 +259,11 @@ export default function PlatformCreator(props) {
       <PlatformProfile/>
       <PlatformLead/>
       <Box className={classes.editThumbnail}>
-      <Input type="file" name="image" accept="image/*" multiple={false} onChange={(e) => setImage(e.target.files[0])}></Input>
-        <Button className={classes.thumbnailButton} size='large' onClick={uploadImage} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button>
+      <Input type="file" name="image" accept=".jpg .png .jpeg" multiple={false} onChange={handleFileInputChange}></Input>
+        <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button>
       </Box>
+      {previewSource && (<img src={previewSource} alt="chosen"
+      style={{height: '300px'}} />)}
       <Box className={classes.Opt} ml={3} mr={1} mt={3}>
         <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
         <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
