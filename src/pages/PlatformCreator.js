@@ -151,6 +151,7 @@ export default function PlatformCreator(props) {
         }).catch(err => {
           console.log(err);
         })
+      console.log(previewSource);
     }
     else if (props.location.state) {
       setState({
@@ -206,13 +207,13 @@ export default function PlatformCreator(props) {
 
   return (
     <Box className={classes.PlatformCreatorContainer}>
-      <PlatformProfile/>
+      <PlatformProfile platform_icon={previewSource}/>
       <PlatformLead/>
       <Box className={classes.editThumbnail}>
       <Input type="file" name="image" accept=".jpg .png .jpeg" multiple={false} onChange={handleFileInputChange}></Input>
         <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button>
       </Box>
-      {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)}
+      {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
       <Box className={classes.Opt} ml={3} mr={1} mt={3}>
         <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
         <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>

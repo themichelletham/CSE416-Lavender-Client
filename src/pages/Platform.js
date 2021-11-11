@@ -101,12 +101,12 @@ export default function Platform(props) {
 
   return (
     <Box className={classes.PlatformContainer}>
-      <PlatformProfile platform_name={state.platform_name} />
+      <PlatformProfile platform_name={state.platform_name} platform_icon={previewSource}/>
       <PlatformLead />
       <Link to={`/platform/${props.match.params.platform_id}/creator`}>
         <ColorButton className={classes.editPlat}>Edit Platform</ColorButton>
       </Link>
-      {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)}
+      {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
       </Box>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', maxWidth: ttheme.spacing(150) }}>
