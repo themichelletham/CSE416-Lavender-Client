@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button, Card, CardContent, CardMedia } from '@material-ui/core';
 import { Box, Grid } from '@mui/material';
 import { makeStyles } from '@material-ui/styles';
 import * as constants from '../components/constants';
@@ -101,12 +101,12 @@ export default function Platform(props) {
 
   return (
     <Box className={classes.PlatformContainer}>
-      <PlatformProfile platform_name={state.platform_name} />
+      <PlatformProfile platform_name={state.platform_name} platform_icon={previewSource}/>
       <PlatformLead />
       <Link to={`/platform/${props.match.params.platform_id}/creator`}>
         <ColorButton className={classes.editPlat}>Edit Platform</ColorButton>
       </Link>
-      {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)}
+      {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
       </Box>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', maxWidth: ttheme.spacing(150) }}>
@@ -118,7 +118,10 @@ export default function Platform(props) {
           {state.quizzes ? state.quizzes.map(quiz => (
             <Grid item className={classes.gridItem} key={quiz.quiz_id}>
               <Link to={{ pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id }}>
-                <ColorButton className={classes.quiz} variant='contained' disableElevation>{quiz.quiz_name}</ColorButton>
+                <Card>
+                  <CardMedia component="img" height="140" image={quiz.icon_photo}/>
+                  <CardContent className={classes.quiz}>{quiz.quiz_name}</CardContent>
+                </Card>
               </Link>
             </Grid>
           )) : <Grid item></Grid>}

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import * as constants from '../components/constants';
 import { makeStyles } from '@material-ui/core';
+import { Card, CardContent, CardMedia } from '@material-ui/core';
 import { Box, Button, FormControl, InputBase, Input, Grid } from '@mui/material';
 import { BrowserRouter as Router, Route, Link, Switch, useHistory } from 'react-router-dom';
 import PlatformProfile from '../components/PlatformProfile.js';
@@ -151,6 +152,7 @@ export default function PlatformCreator(props) {
         }).catch(err => {
           console.log(err);
         })
+      console.log(previewSource);
     }
     else if (props.location.state) {
       setState({
@@ -206,13 +208,13 @@ export default function PlatformCreator(props) {
 
   return (
     <Box className={classes.PlatformCreatorContainer}>
-      <PlatformProfile/>
+      <PlatformProfile platform_icon={previewSource}/>
       <PlatformLead/>
       <Box className={classes.editThumbnail}>
       <Input type="file" name="image" accept=".jpg .png .jpeg" multiple={false} onChange={handleFileInputChange}></Input>
         <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button>
       </Box>
-      {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)}
+      {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
       <Box className={classes.Opt} ml={3} mr={1} mt={3}>
         <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
         <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
@@ -235,7 +237,10 @@ export default function PlatformCreator(props) {
             {state.quizzes?state.quizzes.map( quiz => (
               <Grid item className={classes.gridItem}  key={quiz.quiz_id}>
                   <Link to={{pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id}}>
-                    <ColorButton className={classes.quiz} variant='contained' disableElevation>{quiz.quiz_name}</ColorButton>
+                    <Card>
+                      <CardMedia component="img" height="140" image={quiz.icon_photo}/>
+                      <CardContent>{quiz.quiz_name}</CardContent>
+                    </Card>
                   </Link>
               </Grid>
             )):<Grid item></Grid>}

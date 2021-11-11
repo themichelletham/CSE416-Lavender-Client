@@ -78,8 +78,10 @@ function Home(props) {
         {state.quizzes ? state.quizzes.map(quiz => (
           <Grid item className={classes.gridItem} key={quiz.quiz_id}>
             <Button onClick={e => onNavigateQuiz(e, quiz.quiz_id)}>
-              <Card><CardContent>{quiz.quiz_name}
-              </CardContent></Card>
+              <Card>
+                <CardMedia component="img" height="140" image={quiz.icon_photo}/>
+                <CardContent>{quiz.quiz_name}</CardContent>
+              </Card>
             </Button>
           </Grid>
         )) : <Grid item></Grid>}
@@ -90,7 +92,7 @@ function Home(props) {
           <Grid item className={classes.gridItem} key={platform.platform_id}>
             <Button onClick={e => onNavigatePlatform(e, platform.platform_id)}>
               <Card>
-                <CardMedia component="img" height="140" image={PlatformIcon}/>
+                <CardMedia component="img" height="140" image={platform.icon_photo}/>
                 <CardContent>{platform.platform_name}</CardContent>
               </Card>
             </Button>

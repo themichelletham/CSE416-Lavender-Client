@@ -52,7 +52,7 @@ export default function PlatformProfile(props) {
   return ( 
     <Box className={classes.PlatformProfileContainer}>
       <img className={classes.banner} src={Banner}/>
-      <img className={classes.icon} src={PlatformIcon}/>
+      <img className={classes.icon} src={props.platform_icon}/>
       <Box className={classes.title}>
         <Typography variant='h4' ml={2} mt={2}> {props.platform_name}</Typography>
       </Box>
