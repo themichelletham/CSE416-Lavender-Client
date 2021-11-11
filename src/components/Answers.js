@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
   answerWrapper: {
     display: 'inline-block',
     paddingLeft: theme.spacing(18),
-    marginTop: theme.spacing(1), 
+    paddingTop: theme.spacing(1),
     marginRight: theme.spacing(2), 
   },
   selected:{

@@ -15,11 +15,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    width: theme.spacing(115), 
+    width: theme.spacing(120), 
   },
   Opt: {
     display: 'inline-block',
-    width: theme.spacing(115),
+    width: theme.spacing(120),
     paddingLeft: 10,
     paddingRight: 10,
     alignItems: 'center', 
@@ -82,39 +82,38 @@ export default function QuizCreate(props) {
 
   const style = {
     backgroundColor: '#ACACE1',
-    marginLeft: 10,
-    marginBottom: 10,
+    marginLeft: theme.spacing(1),
+    marginBottom: theme.spacing(1),
     color: 'black'
   }
 
   const addQStyle = {
     backgroundColor: '#8A8AEE',
-    left: "8%",
-    marginBottom: 10,
+    left: theme.spacing(11),
+    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(6),
     color: 'black',
-    width: "50vw",
+    width: theme.spacing(95),
     borderRadius: 20,
-    marginTop: theme.spacing(1),
-  }
-
-  const deleteQStyle = {
-    backgroundColor: '#8A8AEE',
-    marginRight: 45,
-    marginTop: theme.spacing(2),
-    float: 'right',
-    color: 'black',
-    borderRadius: 20
   }
 
   const addAnsStyle = {
     backgroundColor: '#8A8AEE',
-    marginTop: theme.spacing(2),
-    marginLeft: theme.spacing(5),
-    //marginBottom: 10,
-    //marginRight: theme.spacing(5),
+    marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(6),
+    marginBottom: theme.spacing(2),
     color: 'black',
     float: 'right',
     borderRadius: 20,
+  }
+
+  const deleteQStyle = {
+    backgroundColor: '#8A8AEE',
+    marginRight: theme.spacing(5),
+    marginTop: theme.spacing(3),
+    float: 'right',
+    color: 'black',
+    borderRadius: 20
   }
 
   const deleteAnsStyle = {

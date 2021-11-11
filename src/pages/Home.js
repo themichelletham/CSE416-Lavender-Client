@@ -8,7 +8,8 @@ import CardMedia from '@mui/material/CardMedia';
 import { makeStyles } from '@material-ui/core/styles';
 import Sidebar from '../components/Sidebar.js';
 import * as constants from '../components/constants';
-import PlatformIcon from '../images/platformicon.jpeg'
+import PlatformIcon from '../images/platformicon.jpeg'; 
+import Typography from '@mui/material/Typography';
 
 const useStyles = makeStyles(theme => ({
   homePage: {
@@ -16,15 +17,17 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'center',
     flexGrow: 1,
-    wdith: '60vw'
+    width: theme.spacing(100), 
+    height: theme.spacing(100)
   },
   gridContainer: {
-    marginTop: 30,
-    width: '60vw',
+    marginTop: theme.spacing(5),
+    marginLeft: theme.spacing(20), 
+    width: theme.spacing(155),
   },
   gridItem: {
     display: 'inline-block'
-  }
+  }, 
 }))
 function Home(props) {
   const [state, setState] = useState({
@@ -70,8 +73,8 @@ function Home(props) {
   return (
     <Box className="homePage">
       <Sidebar className={classes.drawer} user_id={props.user_id}/>
-      <Grid container spacing={10} className={classes.gridContainer}>
-        QUIZZES
+      <Typography ml={20}>QUIZZES</Typography>
+      <Grid container spacing={3} className={classes.gridContainer}>
         {state.quizzes ? state.quizzes.map(quiz => (
           <Grid item className={classes.gridItem} key={quiz.quiz_id}>
             <Button onClick={e => onNavigateQuiz(e, quiz.quiz_id)}>
@@ -81,8 +84,8 @@ function Home(props) {
           </Grid>
         )) : <Grid item></Grid>}
       </Grid>
-      <Grid container spacing={10} className={classes.gridContainer}>
-        PLATFORMS
+      <Typography ml={20} mt={5}>PLATFORMS</Typography>
+      <Grid container spacing={3} className={classes.gridContainer}>
         {state.platforms ? state.platforms.map(platform => (
           <Grid item className={classes.gridItem} key={platform.platform_id}>
             <Button onClick={e => onNavigatePlatform(e, platform.platform_id)}>

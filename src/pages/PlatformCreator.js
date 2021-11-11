@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import * as constants from '../components/constants';
 import { makeStyles } from '@material-ui/core';
-import { Box, Button, FormControl,Grid, InputBase, Input } from '@mui/material';
+import { Box, Button, FormControl, InputBase, Input, Grid } from '@mui/material';
 import { BrowserRouter as Router, Route, Link, Switch, useHistory } from 'react-router-dom';
 import PlatformProfile from '../components/PlatformProfile.js';
 import PlatformLead from "../components/PlatformLead.js";
@@ -25,17 +25,18 @@ const ColorButton = styled(Button)(({ theme }) => ({
 const useStyles = makeStyles((theme) => ({
   PlatformCreatorContainer: {
     display: "flex",
-    overflow:'hidden', 
     flexDirection: 'column',
+    overflow: 'hidden', 
     justifyContent: 'flex-start',
     alignItems: 'left', 
-    width: theme.spacing(200), 
+    flexGrow: 1, 
+    width: theme.spacing(130), 
+    marginLeft: theme.spacing(5), 
   },
   Opt: {
     display: 'inline-block',
-    width: theme.spacing(200),
-    paddingLeft: theme.spacing(117),
-    //paddingTop: theme.spacing(10),
+    width: theme.spacing(160),
+    paddingLeft: theme.spacing(115),
     paddingBottom: theme.spacing(.5), 
     alignItems: 'left', 
   },
@@ -49,9 +50,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(7.5),
     backgroundColor: "#7519BD",
     width: theme.spacing(155), 
-    marginLeft: theme.spacing(3),
     marginBottom: theme.spacing(2),
-    //marginTop: theme.spacing(30)
   },
   quiz:{ 
     color: "#FFFFFF", 
@@ -182,7 +181,7 @@ export default function PlatformCreator(props) {
       <Input type="file" name="image" accept="image/*" multiple={false} onChange={(e) => setImage(e.target.files[0])}></Input>
         <Button className={classes.thumbnailButton} size='large' onClick={uploadImage} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button>
       </Box>
-      <Box className={classes.Opt} ml={3} mr={1} mt={3}>
+      <Box className={classes.Opt} ml={1} mt={3}>
         <Button size='small' variant='contained' onClick={onSave} disableElevation>Save Platform</Button>
         <Button size='small' variant='contained' onClick={onDelete} disableElevation>Delete Platform</Button>
       </Box>
@@ -199,8 +198,8 @@ export default function PlatformCreator(props) {
           onChange={onTitleChange}
         />
       </FormControl>
-      <Box>
-          <Grid container spacing={10} ml={1} className={classes.gridContainer}>
+      <Box sx={{display: 'flex',flexWrap: 'wrap', maxWidth: theme.spacing(150)}}>
+          <Grid container spacing={8} ml={1}>
             {state.quizzes?state.quizzes.map( quiz => (
               <Grid item className={classes.gridItem}  key={quiz.quiz_id}>
                   <Link to={{pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id}}>
