@@ -21,7 +21,7 @@ export default function PointCard(props) {
     return c;
   }
   useEffect(() => {
-    axios.get(`${constants.API_PATH}/${props.platform_id}`)
+    axios.get(`${constants.API_PATH}/platform/${props.platform_id}`)
       .then(res => {
         if (res.status === 200) {
           const new_state = copyState();

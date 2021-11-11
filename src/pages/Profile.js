@@ -101,6 +101,20 @@ export default function Profile(props) {
     })
   };
 
+  const preProcess = (data) => {
+    const new_state = {};
+    new_state.user = { ...data.user };
+    const points_arr = [];
+    for (let i = 0; i < data.points.length; ++i) {
+      if (i % 2 === 0)
+        points_arr.push([{ ...data.points[i] }]);
+      else
+        points_arr[i - 1].push({ ...data.points[i] });
+    }
+    new_state.points = points_arr;
+    return new_state;
+  };
+
   useEffect(() => {
     axios.get(`${constants.API_PATH}/users/${props.match.params.user_id}`)
       .catch(err => {
@@ -108,7 +122,8 @@ export default function Profile(props) {
       }).then(res => {
         console.log(res)
         if (res.status == 200) {
-          setState({ user: { ...res.data.user }, points: [...res.data.points] });
+          const new_state = preProcess(res.data);
+          setState(new_state);
         }
       })
   }, [props]);
@@ -123,9 +138,9 @@ export default function Profile(props) {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Edit Username</DialogTitle>
           <DialogContent>
-            <TextField autoFocus margin="dense" id="username" label="username" type="username" fullWidth variant="standard" onChange={onUsernameChange}/> 
+            <TextField autoFocus margin="dense" id="username" label="username" type="username" fullWidth variant="standard" onChange={onUsernameChange} />
           </DialogContent>
-          { 
+          {
             usernameExist == true ? <Alert severity="error">Username is already taken</Alert> : <p></p>
           }
           <DialogActions>
@@ -138,14 +153,12 @@ export default function Profile(props) {
         <Typography>Total Points: {state.user && state.user.points}</Typography>
       </Box>
       <Box className={classes.pointsContianer}>
-        {state.points.length ? state.points.reduce((pairs, value, key) => {
-          return (key % 2 === 0 ? pairs.push([key]) : pairs[pairs.length - 1].push(key)) && pairs;
-        }).map((pair) => {
+        {state.points.length ? state.points.map((pair) => {
           const ret = (
             <Box className={classes.pointRow}>
-              <PointCard points={state.points[pair[0]].points} platform_id={state.points[pair[0]].platform_id} />
+              <PointCard points={pair[0].points} platform_id={pair[0].platform_id} />
               {pair.length === 2 ?
-                <PointCard points={state.points[pair[1]].points} platform_id={state.points[pair[1]].platform_id} />
+                <PointCard points={pair[1].points} platform_id={pair[1].platform_id} />
                 : <></>}
             </Box>
           )
