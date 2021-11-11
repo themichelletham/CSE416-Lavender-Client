@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { makeStyles, styled } from '@material-ui/core/styles';
-import { Box, Button, FormControl, InputBase, TextField } from '@mui/material'
+import { Box, Button, FormControl, InputBase, Input } from '@mui/material'
 import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import * as constants from '../components/constants';
@@ -9,6 +9,8 @@ import Answers from '../components/Answers';
 import { DoorBack, Login } from '@mui/icons-material';
 import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+
 
 const useStyles = makeStyles((theme) => ({
   QuizContainer: {
@@ -53,7 +55,13 @@ const useStyles = makeStyles((theme) => ({
   }, 
   answer: { 
     display: 'flex',
-  }
+  },
+  editThumbnail: {
+    display: 'inline-block',
+    width: theme.spacing(200),
+    paddingLeft: theme.spacing(103),
+    zIndex: 'tooltip'
+  },
   //toolbar: theme.mixins.toolbar,
 }))
 
@@ -65,6 +73,7 @@ export default function QuizCreate(props) {
     answers: [],
     correct_answers: [],
   })
+  const [previewSource, setPreviewSource] = useState();
 
   const copyState = () => {
     let new_title = state.quiz_title;
@@ -302,9 +311,53 @@ export default function QuizCreate(props) {
     }
   }, [props]);
 
+  const handleFileInputChange = (e) => {
+    const file = (e.target.files[0]);
+    if (!file) return;
+    previewFile(file);
+  }
+
+  const previewFile = (file) =>{
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    }
+  }
+
+  const handleSubmitFile = (e) =>{
+    e.preventDefault();
+    if (!previewSource) return;
+    uploadImage(previewSource);
+  }
+
+  const uploadImage = async (base64EncodedImage) =>{
+    console.log(typeof base64EncodedImage);
+    console.log(base64EncodedImage);
+    if (!base64EncodedImage){
+      return;
+    }
+    axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/image-upload`, {
+      quiz_fields: { icon_photo: base64EncodedImage }
+  
+    }).then(res => {
+      //stuff
+      console.log(res);
+      console.log("image sent");
+      return;
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
   return (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_name}</h1>
+      <img className={classes.icon} src={previewSource}/>
+      <Box className={classes.editThumbnail}>
+        <Input type="file" name="image" accept=".jpg .png .jpeg" multiple={false} onChange={handleFileInputChange}></Input>
+        <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button>
+      </Box>
       <Box className={classes.Opt} mt={3} >
         <div className={classes.duration}>Duration: INF</div>
         <Button size='small' variant='contained' style={style} className={classes.save}  onClick={onDelete} disableElevation>Delete Quiz</Button>
