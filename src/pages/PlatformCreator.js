@@ -72,8 +72,6 @@ export default function PlatformCreator(props) {
     quizzes: [],
   })
 
-  const [fileInputState, setFileInputState] = useState("");
-  const [selectedFile, setSelectedFile] = useState("");
   const [previewSource, setPreviewSource] = useState();
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
@@ -146,6 +144,7 @@ export default function PlatformCreator(props) {
       axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
         .then(res => {
           console.log(res);
+          setPreviewSource(res.data.icon_photo)
           setState({platform_name: res.data.platform_name,
             quizzes: res.data.quizzes,
          });
@@ -167,19 +166,6 @@ export default function PlatformCreator(props) {
     const file = (e.target.files[0]);
     if (!file) return;
     previewFile(file);
-    // const data = new FormData();
-    // data.append("file", image);
-    // data.append("upload_present", "qoipcud5");
-    // data.append("cloud_name", "lavender-sprout-herokuapp-com");
-    // fetch("	https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload", {
-    //   method: "post",
-    //   body: data
-    // })
-    // .then(res => res.json())
-    // .then(data => {
-    //   setUrl(data.url)
-    // })
-    // .catch( err => console.log(err))
   }
 
   const previewFile = (file) =>{
@@ -193,18 +179,18 @@ export default function PlatformCreator(props) {
   const handleSubmitFile = (e) =>{
     e.preventDefault();
     if (!previewSource) return;
-    // const reader = new FileReader();
-    // reader.readAsDataURL(selectedFile);
     uploadImage(previewSource);
   }
 
   const uploadImage = async (base64EncodedImage) =>{
     console.log(base64EncodedImage);
-    if (base64EncodedImage){
-      
+    if (!base64EncodedImage){
+      return;
     }
-    axios.post(`${constants.API_PATH}/image/image-upload`, {
-      data: JSON.stringify(base64EncodedImage),  
+    axios.put(`${constants.API_PATH}/platform/${props.match.params.platform_id}/image-upload`, {
+      platform_fields: { icon_photo: base64EncodedImage,
+      }
+  
     }).then(res => {
       //stuff
       console.log(res);
@@ -213,45 +199,8 @@ export default function PlatformCreator(props) {
     }).catch(err => {
       console.log(err);
     });
-    // try {
-    //   await fetch ('/image/image-upload',{
-    //     method:'POST',
-    //     body: JSON.stringify({data: base64EncodedImage}),
-    //     headers: {'Content-type': 'applicaiton/json'}
-    //   })
-
-    // }catch (error){
-    //   console.error(error);
-    // }
   }
 
-  const handleImageUpload = (e) => {
-    if (!image) {
-      return;
-    }
-    console.log(image);
-    
-    const data = new FormData();
-    data.append("image", image);
-    // uploadImage(data)
-    // .then(uploadedImage=>{
-    //   console.log(uploadedImage)
-    // })
-    // .catch(_ => {
-    //   console.log("image upload went wrong")
-    // })
-    // data.append("upload_present", "qoipcud5");
-    // data.append("cloud_name", "lavender-sprout-herokuapp-com");
-    // fetch("	https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload", {
-    //   method: "post",
-    //   body: data
-    // })
-    // .then(res => res.json())
-    // .then(data => {
-    //   setUrl(data.url)
-    // })
-    // .catch( err => console.log(err))
-  }
 
   return (
     <Box className={classes.PlatformCreatorContainer}>
