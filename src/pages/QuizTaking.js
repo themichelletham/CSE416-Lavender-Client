@@ -137,7 +137,7 @@ export default function QuizTake(props) {
 
   const onSubmit = (e) => {
     axios.post(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/results`, {
-      user_id: 1,
+      user_id: 5,
       platform_id: state.platform_id,
       selected_answers: state.selected_answers.slice(0),
       duration: null,
