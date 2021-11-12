@@ -79,7 +79,7 @@ function Home(props) {
           <Grid item className={classes.gridItem} key={quiz.quiz_id}>
             <Button onClick={e => onNavigateQuiz(e, quiz.quiz_id)}>
               <Card>
-                <CardMedia component="img" height="140" image={quiz.icon_photo}/>
+                <CardMedia component="img" height="140" width="200" image={quiz.icon_photo}/>
                 <CardContent>{quiz.quiz_name}</CardContent>
               </Card>
             </Button>
@@ -92,7 +92,7 @@ function Home(props) {
           <Grid item className={classes.gridItem} key={platform.platform_id}>
             <Button onClick={e => onNavigatePlatform(e, platform.platform_id)}>
               <Card>
-                <CardMedia component="img" height="140" image={platform.icon_photo}/>
+                <CardMedia component="img" height="140" width="200" image={platform.icon_photo}/>
                 <CardContent>{platform.platform_name}</CardContent>
               </Card>
             </Button>

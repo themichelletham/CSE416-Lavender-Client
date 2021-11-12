@@ -233,12 +233,12 @@ export default function PlatformCreator(props) {
         />
       </FormControl>
       <Box sx={{display: 'flex',flexWrap: 'wrap', maxWidth: theme.spacing(150)}}>
-          <Grid container spacing={8} ml={1}>
+          <Grid container spacing={3} ml={1} mt={1}>
             {state.quizzes?state.quizzes.map( quiz => (
               <Grid item className={classes.gridItem}  key={quiz.quiz_id}>
                   <Link to={{pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id}}>
                     <Card>
-                      <CardMedia component="img" height="140" image={quiz.icon_photo}/>
+                      <CardMedia component="img" height="140" width="200" image={quiz.icon_photo}/>
                       <CardContent>{quiz.quiz_name}</CardContent>
                     </Card>
                   </Link>

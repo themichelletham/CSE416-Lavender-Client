@@ -11,7 +11,8 @@ import PlatformProfile from '../components/PlatformProfile.js';
 import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { styled } from '@mui/material/styles';
-import { purple } from '@mui/material/colors'
+import { purple } from '@mui/material/colors'; 
+import AddIcon from '@mui/icons-material/Add';
 
 const ttheme = createTheme();
 ttheme.spacing(1); // `${8 * 2}px` = '16px'
@@ -41,7 +42,11 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: ttheme.spacing(140)
   },
   createQuiz: {
-    marginLeft: ttheme.spacing(0)
+    //marginLeft: ttheme.spacing(3),
+    //marginRight: ttheme.spacing(3),
+    marginTop: ttheme.spacing(3),
+    height: ttheme.spacing(20), 
+    width: ttheme.spacing(25), 
   }
 }));
 
@@ -110,16 +115,16 @@ export default function Platform(props) {
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
       </Box>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', maxWidth: ttheme.spacing(150) }}>
-        <Grid container spacing={3} ml={1} mt={1} className={classes.gridContainer}>
+        <Grid container spacing={3} ml={4} mt={1} className={classes.gridContainer}>
           {props.user_id ?
             (<Grid item className={classes.gridItem} key={'Create quiz'}>
-             <ColorButton className={classes.createQuiz} onClick={onCreateQuiz}>Create Quiz</ColorButton>
+             <ColorButton className={classes.createQuiz} onClick={onCreateQuiz}  endIcon={<AddIcon />}>Create Quiz</ColorButton>
             </Grid>) : <></>}
           {state.quizzes ? state.quizzes.map(quiz => (
             <Grid item className={classes.gridItem} key={quiz.quiz_id}>
               <Link to={{ pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id }}>
                 <Card>
-                  <CardMedia component="img" height="140" image={quiz.icon_photo}/>
+                  <CardMedia component="img" height="140" width="200" image={quiz.icon_photo}/>
                   <CardContent className={classes.quiz}>{quiz.quiz_name}</CardContent>
                 </Card>
               </Link>
