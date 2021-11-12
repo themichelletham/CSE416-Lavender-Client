@@ -62,27 +62,6 @@ export default function NavBar() {
   const classes = useStyles();
   const history = useHistory();
 
-  const onCreateQuiz = (e) => {
-    e.preventDefault();
-    axios.post(`${constants.API_PATH}/quiz`, {
-      quiz_fields: {
-        platform_id: 5,
-        quiz_name: 'Untitled',
-        time_limit: null
-      }
-    }).then(res => {
-      console.log(res)
-      if (res.status == 201) {
-        history.push('/quiz/creator/' + res.data.quiz.quiz_id, {
-          quiz: { ...res.data.quiz },
-          platform: { ...res.data.platform }
-        });
-      }
-    }).catch(err => {
-      console.log('Create Quiz Button: ', err);
-    })
-  }
-
   const onCreatePlatform = (e) => {
     e.preventDefault();
     axios.post(`${constants.API_PATH}/platform`, {
@@ -174,7 +153,6 @@ export default function NavBar() {
             <img float='left' width="90" height="50" alt="sproutlogo" src={sproutLogo} /></IconButton>
           </Link>
           <SearchBar className={classes.search} placeholder="Search..." />
-          <Button className={classes.leader} onClick={onCreateQuiz}>Create Quiz</Button>
           <Link to='/leaderboard'>
             <Button className={classes.leader}>Leaderboard</Button>
           </Link>
@@ -222,11 +200,12 @@ export default function NavBar() {
         <Switch>
           <Route path="/" exact render={(props) => <Home user_id={state.user && state.user.user_id} {...props} />} />
           <Route path="/leaderboard" exact component={Leaderboard} />
-          <Route path="/platform/:platform_id/creator" component={PlatformCreator} />
-          <Route path='/platform/:platform_id' render={(props) => <Platform user_id={state.user && state.user.user_id} {...props} />} />
+          <Route path="/platform/:platform_id/creator" render={(props) => <PlatformCreator user_id={state.user && state.user.user_id} {...props} />} />
+          <Route path='/platform/:platform_id' component={Platform} />
           <Route path='/quiz/creator/:quiz_id' component={QuizCreate} />
           <Route path='/quiz/:quiz_id/results' component={QuizResult} />
-          <Route path='/quiz/:quiz_id' component={QuizTake} />
+          <Route path='/quiz/:quiz_id' rendr={(props) => <QuizTake user_id={state.user && state.user.user_id} {...props} />} />
+          {/*<Route path='/quiz/:quiz_id' component={QuizTake} />*/}
           <Route path='/login/success' component={LoginSucess} />
           <Route path='/profile/:user_id' component={Profile} />
         </Switch>

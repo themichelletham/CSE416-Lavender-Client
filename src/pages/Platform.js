@@ -66,27 +66,6 @@ export default function Platform(props) {
       , new_quizzes
     ];
   }
-  const onCreateQuiz = (e) => {
-    e.preventDefault();
-    axios.post(`${constants.API_PATH}/quiz`, {
-      quiz_fields: {
-        platform_id: props.match.params.platform_id,
-        quiz_name: 'Untitled',
-        time_limit: null
-      },
-      user_id: props.user_id
-    }, { withCredentials: true }).then(res => {
-      console.log(res)
-      if (res.status == 201) {
-        history.push('/quiz/creator/' + res.data.quiz.quiz_id, {
-          quiz: { ...res.data.quiz },
-          platform: { ...res.data.platform }
-        });
-      }
-    }).catch(err => {
-      console.log('Create Quiz Button: ', err);
-    })
-  }
 
   useEffect(() => {
     console.log(props.user_id)
@@ -116,10 +95,6 @@ export default function Platform(props) {
       </Box>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', maxWidth: ttheme.spacing(150) }}>
         <Grid container spacing={3} ml={4} mt={1} className={classes.gridContainer}>
-          {props.user_id ?
-            (<Grid item className={classes.gridItem} key={'Create quiz'}>
-             <ColorButton className={classes.createQuiz} onClick={onCreateQuiz}  endIcon={<AddIcon />}>Create Quiz</ColorButton>
-            </Grid>) : <></>}
           {state.quizzes ? state.quizzes.map(quiz => (
             <Grid item className={classes.gridItem} key={quiz.quiz_id}>
               <Link to={{ pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id }}>

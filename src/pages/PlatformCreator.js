@@ -8,56 +8,57 @@ import { BrowserRouter as Router, Route, Link, Switch, useHistory } from 'react-
 import PlatformProfile from '../components/PlatformProfile.js';
 import PlatformLead from "../components/PlatformLead.js";
 import { styled } from '@mui/material/styles';
-import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
+import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { purple } from '@mui/material/colors'
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import AddIcon from '@material-ui/icons/Add'
 
 const theme = createTheme();
 theme.spacing(1); // `${8 * 2}px` = '16px'
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText("#7519BD"),
-    backgroundColor: "#7519BD",
-    "&:hover": {
-      backgroundColor: purple[900]
-    }
+  backgroundColor: "#7519BD",
+  "&:hover": {
+    backgroundColor: purple[900]
+  }
 }));
 
 const useStyles = makeStyles((theme) => ({
   PlatformCreatorContainer: {
     display: "flex",
     flexDirection: 'column',
-    overflow: 'hidden', 
+    overflow: 'hidden',
     justifyContent: 'flex-start',
-    alignItems: 'left', 
-    flexGrow: 1, 
-    width: theme.spacing(130), 
-    marginLeft: theme.spacing(5), 
+    alignItems: 'left',
+    flexGrow: 1,
+    width: theme.spacing(130),
+    marginLeft: theme.spacing(5),
   },
   Opt: {
     display: 'inline-block',
     width: theme.spacing(160),
     paddingLeft: theme.spacing(115),
-    paddingBottom: theme.spacing(.5), 
-    alignItems: 'left', 
+    paddingBottom: theme.spacing(.5),
+    alignItems: 'left',
   },
   editPlatform: {
     borderRadius: 15,
-    borderTopLeftRadius: 15,  
+    borderTopLeftRadius: 15,
   },
   title: {
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     height: theme.spacing(7.5),
     backgroundColor: "#7519BD",
-    width: theme.spacing(155), 
+    width: theme.spacing(155),
     marginBottom: theme.spacing(2),
   },
-  quiz:{ 
-    color: "#FFFFFF", 
-    width: theme.spacing(15), 
-    height: theme.spacing(10), 
-    textAlign: 'center', 
+  quiz: {
+    color: "#FFFFFF",
+    width: theme.spacing(15),
+    height: theme.spacing(10),
+    textAlign: 'center',
   },
   editThumbnail: {
     display: 'inline-block',
@@ -88,15 +89,16 @@ export default function PlatformCreator(props) {
 
   useEffect(() => {
     axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}/quizzes`)
-    .then( res => {
-      console.log(res);
-      setState({platform_name: state.platform_name
-        , quizzes: res.data
-      });
-    }).catch( err => {
-      console.log(err);
-      
-    })
+      .then(res => {
+        console.log(res);
+        setState({
+          platform_name: state.platform_name
+          , quizzes: res.data
+        });
+      }).catch(err => {
+        console.log(err);
+
+      })
   }, []);
 
   const classes = useStyles();
@@ -104,8 +106,9 @@ export default function PlatformCreator(props) {
 
   const onSave = (e) => {
     axios.put(`${constants.API_PATH}/platform/${props.match.params.platform_id}/creator`, {
-      platform_fields: { platform_name: state.platform_name
-        , quizzes: state.quizzes 
+      platform_fields: {
+        platform_name: state.platform_name,
+        quizzes: state.quizzes
       }
     }).then(res => {
       // TODO: DO something after udpate
@@ -116,11 +119,11 @@ export default function PlatformCreator(props) {
 
   const onDelete = (e) => {
     axios.delete(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
-    .then(res => {
-      history.goBack().goBack();
-    }).catch(err => {
-      console.log(err);
-    })
+      .then(res => {
+        history.goBack().goBack();
+      }).catch(err => {
+        console.log(err);
+      })
   }
 
   const onTitleChange = (e) => {
@@ -135,7 +138,8 @@ export default function PlatformCreator(props) {
   const parseToState = (res) => {
     const title = res.data.platform_name;
     const quizzes = res.data.quizzes.map(q_obj => q_obj.quiz_name)
-    return { platform_name: title
+    return {
+      platform_name: title
       , quizzes: quizzes
     };
   }
@@ -146,9 +150,10 @@ export default function PlatformCreator(props) {
         .then(res => {
           console.log(res);
           setPreviewSource(res.data.icon_photo);
-          setState({platform_name: res.data.platform_name,
+          setState({
+            platform_name: res.data.platform_name,
             quizzes: res.data.quizzes,
-         });
+          });
         }).catch(err => {
           console.log(err);
         })
@@ -162,15 +167,36 @@ export default function PlatformCreator(props) {
     }
   }, [props]);
 
-  
-  
+  const onCreateQuiz = (e) => {
+    e.preventDefault();
+    axios.post(`${constants.API_PATH}/quiz`, {
+      quiz_fields: {
+        platform_id: props.match.params.platform_id,
+        quiz_name: 'Untitled',
+        time_limit: null
+      },
+      user_id: props.user_id
+    }, { withCredentials: true }).then(res => {
+      console.log(res)
+      if (res.status == 201) {
+        history.push('/quiz/creator/' + res.data.quiz.quiz_id, {
+          quiz: { ...res.data.quiz },
+          platform: { ...res.data.platform }
+        });
+      }
+    }).catch(err => {
+      console.log('Create Quiz Button: ', err);
+    })
+  }
+
+
   const handleFileInputChange = (e) => {
     const file = (e.target.files[0]);
     if (!file) return;
     previewFile(file);
   }
 
-  const previewFile = (file) =>{
+  const previewFile = (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -179,22 +205,23 @@ export default function PlatformCreator(props) {
   }
 
 
-  const handleSubmitFile = (e) =>{
+  const handleSubmitFile = (e) => {
     e.preventDefault();
     if (!previewSource) return;
     uploadImage(previewSource);
   }
 
-  const uploadImage = async (base64EncodedImage) =>{
+  const uploadImage = async (base64EncodedImage) => {
     console.log(typeof base64EncodedImage);
     console.log(base64EncodedImage);
-    if (!base64EncodedImage){
+    if (!base64EncodedImage) {
       return;
     }
     axios.put(`${constants.API_PATH}/platform/${props.match.params.platform_id}/image-upload`, {
-      platform_fields: { icon_photo: base64EncodedImage,
+      platform_fields: {
+        icon_photo: base64EncodedImage,
       }
-  
+
     }).then(res => {
       //stuff
       console.log(res);
@@ -208,10 +235,10 @@ export default function PlatformCreator(props) {
 
   return (
     <Box className={classes.PlatformCreatorContainer}>
-      <PlatformProfile platform_icon={previewSource}/>
-      <PlatformLead/>
+      <PlatformProfile platform_icon={previewSource} />
+      <PlatformLead />
       <Box className={classes.editThumbnail}>
-      <Input type="file" name="image" accept=".jpg .png .jpeg" multiple={false} onChange={handleFileInputChange}></Input>
+        <Input type="file" name="image" accept=".jpg .png .jpeg" multiple={false} onChange={handleFileInputChange}></Input>
         <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button>
       </Box>
       {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
@@ -225,27 +252,31 @@ export default function PlatformCreator(props) {
             min: 0,
             style: {
               textAlign: 'center', fontSize: 22, paddingTop: 0, paddingBottom: 0,
-              marginTop: 10, 
+              marginTop: 10,
             }
           }}
           value={state.platform_name}
           onChange={onTitleChange}
         />
       </FormControl>
-      <Box sx={{display: 'flex',flexWrap: 'wrap', maxWidth: theme.spacing(150)}}>
-          <Grid container spacing={3} ml={1} mt={1}>
-            {state.quizzes?state.quizzes.map( quiz => (
-              <Grid item className={classes.gridItem}  key={quiz.quiz_id}>
-                  <Link to={{pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id}}>
-                    <Card>
-                      <CardMedia component="img" height="140" width="200" image={quiz.icon_photo}/>
-                      <CardContent>{quiz.quiz_name}</CardContent>
-                    </Card>
-                  </Link>
-              </Grid>
-            )):<Grid item></Grid>}
-          </Grid>
-        </Box>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', maxWidth: theme.spacing(150) }}>
+        <Grid container spacing={3} ml={1} mt={1}>
+          {props.user_id ?
+            (<Grid item className={classes.gridItem} key={'Create quiz'}>
+              <ColorButton className={classes.createQuiz} onClick={onCreateQuiz} endIcon={<AddIcon />}>Create Quiz</ColorButton>
+            </Grid>) : <></>}
+          {state.quizzes ? state.quizzes.map(quiz => (
+            <Grid item className={classes.gridItem} key={quiz.quiz_id}>
+              <Link to={{ pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id }}>
+                <Card>
+                  <CardMedia component="img" height="140" width="200" image={quiz.icon_photo} />
+                  <CardContent>{quiz.quiz_name}</CardContent>
+                </Card>
+              </Link>
+            </Grid>
+          )) : <Grid item></Grid>}
+        </Grid>
+      </Box>
     </Box>
   )
 }
