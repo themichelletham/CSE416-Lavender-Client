@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   username: {
     display: 'inline-block',
     marginTop: theme.spacing(35),
-    //marginLeft: theme.spacing(140)
+    align: "center", 
   },
   pointsContainer: {
     display: 'flex',
@@ -133,7 +133,7 @@ export default function Profile(props) {
   }, [props]);
 
   return (
-    <Box className={classes.profilePage}>
+    <Box className={classes.profilePage} align="center">
       <Box className={classes.banner} />
       <img className={classes.icon} src={state.user && state.user.picture} />
       <Box className={classes.username}>

@@ -10,6 +10,11 @@ import Sidebar from '../components/Sidebar.js';
 import * as constants from '../components/constants';
 import PlatformIcon from '../images/platformicon.jpeg';
 import Typography from '@mui/material/Typography';
+import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+
+const ttheme = createTheme();
+ttheme.spacing(1);
 
 const useStyles = makeStyles(theme => ({
   homePage: {
@@ -77,7 +82,7 @@ function Home(props) {
   return (
     <Box className="homePage">
       <Sidebar className={classes.drawer} user_id={props.user_id} />
-      <Typography ml={20}>QUIZZES</Typography>
+      <Typography ml={ttheme.spacing(3)} mt={ttheme.spacing(.5)}>QUIZZES</Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
         {state.quizzes ? state.quizzes.map(quiz => (
           <Grid item className={classes.gridItem} key={quiz.quiz_id}>
@@ -90,7 +95,7 @@ function Home(props) {
           </Grid>
         )) : <Grid item></Grid>}
       </Grid>
-      <Typography ml={20} mt={5}>PLATFORMS</Typography>
+      <Typography mt={ttheme.spacing(1)} ml={ttheme.spacing(3)}>PLATFORMS</Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
         {state.platforms ? state.platforms.map(platform => (
           <Grid item className={classes.gridItem} key={platform.platform_id}>

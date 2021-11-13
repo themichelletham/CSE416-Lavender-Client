@@ -4,7 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
-import { List, ListItem, ListItemText, ListItemIcon, Toolbar, Divider, Typography } from '@material-ui/core';
+import { List, ListItem, ListItemText, ListItemIcon, Toolbar, Divider } from '@material-ui/core';
+import Typography from '@mui/material/Typography';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Profile from "../pages/Profile"
@@ -16,8 +17,7 @@ const drawerWidth = 205;
 
 const useStyles = makeStyles((theme) => ({
   homeMain: {
-    flexGrow: 1,
-    p: 3,
+    //flexGrow: 1,
   },
   mainbox: {
     display: "flex",
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   topten: {
     align: "center",
-    marginLeft: "20px",
+    marginLeft: theme.spacing(2.5),
     fontWeight: "bold",
     fontSize: "22px",
   },
@@ -104,9 +104,7 @@ export default function Sidebar(props) {
           </List>
         </Box>
       </Drawer>
-      <Box component="main" classname="homeMain">
-        <Typography paragraph>Quizzes and Platforms</Typography>
-      </Box>
+     
       <Switch>
         <Route path="/profile" exact component={Profile} />
         <Route path="/platform/:platform_id/creator" component={PlatformCreator} />
