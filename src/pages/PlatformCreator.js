@@ -183,7 +183,7 @@ export default function PlatformCreator(props) {
     }, { withCredentials: true }).then(res => {
       console.log(res)
       if (res.status == 201) {
-        history.push('/quiz/creator/' + res.data.quiz.quiz_id);
+        history.push(`/quiz/${res.data.quiz.quiz_id}/creator`);
       }
     }).catch(err => {
       console.log('Create Quiz Button: ', err);
@@ -268,7 +268,7 @@ export default function PlatformCreator(props) {
             </Grid>) : <></>}
           {state.quizzes ? state.quizzes.map(quiz => (
             <Grid item className={classes.gridItem} key={quiz.quiz_id}>
-              <Link to={{ pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id }}>
+              <Link to={{ pathname: `/quiz/${quiz.quiz_id}/creator`, quiz_id: quiz.quiz_id }}>
                 <Card>
                   <CardMedia component="img" height="140" width="200" image={quiz.icon_photo} />
                   <CardContent>{quiz.quiz_name}</CardContent>

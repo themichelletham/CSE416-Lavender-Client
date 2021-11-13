@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Box, IconButton, Button, Toolbar, Divider } from '@material-ui/core';
@@ -142,6 +142,9 @@ export default function NavBar() {
     history.push('/', {});
   }
 
+  useEffect(() => {
+    fetchAuthUser();
+  }, []);
 
   const openProfileMenu = Boolean(state.anchorEl ? 'basic-menu' : null);
   return (
@@ -202,7 +205,7 @@ export default function NavBar() {
           <Route path="/leaderboard" exact component={Leaderboard} />
           <Route path="/platform/:platform_id/creator" render={(props) => <PlatformCreator user_id={state.user && state.user.user_id} {...props} />} />
           <Route path='/platform/:platform_id' component={Platform} />
-          <Route path='/quiz/creator/:quiz_id' component={QuizCreate} />
+          <Route path='/quiz/:quiz_id/creator' component={QuizCreate} />
           <Route path='/quiz/:quiz_id/results' component={QuizResult} />
           <Route path='/quiz/:quiz_id' render={(props) => <QuizTake user_id={state.user && state.user.user_id} {...props} />} />
           {/*<Route path='/quiz/:quiz_id' component={QuizTake} />*/}
