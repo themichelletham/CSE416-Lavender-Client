@@ -203,8 +203,8 @@ export default function NavBar() {
           <Route path="/platform/:platform_id/creator" render={(props) => <PlatformCreator user_id={state.user && state.user.user_id} {...props} />} />
           <Route path='/platform/:platform_id' component={Platform} />
           <Route path='/quiz/creator/:quiz_id' component={QuizCreate} />
-          <Route path='/quiz/:quiz_id/results' component={QuizResult} />
-          <Route path='/quiz/:quiz_id' render={(props) => <QuizTake user_id={state.user && state.user.user_id} {...props} />} />
+          <Route path='/quiz/:quiz_id/results' render={(props) => <QuizResult user_id={state.user && state.user.user_id} authenticated={state.authenticated} {...props} />} />
+          <Route path='/quiz/:quiz_id' render={(props) => <QuizTake user_id={state.user && state.user.user_id} authenticated={state.authenticated} {...props} />} />
           {/*<Route path='/quiz/:quiz_id' component={QuizTake} />*/}
           <Route path='/login/success' component={LoginSucess} />
           <Route path='/profile/:user_id' component={Profile} />
