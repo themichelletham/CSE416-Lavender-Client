@@ -10,6 +10,7 @@ import { DoorBack, Login } from '@mui/icons-material';
 import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import CircleIcon from '@mui/icons-material/CircleOutlined';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   editThumbnail: {
     display: 'inline-block',
     width: theme.spacing(200),
-    paddingLeft: theme.spacing(103),
+    paddingLeft: theme.spacing(67),
     zIndex: 'tooltip'
   },
   //toolbar: theme.mixins.toolbar,
@@ -357,7 +358,7 @@ export default function QuizCreate(props) {
       <img className={classes.icon} src={previewSource}/>
       <Box className={classes.editThumbnail}>
         <Input type="file" name="image" accept=".jpg .png .jpeg" multiple={false} onChange={handleFileInputChange}></Input>
-        <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button>
+        <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation>Upload</Button>
       </Box>
       <Box className={classes.Opt} mt={3} >
         <div className={classes.duration}>Duration: INF</div>

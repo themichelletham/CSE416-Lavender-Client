@@ -17,10 +17,10 @@ import AddIcon from '@material-ui/icons/Add'
 const theme = createTheme();
 theme.spacing(1); // `${8 * 2}px` = '16px'
 const ColorButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.getContrastText("#7519BD"),
-  backgroundColor: "#7519BD",
+  color: theme.palette.getContrastText("#ACACE1"),
+  backgroundColor: "#ACACE1",
   "&:hover": {
-    backgroundColor: purple[900]
+    backgroundColor: "#8A8AEE"
   }
 }));
 
@@ -66,6 +66,10 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(103),
     zIndex: 'tooltip'
   },
+  createQuiz: { 
+    width: theme.spacing(25), 
+    height: theme.spacing(15)
+  }
 }));
 
 export default function PlatformCreator(props) {
