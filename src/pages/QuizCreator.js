@@ -154,8 +154,8 @@ export default function QuizCreate(props) {
       { quiz_id: props.match.params.quiz_id, question_text: q }
     ));
     var answers_fields = state.answers.map((ans_arr, index) => {
-      return ans_arr.map((ans) => (
-        { answer_text: ans, is_correct: state.correct_answers[index][0] === ans }));
+      return ans_arr.map((ans, a_key) => (
+        { answer_text: ans, is_correct: state.correct_answers[index][0] === a_key }));
     });
 
     axios.put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/question`, {
