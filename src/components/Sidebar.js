@@ -4,7 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
-import { List, ListItem, ListItemText, ListItemIcon, Toolbar, Divider } from '@material-ui/core';
+import {Toolbar, Divider } from '@material-ui/core';
+import {List, ListItem, ListItemText, ListItemIcon,} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   topten: {
     align: "center",
-    marginLeft: theme.spacing(2.5),
+    marginLeft: theme.spacing(10),
     fontWeight: "bold",
     fontSize: "22px",
   },
@@ -94,11 +95,11 @@ export default function Sidebar(props) {
           </List>
           <Divider />
           <br />
-          <Typography className={classes.topten}>Top 10 Sprouts</Typography>
-          <List>
+          <Typography ml={5} className={classes.topten}>Top 10 Sprouts</Typography>
+          <List sx={{  marginLeft: 2}}>
             {["annie", "judy", "michelle", "steven"].map((text, index) => (
               <ListItem>
-                <ListItemText primary={(index + 1) + "\t" + text} />
+                <ListItemText primary={(index + 1) + ".\t" + text} />
               </ListItem>
             ))}
           </List>
