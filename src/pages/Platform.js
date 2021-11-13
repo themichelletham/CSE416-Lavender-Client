@@ -87,9 +87,11 @@ export default function Platform(props) {
     <Box className={classes.PlatformContainer}>
       <PlatformProfile platform_name={state.platform_name} platform_icon={previewSource}/>
       <PlatformLead />
-      <Link to={`/platform/${props.match.params.platform_id}/creator`}>
-        <ColorButton className={classes.editPlat}>Edit Platform</ColorButton>
+      <Box className={classes.editPlat}>
+        <Link to={`/platform/${props.match.params.platform_id}/creator`}>
+        <ColorButton>Edit Platform</ColorButton>
       </Link>
+      </Box>
       {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
       </Box>
