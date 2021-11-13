@@ -183,10 +183,7 @@ export default function PlatformCreator(props) {
     }, { withCredentials: true }).then(res => {
       console.log(res)
       if (res.status == 201) {
-        history.push('/quiz/creator/' + res.data.quiz.quiz_id, {
-          quiz: { ...res.data.quiz },
-          platform: { ...res.data.platform }
-        });
+        history.push('/quiz/creator/' + res.data.quiz.quiz_id);
       }
     }).catch(err => {
       console.log('Create Quiz Button: ', err);
