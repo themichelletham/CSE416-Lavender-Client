@@ -293,7 +293,7 @@ export default function NavBar() {
             )}
           />
           <Route path="/platform/:platform_id" component={Platform} />
-          <Route path="/quiz/creator/:quiz_id" component={QuizCreate} />
+          <Route path="/quiz/:quiz_id/creator" component={QuizCreate} />
           <Route
             path="/quiz/:quiz_id/results"
             render={(props) => (
