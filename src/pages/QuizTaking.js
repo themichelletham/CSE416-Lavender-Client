@@ -172,7 +172,6 @@ export default function QuizTake(props) {
           console.log(err);
         });
     } else {
-      console.log("====================================");
       axios
         .post(
           `${constants.API_PATH}/quiz/${props.match.params.quiz_id}/view-results-unauth`,
