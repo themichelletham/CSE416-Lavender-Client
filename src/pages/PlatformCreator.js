@@ -109,6 +109,8 @@ export default function PlatformCreator(props) {
   const history = useHistory();
 
   const onSave = (e) => {
+    handleSubmitFile();
+
     axios.put(`${constants.API_PATH}/platform/${props.match.params.platform_id}/creator`, {
       platform_fields: {
         platform_name: state.platform_name,
@@ -206,8 +208,7 @@ export default function PlatformCreator(props) {
   }
 
 
-  const handleSubmitFile = (e) => {
-    e.preventDefault();
+  const handleSubmitFile = () => {
     if (!previewSource) return;
     uploadImage(previewSource);
   }
@@ -240,7 +241,7 @@ export default function PlatformCreator(props) {
       <PlatformLead />
       <Box className={classes.editThumbnail}>
         <Input type="file" name="image" accept=".jpg .png .jpeg" multiple={false} onChange={handleFileInputChange}></Input>
-        <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button>
+        {/* <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button> */}
       </Box>
       {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
       <Box className={classes.Opt} ml={3} mr={1} mt={3}>

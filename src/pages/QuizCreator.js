@@ -151,6 +151,8 @@ export default function QuizCreate(props) {
       console.log('PUT on Save: ', err);
     })
 
+    handleSubmitFile();
+
     var questions_fields = state.questions.map((q) => (
       { quiz_id: props.match.params.quiz_id, question_text: q }
     ));
@@ -327,8 +329,7 @@ export default function QuizCreate(props) {
     }
   }
 
-  const handleSubmitFile = (e) => {
-    e.preventDefault();
+  const handleSubmitFile = () => {
     if (!previewSource) return;
     uploadImage(previewSource);
   }
@@ -358,7 +359,7 @@ export default function QuizCreate(props) {
       <img className={classes.icon} src={previewSource} />
       <Box className={classes.editThumbnail}>
         <Input type="file" name="image" accept=".jpg .png .jpeg" multiple={false} onChange={handleFileInputChange}></Input>
-        <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation>Upload</Button>
+        {/* <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation>Upload</Button> */}
       </Box>
       <Box className={classes.Opt} mt={3} >
         <div className={classes.duration}>Duration: INF</div>
