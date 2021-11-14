@@ -169,6 +169,8 @@ export default function QuizCreate(props) {
     }).catch(err => {
       console.log('PUT on Save: ', err);
     })
+
+    history.goBack();
   };
 
   const onDelete = (e) => {
