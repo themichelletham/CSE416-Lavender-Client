@@ -146,6 +146,7 @@ export default function NavBar() {
       anchorEl: null,
     });
   };
+
   const logout = async () => {
     const res = await axios
       .get(`${constants.API_PATH}/auth/google/logout`, {
@@ -155,6 +156,29 @@ export default function NavBar() {
         console.log("Logout: ", err);
       });
     history.push("/", {});
+  };
+
+  const search = async (e) => {
+    if (e.key == "Enter") {
+      console.log("Enter pressed");
+
+      const res = await axios
+        .get(`${constants.API_PATH}/search/${e.target.value}`)
+        .then((res) => {
+          console.log(res);
+          history.push(`/`, {
+            platforms: res.data.platforms,
+            quizzes: res.data.quizzes,
+          });
+        });
+    }
+    // //send platform and quiz data to home page
+    // if (res && res.data) {
+    //   setState({
+    //     authenticated: true,
+    //     user: res.data,
+    //   });
+    // }
   };
 
   useEffect(() => {
@@ -185,7 +209,12 @@ export default function NavBar() {
               />
             </IconButton>
           </Link>
-          <SearchBar className={classes.search} placeholder="Search..." />
+          <SearchBar
+            className={classes.search}
+            placeholder="Search..."
+            onKeyPress={search}
+          />
+
           <Link to="/leaderboard">
             <Button className={classes.leader}>Leaderboard</Button>
           </Link>
