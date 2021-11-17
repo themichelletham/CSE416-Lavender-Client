@@ -86,7 +86,7 @@ export default function Platform(props) {
   return (
     <Box className={classes.PlatformContainer}>
       <PlatformProfile platform_name={state.platform_name} platform_icon={previewSource}/>
-      <PlatformLead />
+      <PlatformLead platform_id={props.match.params.platform_id}/>
       <Box className={classes.editPlat}>
         <Link to={`/platform/${props.match.params.platform_id}/creator`}>
         <ColorButton>Edit Platform</ColorButton>
