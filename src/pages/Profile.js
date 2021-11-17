@@ -50,17 +50,21 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
   },
   username: {
-    display: 'inline-block',
+    display: 'inline-flex',
     marginTop: theme.spacing(35),
     align: "center", 
   },
   pointsContainer: {
-    display: 'flex',
-    flexDirection: 'column',
+    float: 'center',
+    overflow: 'hidden',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    //alignItems: 'left',
+    //width: '100%',
   },
   pointsRow: {
-    display: 'flex',
     flexDirection: 'row',
+    width: '100%'
   }, 
 }));
 
@@ -138,7 +142,7 @@ export default function Profile(props) {
       <img className={classes.icon} src={state.user && state.user.picture} />
       <Box className={classes.username}>
           <Typography variant="h5" align="center" mb={1}>{state.user && state.user.username}</Typography>
-          <Button variant="outlined" onClick={handleClickOpen} endIcon={<EditIcon />}>Edit Username</Button>
+          <IconButton onClick={handleClickOpen}><EditIcon/></IconButton>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Edit Username</DialogTitle>
           <DialogContent>
@@ -153,13 +157,14 @@ export default function Profile(props) {
           </DialogActions>
         </Dialog>
       </Box>
-      <Box className={classes.totalPoints}  mt={1}>
+      <Box className={classes.totalPoints} mt={1}>
         <Typography>Total Points: {state.user && state.user.points}</Typography>
       </Box>
+      <div>
       <Box className={classes.pointsContainer}>
         {state.points.length ? state.points.map((pair) => {
           const ret = (
-            <Box className={classes.pointRow}>
+            <Box className={classes.pointRow} sx={{ display: 'flex', flexWrap: 'wrap', width: '100%'}}>
               <PointCard points={pair[0].points} platform_id={pair[0].platform_id} />
               {pair.length === 2 ?
                 <PointCard points={pair[1].points} platform_id={pair[1].platform_id} />
@@ -169,6 +174,7 @@ export default function Profile(props) {
           return ret;
         }) : <></>}
       </Box>
+      </div>
     </Box>
   )
 }
