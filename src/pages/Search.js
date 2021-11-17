@@ -39,7 +39,6 @@ function Search(props) {
   const [state, setState] = useState({
     quizzes: null,
     platforms: null,
-    keyword: "",
   });
 
   const classes = useStyles();
@@ -73,7 +72,6 @@ function Search(props) {
   };
 
   useEffect(() => {
-    // console.log("searhc stuf");
     if (props.keyword === "") {
       axios
         .get(constants.API_PATH + `/platform`)
@@ -100,10 +98,9 @@ function Search(props) {
 
   return (
     <Box>
-      <Typography ml={ttheme.spacing(3)} mt={ttheme.spacing(0.5)}>
+      <Typography ml={"6%"} mt={ttheme.spacing(0.5)} mb={ttheme.spacing(0.5)}>
         QUIZZES
       </Typography>
-
       <Grid container spacing={3} className={classes.gridContainer}>
         {state.quizzes ? (
           state.quizzes.map((quiz) => (
@@ -125,11 +122,9 @@ function Search(props) {
           <Grid item></Grid>
         )}
       </Grid>
-
-      <Typography mt={ttheme.spacing(1)} ml={ttheme.spacing(3)}>
+      <Typography mt={ttheme.spacing(1)} ml={"6%"} mb={ttheme.spacing(0.5)}>
         PLATFORMS
       </Typography>
-
       <Grid container spacing={3} className={classes.gridContainer}>
         {state.platforms ? (
           state.platforms.map((platform) => (

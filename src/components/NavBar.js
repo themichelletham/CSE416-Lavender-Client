@@ -106,8 +106,12 @@ export default function NavBar() {
     history.push(`/profile/${state.user.user_id}`);
   };
 
+  const resetKeyword = () => {
+    setKeyword("");
+  };
   const handleCloseProfileMenu = () => {
     setState({ ...state, anchorEl: null });
+    setKeyword("");
   };
 
   const fetchAuthUser = async () => {
@@ -163,16 +167,14 @@ export default function NavBar() {
 
   const search = (e) => {
     if (e.key == "Enter") {
-      // console.log(e.target.value);
       setKeyword(e.target.value);
-      // doesnt rerender after first search
       history.push(`/search/${e.target.value}`);
     }
   };
 
   useEffect(() => {
     fetchAuthUser();
-    // console.log(keyword);
+    resetKeyword();
   }, []);
 
   const openProfileMenu = Boolean(state.anchorEl ? "basic-menu" : null);
@@ -189,7 +191,7 @@ export default function NavBar() {
       <AppBar className={classes.AppBar} elevation={0}>
         <Toolbar>
           <Link to="/">
-            <IconButton p={50} className={classes.icon}>
+            <IconButton p={50} className={classes.icon} onClick={resetKeyword}>
               <img
                 float="left"
                 width="90"

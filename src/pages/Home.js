@@ -15,15 +15,22 @@ const useStyles = makeStyles((theme) => ({
   homePage: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    width: "80vw",
+    height: "80vh",
     flexGrow: 1,
-    width: theme.spacing(100),
-    height: theme.spacing(100),
+    //width: '100%',
+    //height: '100%',
   },
   gridContainer: {
-    marginTop: theme.spacing(5),
-    marginLeft: theme.spacing(20),
-    width: theme.spacing(155),
+    //marginTop: '2%',
+    //marginLeft: '10%',
+    //width: '90%',
+    //display: 'absolute',
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    marginLeft: "5%",
+    width: "80vw",
   },
   gridItem: {
     display: "inline-block",
@@ -36,8 +43,6 @@ function Home(props) {
   const history = useHistory();
 
   useEffect(() => {
-    console.log("home pageee");
-    console.log(props.keyword);
     setKeyword(props.keyword);
   }, []);
 
