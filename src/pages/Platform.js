@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'left',
-    width: ttheme.spacing(200),
+    width: '100%',
   },
   gridContainer: {
     marginBottom: ttheme.spacing(40),
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     width: ttheme.spacing(200),
   },
   editPlat: {
-    marginLeft: ttheme.spacing(140)
+    marginLeft: '73%'
   },
   createQuiz: {
     //marginLeft: ttheme.spacing(3),
