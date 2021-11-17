@@ -114,10 +114,10 @@ export default function Profile(props) {
     new_state.user = { ...data.user };
     const points_arr = [];
     for (let i = 0; i < data.points.length; ++i) {
-      if (i % 2 === 0)
+      if (i % 2 == 0)
         points_arr.push([{ ...data.points[i] }]);
       else
-        points_arr[i - 1].push({ ...data.points[i] });
+        points_arr[parseInt(i/2)].push({ ...data.points[i] });
     }
     new_state.points = points_arr;
     return new_state;
