@@ -153,7 +153,6 @@ export default function QuizTake(props) {
   };
 
   const onSubmit = (e) => {
-    console.log("djwiodjwidqno");
     if (props.authenticated) {
       axios
         .post(

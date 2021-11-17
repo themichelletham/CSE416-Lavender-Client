@@ -26,6 +26,7 @@ import { grey } from "@material-ui/core/colors";
 import Home from "../pages/Home";
 import Leaderboard from "../pages/Leaderboard";
 import Platform from "../pages/Platform";
+import Search from "../pages/Search";
 import PlatformCreator from "../pages/PlatformCreator";
 import QuizCreate from "../pages/QuizCreator";
 import QuizTake from "../pages/QuizTaking";
@@ -71,6 +72,7 @@ export default function NavBar() {
     user: null,
     anchorEl: null,
   });
+  const [keyword, setKeyword] = useState("");
   const classes = useStyles();
   const history = useHistory();
 
@@ -141,6 +143,7 @@ export default function NavBar() {
   const handleSignOut = (e) => {
     logout();
     setState({
+      ...state,
       authenticated: false,
       user: null,
       anchorEl: null,
@@ -158,31 +161,18 @@ export default function NavBar() {
     history.push("/", {});
   };
 
-  const search = async (e) => {
+  const search = (e) => {
     if (e.key == "Enter") {
-      console.log("Enter pressed");
-
-      const res = await axios
-        .get(`${constants.API_PATH}/search/${e.target.value}`)
-        .then((res) => {
-          console.log(res);
-          history.push(`/`, {
-            platforms: res.data.platforms,
-            quizzes: res.data.quizzes,
-          });
-        });
+      // console.log(e.target.value);
+      setKeyword(e.target.value);
+      // doesnt rerender after first search
+      history.push(`/search/${e.target.value}`);
     }
-    // //send platform and quiz data to home page
-    // if (res && res.data) {
-    //   setState({
-    //     authenticated: true,
-    //     user: res.data,
-    //   });
-    // }
   };
 
   useEffect(() => {
     fetchAuthUser();
+    // console.log(keyword);
   }, []);
 
   const openProfileMenu = Boolean(state.anchorEl ? "basic-menu" : null);
@@ -279,9 +269,36 @@ export default function NavBar() {
             path="/"
             exact
             render={(props) => (
-              <Home user_id={state.user && state.user.user_id} {...props} />
+              <Home
+                user_id={state.user && state.user.user_id}
+                keyword={keyword}
+                {...props}
+              />
             )}
           />
+          <Route
+            path="/search"
+            exact
+            render={(props) => (
+              <Search
+                user_id={state.user && state.user.user_id}
+                keyword={keyword}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path="/search/:keyword"
+            exact
+            render={(props) => (
+              <Search
+                user_id={state.user && state.user.user_id}
+                keyword={keyword}
+                {...props}
+              />
+            )}
+          />
+
           <Route path="/leaderboard" exact component={Leaderboard} />
           <Route
             path="/platform/:platform_id/creator"
