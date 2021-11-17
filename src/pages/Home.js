@@ -27,16 +27,12 @@ const useStyles = makeStyles((theme) => ({
   },
   gridContainer: {
     marginTop: '2%',
-    marginLeft: '10%',
-    width: theme.spacing(155),
+    marginLeft: '15%',
+    width: '85%',
   },
   gridItem: {
     display: "inline-block",
   },
-  title:{ 
-    marginLeft: '10%'
-    //ml={ttheme.spacing(3)} mt={ttheme.spacing(0.5)} 
-  }
 }));
 
 function Home(props) {
@@ -91,7 +87,7 @@ function Home(props) {
   return (
     <Box className="homePage">
       <Sidebar className={classes.drawer} user_id={props.user_id} />
-      <Typography ml={'10%'} mt={'2%'}>
+      <Typography ml={'15%'} mt={'2%'}>
         QUIZZES
       </Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
@@ -115,7 +111,7 @@ function Home(props) {
           <Grid item></Grid>
         )}
       </Grid>
-      <Typography ml={'10%'} mt={'2%'}>
+      <Typography ml={'15%'} mt={'2%'}>
         PLATFORMS
       </Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
