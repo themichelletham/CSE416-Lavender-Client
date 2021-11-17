@@ -9,9 +9,12 @@ import PlatformProfile from '../components/PlatformProfile.js';
 import PlatformLead from "../components/PlatformLead.js";
 import { styled } from '@mui/material/styles';
 import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import { purple } from '@mui/material/colors'
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import AddIcon from '@material-ui/icons/Add'
 
 const theme = createTheme();
@@ -79,9 +82,8 @@ export default function PlatformCreator(props) {
   })
 
   const [previewSource, setPreviewSource] = useState();
-  const [image, setImage] = useState("");
-  const [url, setUrl] = useState("");
-
+  const [selectedQuiz, setSelectedQuiz] = useState();
+  const [open, setOpen] = useState(false);
 
   const copyState = () => {
     let new_name = state.platform_name;
@@ -91,19 +93,19 @@ export default function PlatformCreator(props) {
     ];
   }
 
-  useEffect(() => {
-    axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}/quizzes`)
-      .then(res => {
-        console.log(res);
-        setState({
-          platform_name: state.platform_name
-          , quizzes: res.data
-        });
-      }).catch(err => {
-        console.log(err);
+  // useEffect(() => {
+  //   axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}/quizzes`)
+  //     .then(res => {
+  //       console.log(res);
+  //       setState({
+  //         platform_name: state.platform_name
+  //         , quizzes: res.data
+  //       });
+  //     }).catch(err => {
+  //       console.log(err);
 
-      })
-  }, []);
+  //     })
+  // }, []);
 
   const classes = useStyles();
   const history = useHistory();
@@ -126,7 +128,8 @@ export default function PlatformCreator(props) {
   const onDelete = (e) => {
     axios.delete(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
       .then(res => {
-        history.goBack().goBack();
+        console.log("platform deleted")
+        history.push('/')
       }).catch(err => {
         console.log(err);
       })
@@ -192,6 +195,30 @@ export default function PlatformCreator(props) {
     })
   }
 
+  const onDeleteQuiz = (quiz_id) => {
+    console.log(`Delete Quiz #${quiz_id}`);
+    let [new_platform_name, new_quizzes] = copyState();
+    axios.delete(`${constants.API_PATH}/quiz/${quiz_id}`)
+    .then(res => {
+      console.log(res);
+      new_quizzes.splice(quiz_id, 1);
+      setState({
+        platform_name: new_platform_name,
+        quizzes: new_quizzes,
+      })
+      setOpen(false);
+      setSelectedQuiz(null);
+      console.log(`deleted quiz ${quiz_id}`)
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+
+  const handleDeleteClose = () => {
+    setOpen(false);
+    setSelectedQuiz(null);
+  }
 
   const handleFileInputChange = (e) => {
     const file = (e.target.files[0]);
@@ -269,15 +296,36 @@ export default function PlatformCreator(props) {
             </Grid>) : <></>}
           {state.quizzes ? state.quizzes.map(quiz => (
             <Grid item className={classes.gridItem} key={quiz.quiz_id}>
-              <Link to={{ pathname: `/quiz/${quiz.quiz_id}/creator`, quiz_id: quiz.quiz_id }}>
-                <Card>
+              <Card>
+                <Link to={{ pathname: `/quiz/${quiz.quiz_id}/creator`, quiz_id: quiz.quiz_id }}>
                   <CardMedia component="img" height="140" width="200" image={quiz.icon_photo} />
-                  <CardContent>{quiz.quiz_name}</CardContent>
-                </Card>
-              </Link>
+                  <CardContent>
+                    {quiz.quiz_name}
+                  </CardContent>
+                </Link>
+                <Button onClick={(e) => {
+                  e.preventDefault();
+                  setSelectedQuiz(quiz.quiz_id);
+                  setOpen(true);
+                }}>
+                  <HighlightOffIcon style={{fill: "red"}}/>
+                  Delete Quiz
+                </Button>
+                {/* <Button onClick={e => onDeleteQuiz(e, quiz.quiz_id)}><HighlightOffIcon style={{fill: "red"}}/>Delete Quiz {quiz.quiz_id}</Button> */}
+              </Card>
             </Grid>
           )) : <Grid item></Grid>}
         </Grid>
+        <Dialog open={open} onClose={handleDeleteClose}>
+          <DialogTitle>Delete Quiz {selectedQuiz}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Are you sure you want to delete this quiz?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDeleteClose}>No</Button>
+            <Button>Yes, Delete</Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </Box>
   )
