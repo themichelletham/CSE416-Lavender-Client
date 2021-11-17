@@ -20,15 +20,22 @@ const useStyles = makeStyles((theme) => ({
   homePage: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    width: "80vw", 
+    height: '80vh',
     flexGrow: 1,
-    width: '100%',
-    height: '100%',
+    //width: '100%',
+    //height: '100%',
   },
   gridContainer: {
-    marginTop: '2%',
-    marginLeft: '15%',
-    width: '85%',
+    //marginTop: '2%',
+    //marginLeft: '10%',
+    //width: '90%',
+    //display: 'absolute', 
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    marginLeft: '5%', 
+    width: "80vw",
   },
   gridItem: {
     display: "inline-block",
@@ -87,7 +94,7 @@ function Home(props) {
   return (
     <Box className="homePage">
       <Sidebar className={classes.drawer} user_id={props.user_id} />
-      <Typography ml={'15%'} mt={'2%'}>
+      <Typography ml={'6%'} mt={ttheme.spacing(.5)} mb={ttheme.spacing(.5)}>
         QUIZZES
       </Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
@@ -111,7 +118,7 @@ function Home(props) {
           <Grid item></Grid>
         )}
       </Grid>
-      <Typography ml={'15%'} mt={'2%'}>
+      <Typography mt={ttheme.spacing(1)} ml={'6%'} mb={ttheme.spacing(.5)}>
         PLATFORMS
       </Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
