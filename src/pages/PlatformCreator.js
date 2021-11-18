@@ -79,6 +79,9 @@ export default function PlatformCreator(props) {
   const [state, setState] = useState({
     platform_name: 'Untitled Platform',
     quizzes: [],
+    previewSource: '',
+    selectedQuiz: null,
+    deleteQuizDialog: false,
   })
 
   const [previewSource, setPreviewSource] = useState();
@@ -88,24 +91,11 @@ export default function PlatformCreator(props) {
   const copyState = () => {
     let new_name = state.platform_name;
     let new_quizzes = [...state.quizzes];
-    return [new_name
-      , new_quizzes
-    ];
+    let new_previewSource = state.previewSource;
+    let new_selectedQuiz = state.selectedQuiz;
+    let new_deleteQuizDialog = state.deleteQuizDialog;
+    return [new_name, new_quizzes, new_previewSource, new_selectedQuiz, new_deleteQuizDialog];
   }
-
-  // useEffect(() => {
-  //   axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}/quizzes`)
-  //     .then(res => {
-  //       console.log(res);
-  //       setState({
-  //         platform_name: state.platform_name
-  //         , quizzes: res.data
-  //       });
-  //     }).catch(err => {
-  //       console.log(err);
-
-  //     })
-  // }, []);
 
   const classes = useStyles();
   const history = useHistory();
@@ -136,21 +126,17 @@ export default function PlatformCreator(props) {
   }
 
   const onTitleChange = (e) => {
-    let [new_name, new_quizzes] = copyState();
+    let [new_name, new_quizzes, new_previewSource, new_selectedQuiz, new_deleteQuizDialog] = copyState();
     new_name = e.target.value;
+    new_selectedQuiz = null;
+    new_deleteQuizDialog = false;
     setState({
       platform_name: new_name,
       quizzes: new_quizzes,
+      previewSource: new_previewSource,
+      selectedQuiz: new_selectedQuiz,
+      deleteQuizDialog: new_deleteQuizDialog,
     });
-  }
-
-  const parseToState = (res) => {
-    const title = res.data.platform_name;
-    const quizzes = res.data.quizzes.map(q_obj => q_obj.quiz_name)
-    return {
-      platform_name: title
-      , quizzes: quizzes
-    };
   }
 
   useEffect(() => {
@@ -158,20 +144,25 @@ export default function PlatformCreator(props) {
       axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
         .then(res => {
           console.log(res);
-          setPreviewSource(res.data.icon_photo);
           setState({
             platform_name: res.data.platform_name,
             quizzes: res.data.quizzes,
+            previewSource: res.data.icon_photo,
+            selectedQuiz: null,
+            deleteQuizDialog: false,
           });
         }).catch(err => {
           console.log(err);
         })
-      console.log(previewSource);
+      console.log(state.previewSource);
     }
     else if (props.location.state) {
       setState({
         platform_name: props.location.state.platform_name,
         quizzes: [],
+        previewSource: '',
+        selectedQuiz: null,
+        deleteQuizDialog: false,
       });
     }
   }, [props]);
@@ -197,17 +188,20 @@ export default function PlatformCreator(props) {
 
   const onDeleteQuiz = (quiz_id) => {
     console.log(`Delete Quiz #${quiz_id}`);
-    let [new_platform_name, new_quizzes] = copyState();
+    let [new_platform_name, new_quizzes, new_previewSource, new_selectedQuiz, new_deleteQuizDialog] = copyState();
     axios.delete(`${constants.API_PATH}/quiz/${quiz_id}`)
     .then(res => {
       console.log(res);
       new_quizzes.splice(quiz_id, 1);
+      new_selectedQuiz = null;
+      new_deleteQuizDialog = false;
       setState({
         platform_name: new_platform_name,
         quizzes: new_quizzes,
+        previewSource: new_previewSource,
+        selectedQuiz: new_selectedQuiz,
+        deleteQuizDialog: new_deleteQuizDialog,
       })
-      setOpen(false);
-      setSelectedQuiz(null);
       console.log(`deleted quiz ${quiz_id}`)
     })
     .catch(err => {
@@ -215,9 +209,33 @@ export default function PlatformCreator(props) {
     })
   }
 
+  const handleDeleteOpen = (e, quiz_id) => {
+    console.log(`trying to delete quiz ${quiz_id}`)
+    let [new_platform_name, new_quizzes, new_previewSource, new_selectedQuiz, new_deleteQuizDialog] = copyState();
+    new_selectedQuiz = quiz_id;
+    new_deleteQuizDialog = true;
+    setState({
+      platform_name: new_platform_name,
+      quizzes: new_quizzes,
+      previewSource: new_previewSource,
+      selectedQuiz: new_selectedQuiz,
+      deleteQuizDialog: new_deleteQuizDialog,
+    });
+    console.log("delete dialog opened")
+  }
+
   const handleDeleteClose = () => {
-    setOpen(false);
-    setSelectedQuiz(null);
+    let [new_platform_name, new_quizzes, new_previewSource, new_selectedQuiz, new_deleteQuizDialog] = copyState();
+    new_selectedQuiz = null;
+    new_deleteQuizDialog = false;
+    setState({
+      platform_name: new_platform_name,
+      quizzes: new_quizzes,
+      previewSource: new_previewSource,
+      selectedQuiz: new_selectedQuiz,
+      deleteQuizDialog: new_deleteQuizDialog,
+    });
+    console.log("delete dialog closed")
   }
 
   const handleFileInputChange = (e) => {
@@ -230,14 +248,21 @@ export default function PlatformCreator(props) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setPreviewSource(reader.result);
+      let [new_platform_name, new_quizzes, new_previewSource, new_selectedQuiz, new_deleteQuizDialog] = copyState();
+      new_previewSource = reader.result;
+      setState({
+        platform_name: new_platform_name,
+        quizzes: new_quizzes,
+        previewSource: new_previewSource,
+        selectedQuiz: new_selectedQuiz,
+        deleteQuizDialog: new_deleteQuizDialog,
+      });
     }
   }
 
-
   const handleSubmitFile = () => {
-    if (!previewSource) return;
-    uploadImage(previewSource);
+    if (!state.previewSource) return;
+    uploadImage(state.previewSource);
   }
 
   const uploadImage = async (base64EncodedImage) => {
@@ -250,7 +275,6 @@ export default function PlatformCreator(props) {
       platform_fields: {
         icon_photo: base64EncodedImage,
       }
-
     }).then(res => {
       //stuff
       console.log(res);
@@ -260,7 +284,6 @@ export default function PlatformCreator(props) {
       console.log(err);
     });
   }
-
 
   return (
     <Box className={classes.PlatformCreatorContainer}>
@@ -303,11 +326,7 @@ export default function PlatformCreator(props) {
                     {quiz.quiz_name}
                   </CardContent>
                 </Link>
-                <Button onClick={(e) => {
-                  e.preventDefault();
-                  setSelectedQuiz(quiz.quiz_id);
-                  setOpen(true);
-                }}>
+                <Button onClick={(e) => {handleDeleteOpen(quiz.quiz_id)}}>
                   <HighlightOffIcon style={{fill: "red"}}/>
                   Delete Quiz
                 </Button>
@@ -316,14 +335,14 @@ export default function PlatformCreator(props) {
             </Grid>
           )) : <Grid item></Grid>}
         </Grid>
-        <Dialog open={open} onClose={handleDeleteClose}>
-          <DialogTitle>Delete Quiz {selectedQuiz}</DialogTitle>
+        <Dialog open={state.deleteQuizDialog} onClose={handleDeleteClose}>
+          <DialogTitle>Delete Quiz {state.selectedQuiz}</DialogTitle>
           <DialogContent>
             <DialogContentText>Are you sure you want to delete this quiz?</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDeleteClose}>No</Button>
-            <Button>Yes, Delete</Button>
+            <Button >Yes, Delete</Button>
           </DialogActions>
         </Dialog>
       </Box>
