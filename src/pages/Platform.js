@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   gridContainer: {
-    display: 'inline-flex', 
+    display: 'inline-flex',
     padding: ttheme.spacing(2),
     paddingLeft: '5%',
     marginBottom: ttheme.spacing(40),
@@ -56,8 +56,8 @@ const useStyles = makeStyles((theme) => ({
     width: 600,
     height: 35,
   },
-  card:{ 
-    width: ttheme.spacing(24), 
+  card: {
+    width: ttheme.spacing(24),
     height: '100%'
   }
 }));
@@ -68,29 +68,31 @@ export default function Platform(props) {
   const [state, setState] = useState({
     platform_name: 'Untitled Platform',
     quizzes: [],
-    keyword: "",
+    topFiveUsers: [],
   })
   const [previewSource, setPreviewSource] = useState();
 
   const copyState = () => {
     let new_name = state.platform_name;
     let new_quizzes = [...state.quizzes];
+    let new_topFiveUsers = [...state.topFiveUsers];
     return {
       platform_name: new_name,
       quizzes: new_quizzes,
+      topFiveUsers: new_topFiveUsers,
     };
   }
 
-  const fetchQuizzes = (keyword) => {
+  const fetchPlatformData = (keyword) => {
     axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`, {
       params: {
         keyword: keyword,
       }
     }).then(res => {
-      console.log(res);
       setState({
         platform_name: res.data.platform_name,
         quizzes: res.data.quizzes,
+        topFiveUsers: res.data.topFiveUsers,
       });
       setPreviewSource(res.data.icon_photo);
     }).catch(err => {
@@ -100,19 +102,19 @@ export default function Platform(props) {
 
   const search = (e) => {
     if (e.key == "Enter") {
-      fetchQuizzes(e.target.value);
+      fetchPlatformData(e.target.value);
     }
   };
 
   useEffect(() => {
-    console.log(props.user_id)
-    fetchQuizzes("");
+    //console.log(props.user_id)
+    fetchPlatformData("");
   }, []);
 
   return (
     <Box className={classes.PlatformContainer}>
       <PlatformProfile platform_name={state.platform_name} platform_icon={previewSource} />
-      <PlatformLead platform_id={props.match.params.platform_id} />
+      <PlatformLead topFiveUsers={[...state.topFiveUsers]} />
       <Box className={classes.editPlat}>
         <Link to={`/platform/${props.match.params.platform_id}/creator`}>
           <ColorButton>Edit Platform</ColorButton>

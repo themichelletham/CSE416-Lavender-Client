@@ -25,13 +25,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import PlatformProfile from "../components/PlatformProfile.js";
 import PlatformLead from "../components/PlatformLead.js";
-import { styled } from "@mui/material/styles";
-import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-import { purple } from "@mui/material/colors";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
+import SearchBar from "material-ui-search-bar";
+import { styled } from '@mui/material/styles';
+import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { purple, grey } from '@mui/material/colors'
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import AddIcon from "@material-ui/icons/Add";
+import AddIcon from '@material-ui/icons/Add'
 
 const theme = createTheme();
 theme.spacing(1); // `${8 * 2}px` = '16px'
@@ -89,12 +90,25 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(25),
     height: theme.spacing(15),
   },
+  createQuiz: {
+    width: theme.spacing(25),
+    height: theme.spacing(15)
+  },
+  search: {
+    border: 1,
+    borderColor: grey,
+    borderRadius: 30,
+    margin: "0 auto",
+    width: 600,
+    height: 35,
+  }
 }));
 
 export default function PlatformCreator(props) {
   const [state, setState] = useState({
     platform_name: "Untitled Platform",
     quizzes: [],
+    topFiveUsers: [],
   });
 
   const [selectedQuiz, setSelectedQuiz] = useState();
@@ -106,9 +120,11 @@ export default function PlatformCreator(props) {
   const [cloudinaryErr, setCloudinaryErr] = useState("");
 
   const copyState = () => {
-    let new_name = state.platform_name;
-    let new_quizzes = [...state.quizzes];
-    return [new_name, new_quizzes];
+    let ret = {};
+    ret.platform_name = state.platform_name;
+    ret.quizzes = state.quizzes.length?[...state.quizzes]:[];
+    ret.topFiveUsers = state.quizzes.length?[...state.topFiveUsers]:[];
+    return ret;
   };
 
   const classes = useStyles();
@@ -149,39 +165,36 @@ export default function PlatformCreator(props) {
   };
 
   const onTitleChange = (e) => {
-    let [new_name, new_quizzes] = copyState();
-    new_name = e.target.value;
-    setState({
-      platform_name: new_name,
-      quizzes: new_quizzes,
-    });
+    let new_state = copyState();
+    new_state.platform_name = e.target.value;
+    setState(new_state);
+  };
+
+  const fetchPlatformData = (keyword) => {
+    axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`, {
+      params: {
+        keyword: keyword,
+      }
+    }).then(res => {
+      setState({
+        platform_name: res.data.platform_name,
+        quizzes: res.data.quizzes,
+        topFiveUsers: res.data.topFiveUsers,
+      });
+      setPreviewSource(res.data.icon_photo);
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  const search = (e) => {
+    if (e.key === "Enter") {
+      fetchPlatformData(e.target.value);
+    }
   };
 
   useEffect(() => {
-    if (props.location.state == null) {
-      console.log("grabbing platform");
-      axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`, {
-        params: {
-          keyword: "",
-        }
-      }).then((res) => {
-          console.log(res);
-          setState({
-            platform_name: res.data.platform_name,
-            quizzes: res.data.quizzes,
-          });
-          setImage(res.data.icon_photo);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else if (props.location.state) {
-      console.log("new platform");
-      setState({
-        platform_name: props.location.state.platform_name,
-        quizzes: [],
-      });
-    }
+    fetchPlatformData("");
   }, [props]);
 
   const onCreateQuiz = (e) => {
@@ -201,12 +214,12 @@ export default function PlatformCreator(props) {
       )
       .then((res) => {
         console.log(res);
-      if (res.status == 201) {
-        history.push(`/quiz/${res.data.quiz.quiz_id}/creator`);
-      }
-    }).catch(err => {
-      console.log('Create Quiz Button: ', err);
-    })
+        if (res.status === 201) {
+          history.push(`/quiz/${res.data.quiz.quiz_id}/creator`);
+        }
+      }).catch(err => {
+        console.log('Create Quiz Button: ', err);
+      })
   }
 
   const onDeleteQuiz = (e, quiz_id) => {
@@ -214,47 +227,38 @@ export default function PlatformCreator(props) {
     console.log(`Delete Quiz #${quiz_id}`);
     let [new_platform_name, new_quizzes] = copyState();
     axios.delete(`${constants.API_PATH}/quiz/${quiz_id}`)
-    .then(res => {
-      console.log(res);
-      new_quizzes.splice(quiz_id, 1);
-      setState({
-        platform_name: new_platform_name,
-        quizzes: new_quizzes,
-      });
+      .then(res => {
+        console.log(res);
+        new_quizzes.splice(quiz_id, 1);
+        setState({
+          platform_name: new_platform_name,
+          quizzes: new_quizzes,
+        });
 
-      setQuizDialog(false);
-      setSelectedQuiz(null);
+        setQuizDialog(false);
+        setSelectedQuiz(null);
 
-      console.log(`deleted quiz ${quiz_id}`)
-    })
-    .catch(err => {
-      console.log(err);
-    })
+        console.log(`deleted quiz ${quiz_id}`)
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
   const handleDeleteOpen = (e, quiz_id) => {
     console.log(`trying to delete quiz ${quiz_id}`)
-    let [new_platform_name, new_quizzes] = copyState();
-    setState({
-      platform_name: new_platform_name,
-      quizzes: new_quizzes,
-    });
-
+    let new_state = copyState();
+    setState(new_state);
     setSelectedQuiz(quiz_id);
     setQuizDialog(true);
     console.log("delete dialog opened")
   }
 
   const handleDeleteClose = () => {
-    let [new_platform_name, new_quizzes] = copyState();
-    setState({
-      platform_name: new_platform_name,
-      quizzes: new_quizzes,
-    });
-    
+    let new_state = copyState();
+    setState(new_state);
     setQuizDialog(false);
     setSelectedQuiz(null);
-
     console.log("delete dialog closed")
   }
 
@@ -290,7 +294,6 @@ export default function PlatformCreator(props) {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setUrl(data.url);
         setCloudinaryErr("");
       })
@@ -298,7 +301,6 @@ export default function PlatformCreator(props) {
         console.log(err);
         setCloudinaryErr(err.message);
       });
-    console.log("platimage");
   };
 
   const uploadImage = () => {
@@ -314,8 +316,6 @@ export default function PlatformCreator(props) {
       )
       .then((res) => {
         //stuff
-        console.log(res);
-        console.log("image sent");
         return;
       })
       .catch((err) => {
@@ -326,7 +326,7 @@ export default function PlatformCreator(props) {
   return (
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile platform_icon={url} />
-      <PlatformLead platform_id={props.match.params.platform_id} />
+      <PlatformLead topFiveUsers={state.topFiveUsers} />
       <Box className={classes.editThumbnail}>
         <Input
           type="file"
@@ -365,6 +365,11 @@ export default function PlatformCreator(props) {
           Delete Platform
         </Button>
       </Box>
+      <SearchBar
+        className={classes.search}
+        placeholder="Search..."
+        onKeyPress={search}
+      />
       <FormControl className={classes.editPlatform}>
         <InputBase
           className={classes.title}
@@ -417,8 +422,8 @@ export default function PlatformCreator(props) {
                     />
                     <CardContent>{quiz.quiz_name}</CardContent>
                   </Link>
-                  <Button onClick={(e) => {handleDeleteOpen(quiz.quiz_id)}}>
-                    <HighlightOffIcon style={{fill: "red"}}/>
+                  <Button onClick={(e) => { handleDeleteOpen(quiz.quiz_id) }}>
+                    <HighlightOffIcon style={{ fill: "red" }} />
                     Delete Quiz
                   </Button>
                 </Card>

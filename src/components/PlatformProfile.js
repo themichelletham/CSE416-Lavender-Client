@@ -2,12 +2,9 @@ import React from 'react'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Container';
 import Banner from "../images/banner.png";
-import PlatformIcon from "../images/platformicon.jpeg"
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@material-ui/core';
-import Button from '@mui/material/Button';
-import { createTheme,  MuiThemeProvider } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 const theme = createTheme();
 theme.spacing(1); // `${8 * 2}px` = '16px'
