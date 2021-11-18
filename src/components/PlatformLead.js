@@ -31,17 +31,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function PlatformLead(props) {
-  const [topTen, setTopTen] = useState([]);
+
   const classes = useStyles();
-  useEffect(() => {
-    axios.get(`${constants.API_PATH}/platform/${props.platform_id}/users`).
-      then(res => {
-        console.log(res);
-        if (res.status === 200) {
-          setTopTen(res.data);
-        }
-      });
-  }, []);
+
   return (
     <Box className={classes.mainbox}>
       <Drawer anchor="right" variant="permanent" className={classes.drawer}>
@@ -49,7 +41,7 @@ function PlatformLead(props) {
         <Typography variant="h6" align='center' mt={50}>Leaderboard</Typography>
         <Box className={classes.pleaderboard}>
           <List>
-            {topTen.map((username, index) => (
+            {props.topFiveUsers.map((username, index) => (
               <ListItem>
                 <ListItemText primary={(index + 1) + "\t" + username} />
               </ListItem>

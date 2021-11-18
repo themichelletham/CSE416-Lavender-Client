@@ -29,7 +29,7 @@ import SearchBar from "material-ui-search-bar";
 import { styled } from '@mui/material/styles';
 import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { purple } from '@mui/material/colors'
+import { purple, grey } from '@mui/material/colors'
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import AddIcon from '@material-ui/icons/Add'
 
@@ -107,6 +107,7 @@ export default function PlatformCreator(props) {
   const [state, setState] = useState({
     platform_name: "Untitled Platform",
     quizzes: [],
+    topFiveUsers: [],
   });
 
   const [selectedQuiz, setSelectedQuiz] = useState();
@@ -120,7 +121,8 @@ export default function PlatformCreator(props) {
   const copyState = () => {
     let new_name = state.platform_name;
     let new_quizzes = [...state.quizzes];
-    return [new_name, new_quizzes];
+    let new_topFiveUsers = [...state.topFiveUsers];
+    return [new_name, new_quizzes, new_topFiveUsers];
   };
 
   const classes = useStyles();
@@ -188,6 +190,7 @@ export default function PlatformCreator(props) {
       setState({
         platform_name: res.data.platform_name,
         quizzes: res.data.quizzes,
+        topFiveUsers: res.data.topFiveUsers,
       });
       setPreviewSource(res.data.icon_photo);
     }).catch(err => {
@@ -204,18 +207,6 @@ export default function PlatformCreator(props) {
   useEffect(() => {
     if (props.location.state == null) {
       fetchQuizzes("");
-      //axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
-      //  .then(res => {
-      //    console.log(res);
-      //    setPreviewSource(res.data.icon_photo);
-      //    setState({
-      //      platform_name: res.data.platform_name,
-      //      quizzes: res.data.quizzes,
-      //    });
-      //  }).catch(err => {
-      //    console.log(err);
-      //  })
-      //console.log(previewSource);
     }
     else if (props.location.state) {
       setState({
@@ -366,7 +357,7 @@ export default function PlatformCreator(props) {
   return (
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile platform_icon={url} />
-      <PlatformLead platform_id={props.match.params.platform_id} />
+      <PlatformLead topFiveUsers={state.topFiveUsers} />
       <Box className={classes.editThumbnail}>
         <Input
           type="file"
