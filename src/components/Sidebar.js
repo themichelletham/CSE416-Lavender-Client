@@ -64,9 +64,7 @@ export default function Sidebar(props) {
     }).then(res => {
       console.log(res)
       if (res.status == 201) {
-        history.push('/platform/' + res.data.platform_id + '/creator', {
-          platform: { ...res.data }
-        });
+        history.push('/platform/' + res.data.platform_id + '/creator');
       }
     }).catch(err => {
       console.log('Sidebar Create Platform Button: ', err);

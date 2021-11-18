@@ -88,9 +88,7 @@ export default function NavBar() {
         console.log(res);
         if (res.status === 201) {
           console.log("yes owo");
-          history.push("/platform/" + res.data.platform_id + "/creator", {
-            platform: { ...res.data },
-          });
+          history.push("/platform/" + res.data.platform_id + "/creator");
         }
       })
       .catch((err) => {
