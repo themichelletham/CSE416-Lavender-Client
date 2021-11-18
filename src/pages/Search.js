@@ -50,21 +50,7 @@ function Search(props) {
   const classes = useStyles();
   const history = useHistory();
   const onNavigateQuiz = (e, quiz_id) => {
-    if (!props.user_id) {
-      history.push(`/quiz/${quiz_id}`);
-    } else {
-      axios
-        .post(`${constants.API_PATH}/quiz/${quiz_id}/history`, {
-          user_id: props.user_id,
-        })
-        .then((res) => {
-          if (res.data.history) {
-            history.push(`/quiz/${quiz_id}/results`);
-          } else {
-            history.push(`/quiz/${quiz_id}`);
-          }
-        });
-    }
+    history.push(`/quiz/${quiz_id}`);
   };
 
   const onNavigatePlatform = (e, platform_id) => {
