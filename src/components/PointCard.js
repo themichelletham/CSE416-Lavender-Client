@@ -10,24 +10,21 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     flexWrap: 'wrap',
     flexGrow: 1, 
-    
-  },
-  gridContainer: {
-    flexDirection: "column",
-  },
-  gridItem: {
-    //display: "inline-block",
+    direction:"column",
+    alignItems:"center",
+    justifyContent:"center",
   },
   cardItems:{ 
     display: "inline-flex",
-    float: 'center'
-    //flexDirection: "row",
+    float: 'center', 
+    alignItems: "center"
   },
   cards:{ 
     display: "inline-block",
-    height:"150px", 
-    width:"500px",
-    paddingTop: theme.spacing(4), 
+    float: "center",
+    width: theme.spacing(80), 
+    height: theme.spacing(15),
+    paddingTop: theme.spacing(3), 
     borderRadius: 15, 
   },
 }));
@@ -53,17 +50,17 @@ export default function PointCard(props) {
       })
   }, []);
   return (
-    <Box mb={5} m={3}>
-    <Box container className={classes.pointCards}>
-      <Box item className={classes.cardItems}>
+    <Box>
+    <Grid container spacing={3} className={classes.pointCards}>
+      <Grid item className={classes.cardItems} item xs={10} md={10}>
       <Card className={classes.cards} variant="outlined">
-        <CardContent>
+        <CardContent >
           <Typography align="center">{`Platform_id:${state.platform_name}`}</Typography>
           <Typography align="center">{`Points:${props.points}`}</Typography>
         </CardContent>
       </Card>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
     </Box>
   );
 };
