@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import {Toolbar, Divider } from '@material-ui/core';
@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Profile from "../pages/Profile"
-import Platform from "../pages/Platform"
 import * as constants from '../components/constants';
 import PlatformCreator from '../pages/PlatformCreator';
 
@@ -49,6 +48,10 @@ export default function Sidebar(props) {
     history.push(`/profile/${props.user_id}`)
   }
 
+  const onViewPlatform = (e) => {
+    history.push(`/platform/${props.platform_id}`)
+  }
+
   const onCreatePlatform = (e) => {
     e.preventDefault();
     axios.post(`${constants.API_PATH}/platform`, {
@@ -84,12 +87,12 @@ export default function Sidebar(props) {
                 </ListItemText>
               </ListItem>)
             }
-            <ListItem button key={"Create Platform"} onClick={onCreatePlatform}>
+            <ListItem button key={"Create Platform"} onClick={props.platform_id?onViewPlatform:onCreatePlatform}>
               <ListItemIcon>
                 <AddCircleOutlineIcon />
               </ListItemIcon>
               <ListItemText>
-                Create Platform
+                {props.platform_id?'View Platform':'Create Platform'}
               </ListItemText>
             </ListItem>
           </List>

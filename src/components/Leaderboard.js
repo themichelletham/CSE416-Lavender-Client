@@ -11,10 +11,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Button } from '@material-ui/core';
 
-function createData(playerName, points) {
-  return { playerName, points };
-}
-
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 1300,

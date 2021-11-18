@@ -149,7 +149,7 @@ export default function QuizResult(props) {
     if (state.answers[q_key][a_key].is_correct) v = "show-correct";
     else if (state.selected_answers[q_key] == a_key) v = "show-incorrect";
     return (
-      <Grid container item>
+      <Grid container item key={a_key}>
         <Answers
           a_key={a_key}
           q_key={q_key}

@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import * as constants from './constants';
+import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { List, ListItem, ListItemText, Toolbar, Typography } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import { padding } from '@mui/system';
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +38,7 @@ function PlatformLead(props) {
         <Typography variant="h6" align='center' mt={50}>Leaderboard</Typography>
         <Box className={classes.pleaderboard}>
           <List>
-            {props.topFiveUsers.map((username, index) => (
+            {props.topFiveUsers && props.topFiveUsers.map((username, index) => (
               <ListItem>
                 <ListItemText primary={(index + 1) + "\t" + username} />
               </ListItem>

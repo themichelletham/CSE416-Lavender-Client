@@ -199,13 +199,13 @@ export default function PlatformCreator(props) {
   }
 
   const search = (e) => {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
       fetchQuizzes(e.target.value);
     }
   };
   
   useEffect(() => {
-    if (props.location.state == null) {
+    if (props.location.state === null) {
       fetchQuizzes("");
     }
     else if (props.location.state) {
@@ -233,7 +233,7 @@ export default function PlatformCreator(props) {
       )
       .then((res) => {
         console.log(res);
-      if (res.status == 201) {
+      if (res.status === 201) {
         history.push(`/quiz/${res.data.quiz.quiz_id}/creator`);
       }
     }).catch(err => {
