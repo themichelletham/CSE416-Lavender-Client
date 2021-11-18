@@ -52,26 +52,55 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
     alignItems: "left",
     flexGrow: 1,
-    width: theme.spacing(130),
+    width: '100vw',
     marginLeft: theme.spacing(5),
   },
+  container:{ 
+    display: "flex", 
+    flexGrow: 1, 
+    width: '100%',
+    left: 1,
+    display: "inline-block", 
+    width: '100%', 
+  },
   Opt: {
-    display: "inline-block",
-    width: theme.spacing(160),
-    paddingLeft: theme.spacing(115),
-    paddingBottom: theme.spacing(0.5),
+    display: "flex",
+    flexGrow: 1,
+    width: '100%',
+    paddingLeft: '60%',
+    //paddingBottom: theme.spacing(0.5),
     alignItems: "left",
+  },
+  search: {
+    //display: 'inline-block',
+    border: 1,
+    borderColor: grey,
+    borderRadius: 30,
+    //margin: "auto",
+    left: 0,
+    marginLeft: '20%',
+    width: 600,
+    height: 35,
+    marginBottom: theme.spacing(.5),
+    marginTop: theme.spacing(.5),
+    //align: "center"
   },
   editPlatform: {
     borderRadius: 15,
+    display: "flex", 
+    flexGrow: 1, 
+    width: '100%',
     borderTopLeftRadius: 15,
+    left: 1
   },
   title: {
+    display: 'flex', 
+    flexGrow: 1, 
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     height: theme.spacing(7.5),
     backgroundColor: "#7519BD",
-    width: theme.spacing(155),
+    width: '80vw',
     marginBottom: theme.spacing(2),
   },
   quiz: {
@@ -82,9 +111,11 @@ const useStyles = makeStyles((theme) => ({
   },
   editThumbnail: {
     display: "inline-block",
-    width: theme.spacing(200),
-    paddingLeft: theme.spacing(117),
+    width: '100%',
+    paddingTop: 1, 
+    paddingLeft: '55%',
     zIndex: "tooltip",
+    flexGrow: 1, 
   },
   createQuiz: {
     width: theme.spacing(25),
@@ -94,14 +125,6 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(25),
     height: theme.spacing(15)
   },
-  search: {
-    border: 1,
-    borderColor: grey,
-    borderRadius: 30,
-    margin: "0 auto",
-    width: 600,
-    height: 35,
-  }
 }));
 
 export default function PlatformCreator(props) {
@@ -326,6 +349,7 @@ export default function PlatformCreator(props) {
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile platform_icon={url} />
       <PlatformLead topFiveUsers={state.topFiveUsers} />
+      <Box className={classes.container}>
       <Box className={classes.editThumbnail}>
         <Input
           type="file"
@@ -346,6 +370,11 @@ export default function PlatformCreator(props) {
           Upload
         </Button>
       </Box>
+      <SearchBar
+        className={classes.search}
+        placeholder="Search..."
+        onKeyPress={search}
+      />
       <Box className={classes.Opt} ml={3} mr={1} mt={3}>
         <Button
           size="small"
@@ -364,22 +393,18 @@ export default function PlatformCreator(props) {
           Delete Platform
         </Button>
       </Box>
-      <SearchBar
-        className={classes.search}
-        placeholder="Search..."
-        onKeyPress={search}
-      />
       <FormControl className={classes.editPlatform}>
         <InputBase
           className={classes.title}
           inputProps={{
-            min: 0,
+            min: 800,
             style: {
               textAlign: "center",
               fontSize: 22,
               paddingTop: 0,
               paddingBottom: 0,
               marginTop: 10,
+              fullWidth: "true"
             },
           }}
           value={state.platform_name}
@@ -387,7 +412,7 @@ export default function PlatformCreator(props) {
         />
       </FormControl>
       <Box
-        sx={{ display: "flex", flexWrap: "wrap", maxWidth: theme.spacing(150) }}
+        sx={{ display: "flex", flexWrap: "wrap", maxWidth: '100%'}}
       >
         <Grid container spacing={3} ml={1} mt={1}>
           {props.user_id ? (
@@ -432,6 +457,7 @@ export default function PlatformCreator(props) {
             <Grid item></Grid>
           )}
         </Grid>
+        </Box>
         <Dialog open={quizDialog} onClose={handleDeleteClose}>
           <DialogTitle>Delete Quiz {selectedQuiz}</DialogTitle>
           <DialogContent>
