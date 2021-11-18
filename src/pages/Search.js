@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   gridItem: {
     display: "inline-block",
+    marginBottom: theme.spacing(1)
   },
   card:{ 
     width: theme.spacing(24), 
@@ -107,7 +108,7 @@ function Search(props) {
       <Grid container spacing={3} className={classes.gridContainer}>
         {state.quizzes ? (
           state.quizzes.map((quiz) => (
-            <Grid item className={classes.gridItem} key={quiz.quiz_id} item xs={2} md={2}>
+            <Grid item className={classes.gridItem} key={quiz.quiz_id} xs={3} md={3}>
               <Button onClick={(e) => onNavigateQuiz(e, quiz.quiz_id)}>
                 <Card className={classes.card}>
                   <CardMedia
@@ -129,7 +130,7 @@ function Search(props) {
       <Grid container spacing={3} className={classes.gridContainer} >
         {state.platforms ? (
           state.platforms.map((platform) => (
-            <Grid item className={classes.gridItem} key={platform.platform_id} item xs={2} md={2}>
+            <Grid item className={classes.gridItem} key={platform.platform_id} xs={3} md={3}>
               <Button
                 onClick={(e) => onNavigatePlatform(e, platform.platform_id)}
               >
