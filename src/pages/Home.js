@@ -13,14 +13,21 @@ ttheme.spacing(1);
 
 const useStyles = makeStyles((theme) => ({
   homePage: {
-    display: "flex",
+    /*display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
-    width: "80vw",
-    height: "80vh",
-    flexGrow: 1,
+    width: "90%",
+    height: "90%",
+    flexGrow: 8,
+    left: 10
     //width: '100%',
-    //height: '100%',
+    //height: '100%',*/
+    isplay: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    flexGrow: 1,
+    width: theme.spacing(100),
+    height: theme.spacing(100),
   },
   gridContainer: {
     //marginTop: '2%',
