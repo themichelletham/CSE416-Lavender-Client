@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   username: {
     display: 'inline-flex',
     marginTop: theme.spacing(35),
-    align: "center", 
+    align: "center",
   },
   pointsContainer: {
     float: 'center',
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   pointsRow: {
     flexDirection: 'row',
     width: '100%'
-  }, 
+  },
 }));
 
 export default function Profile(props) {
@@ -77,18 +77,16 @@ export default function Profile(props) {
   const [usernameExist, setUsernameExist] = useState(false);
 
   const copyState = () => {
-    let new_user = state.user;
-    let new_points = [...state.points];
-    return [new_user, new_points];
+    const ret = {};
+    ret.user = { ...state.user };
+    ret.points = [...state.points];
+    return ret;
   }
 
   const onUsernameChange = (e) => {
-    let [new_user, new_points] = copyState();
-    new_user.username = e.target.value;
-    setState({
-      user: new_user,
-      points: new_points,
-    });
+    let new_state = copyState();
+    new_state.user.username = e.target.value;
+    setState(new_state);
   }
 
   const handleClickOpen = () => {
@@ -108,7 +106,7 @@ export default function Profile(props) {
     })
   };
 
-  const preProcess = (data) => {
+  const parseToState = (data) => {
     const new_state = {};
     new_state.user = { ...data.user };
     const points_arr = [];
@@ -116,7 +114,7 @@ export default function Profile(props) {
       if (i % 2 == 0)
         points_arr.push([{ ...data.points[i] }]);
       else
-        points_arr[parseInt(i/2)].push({ ...data.points[i] });
+        points_arr[parseInt(i / 2)].push({ ...data.points[i] });
     }
     new_state.points = points_arr;
     return new_state;
@@ -129,7 +127,7 @@ export default function Profile(props) {
       }).then(res => {
         console.log(res)
         if (res.status == 200) {
-          const new_state = preProcess(res.data);
+          const new_state = parseToState(res.data);
           setState(new_state);
         }
       })
@@ -140,8 +138,8 @@ export default function Profile(props) {
       <Box className={classes.banner} />
       <img className={classes.icon} src={state.user && state.user.picture} />
       <Box className={classes.username}>
-          <Typography variant="h5" align="center" mb={1}>{state.user && state.user.username}</Typography>
-          <IconButton onClick={handleClickOpen}><EditIcon/></IconButton>
+        <Typography variant="h5" align="center" mb={1}>{state.user && state.user.username}</Typography>
+        <IconButton onClick={handleClickOpen}><EditIcon /></IconButton>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Edit Username</DialogTitle>
           <DialogContent>
@@ -160,19 +158,19 @@ export default function Profile(props) {
         <Typography>Total Points: {state.user && state.user.points}</Typography>
       </Box>
       <div>
-      <Box className={classes.pointsContainer}>
-        {state.points.length ? state.points.map((pair) => {
-          const ret = (
-            <Box className={classes.pointRow} sx={{ display: 'flex', flexWrap: 'wrap', width: '100%'}}>
-              <PointCard points={pair[0].points} platform_id={pair[0].platform_id} />
-              {pair.length === 2 ?
-                <PointCard points={pair[1].points} platform_id={pair[1].platform_id} />
-                : <></>}
-            </Box>
-          )
-          return ret;
-        }) : <></>}
-      </Box>
+        <Box className={classes.pointsContainer}>
+          {state.points.length ? state.points.map((pair) => {
+            const ret = (
+              <Box className={classes.pointRow} sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
+                <PointCard points={pair[0].points} platform_id={pair[0].platform_id} />
+                {pair.length === 2 ?
+                  <PointCard points={pair[1].points} platform_id={pair[1].platform_id} />
+                  : <></>}
+              </Box>
+            )
+            return ret;
+          }) : <></>}
+        </Box>
       </div>
     </Box>
   )
