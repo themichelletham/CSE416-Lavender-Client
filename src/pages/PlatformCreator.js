@@ -25,13 +25,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import PlatformProfile from "../components/PlatformProfile.js";
 import PlatformLead from "../components/PlatformLead.js";
-import { styled } from "@mui/material/styles";
-import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-import { purple } from "@mui/material/colors";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import AddIcon from "@material-ui/icons/Add";
+import SearchBar from "material-ui-search-bar";
+import { styled } from '@mui/material/styles';
+import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { purple } from '@mui/material/colors'
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import AddIcon from '@material-ui/icons/Add'
 
 const theme = createTheme();
 theme.spacing(1); // `${8 * 2}px` = '16px'
@@ -89,6 +89,18 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(25),
     height: theme.spacing(15),
   },
+  createQuiz: { 
+    width: theme.spacing(25), 
+    height: theme.spacing(15)
+  },
+  search: {
+    border: 1,
+    borderColor: grey,
+    borderRadius: 30,
+    margin: "0 auto",
+    width: 600,
+    height: 35,
+  }
 }));
 
 export default function PlatformCreator(props) {
@@ -157,26 +169,55 @@ export default function PlatformCreator(props) {
     });
   };
 
+  const parseToState = (res) => {
+    const title = res.data.platform_name;
+    const quizzes = res.data.quizzes.map((q_obj) => q_obj.quiz_name);
+    return {
+      platform_name: title,
+      quizzes: quizzes,
+    };
+  };
+
+  const fetchQuizzes = (keyword) => {
+    axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`, {
+      params: {
+        keyword: keyword,
+      }
+    }).then(res => {
+      console.log(res);
+      setState({
+        platform_name: res.data.platform_name,
+        quizzes: res.data.quizzes,
+      });
+      setPreviewSource(res.data.icon_photo);
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  const search = (e) => {
+    if (e.key == "Enter") {
+      fetchQuizzes(e.target.value);
+    }
+  };
+  
   useEffect(() => {
     if (props.location.state == null) {
-      console.log("grabbing platform");
-      axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`, {
-        params: {
-          keyword: "",
-        }
-      }).then((res) => {
-          console.log(res);
-          setState({
-            platform_name: res.data.platform_name,
-            quizzes: res.data.quizzes,
-          });
-          setImage(res.data.icon_photo);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else if (props.location.state) {
-      console.log("new platform");
+      fetchQuizzes("");
+      //axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
+      //  .then(res => {
+      //    console.log(res);
+      //    setPreviewSource(res.data.icon_photo);
+      //    setState({
+      //      platform_name: res.data.platform_name,
+      //      quizzes: res.data.quizzes,
+      //    });
+      //  }).catch(err => {
+      //    console.log(err);
+      //  })
+      //console.log(previewSource);
+    }
+    else if (props.location.state) {
       setState({
         platform_name: props.location.state.platform_name,
         quizzes: [],
@@ -364,6 +405,11 @@ export default function PlatformCreator(props) {
           Delete Platform
         </Button>
       </Box>
+      <SearchBar
+        className={classes.search}
+        placeholder="Search..."
+        onKeyPress={search}
+      />
       <FormControl className={classes.editPlatform}>
         <InputBase
           className={classes.title}
