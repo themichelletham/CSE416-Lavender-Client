@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   editThumbnail: {
     display: 'inline-block',
     width: theme.spacing(200),
-    paddingLeft: theme.spacing(103),
+    paddingLeft: theme.spacing(117),
     zIndex: 'tooltip'
   },
   createQuiz: { 

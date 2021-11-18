@@ -27,22 +27,20 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     position: 'absolute',
     float: 'left',
-    //top: 0,
+    top: 0,
     left: 0, 
-    //zIndex: 'modal',
+    zIndex: 'modal',
   },
   icon: {
-    float: 'left', 
-    left: '5%', 
-    top: '30%', 
-    //marginLeft: theme.spacing(5), 
-    //marginTop: theme.spacing(10),
-    //marginBottom: theme.spacing(5), 
+    float: 'center',
+    marginLeft: '1%', 
+    marginTop: theme.spacing(10),
+    marginBottom: theme.spacing(5), 
     height: theme.spacing(22),
     width: theme.spacing(22),
-    //borderRadius: "100%",
+    borderRadius: "100%",
     position: 'absolute',
-    //zIndex: 'tooltip'
+    zIndex: 'tooltip'
   }, 
   title:{
     paddingTop: '23%', 
@@ -53,10 +51,10 @@ const useStyles = makeStyles((theme) => ({
 export default function PlatformProfile(props) {
   const classes = useStyles();
   return ( 
-    <Grid  className={classes.PlatformProfileContainer}>
-      <Box sx={{ zIndex: 'modal', maxWidth: 'md' }} >
+    <Grid container className={classes.PlatformProfileContainer}>
+      <Box item sx={{display: 'flex'}} >
         <img className={classes.banner} src={Banner}/></Box>
-      <Box sx={{ zIndex: 'tooltip' }}>
+      <Box item sx={{display: 'flex'}} >
         <img className={classes.icon} src={props.platform_icon}/>
       <Box className={classes.title}>
         <Typography variant='h4' ml={2} mt={2}> {props.platform_name}</Typography>
