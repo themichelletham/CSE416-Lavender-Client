@@ -222,41 +222,37 @@ export default function PlatformCreator(props) {
       })
   }
 
-  const onDeleteQuiz = (e, quiz_id) => {
+  const onDeleteQuiz = (e, index) => {
     e.preventDefault();
-    console.log(`Delete Quiz #${quiz_id}`);
-    let [new_platform_name, new_quizzes] = copyState();
-    axios.delete(`${constants.API_PATH}/quiz/${quiz_id}`)
+    console.log(`Deleting Quiz index ${index}`);
+    let new_state = copyState();
+    console.log(`${constants.API_PATH}/quiz/${state.quizzes[index].quiz_id}`);
+
+    axios.delete(`${constants.API_PATH}/quiz/${state.quizzes[index].quiz_id}`)
       .then(res => {
         console.log(res);
-        new_quizzes.splice(quiz_id, 1);
-        setState({
-          platform_name: new_platform_name,
-          quizzes: new_quizzes,
-        });
+        new_state.quizzes.splice(index, 1);
 
         setQuizDialog(false);
         setSelectedQuiz(null);
 
-        console.log(`deleted quiz ${quiz_id}`)
+        console.log(`deleted quiz ${state.quizzes[index].quiz_id}`)
       })
       .catch(err => {
         console.log(err);
       })
   }
 
-  const handleDeleteOpen = (e, quiz_id) => {
-    console.log(`trying to delete quiz ${quiz_id}`)
-    let new_state = copyState();
-    setState(new_state);
-    setSelectedQuiz(quiz_id);
+  const handleDeleteOpen = (index) => {
+    console.log(state);
+    console.log(`trying to delete quiz ${index}`);
+    
+    setSelectedQuiz(index);
     setQuizDialog(true);
     console.log("delete dialog opened")
   }
 
   const handleDeleteClose = () => {
-    let new_state = copyState();
-    setState(new_state);
     setQuizDialog(false);
     setSelectedQuiz(null);
     console.log("delete dialog closed")
@@ -405,8 +401,8 @@ export default function PlatformCreator(props) {
             <></>
           )}
           {state.quizzes ? (
-            state.quizzes.map((quiz) => (
-              <Grid item className={classes.gridItem} key={quiz.quiz_id}>
+            state.quizzes.map((quiz, index) => (
+              <Grid item className={classes.gridItem} key={index}>
                 <Card>
                   <Link
                     to={{
@@ -422,9 +418,9 @@ export default function PlatformCreator(props) {
                     />
                     <CardContent>{quiz.quiz_name}</CardContent>
                   </Link>
-                  <Button onClick={(e) => { handleDeleteOpen(quiz.quiz_id) }}>
+                  <Button onClick={(e) => { handleDeleteOpen(index) }}>
                     <HighlightOffIcon style={{ fill: "red" }} />
-                    Delete Quiz
+                    Delete Quiz {index}
                   </Button>
                 </Card>
               </Grid>
@@ -434,13 +430,13 @@ export default function PlatformCreator(props) {
           )}
         </Grid>
         <Dialog open={quizDialog} onClose={handleDeleteClose}>
-          <DialogTitle>Delete Quiz {selectedQuiz}</DialogTitle>
+          <DialogTitle>Delete Quiz</DialogTitle>
           <DialogContent>
             <DialogContentText>Are you sure you want to delete this quiz?</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDeleteClose}>No</Button>
-            <Button onClick={e => {onDeleteQuiz(selectedQuiz)}}>Yes, Delete</Button>
+            <Button onClick={e => {onDeleteQuiz(e, selectedQuiz)}}>Yes, Delete</Button>
           </DialogActions>
         </Dialog>
       </Box>
