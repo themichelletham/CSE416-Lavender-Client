@@ -209,7 +209,8 @@ export default function PlatformCreator(props) {
     })
   }
 
-  const onDeleteQuiz = (quiz_id) => {
+  const onDeleteQuiz = (e, quiz_id) => {
+    e.preventDefault();
     console.log(`Delete Quiz #${quiz_id}`);
     let [new_platform_name, new_quizzes] = copyState();
     axios.delete(`${constants.API_PATH}/quiz/${quiz_id}`)
@@ -434,7 +435,7 @@ export default function PlatformCreator(props) {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDeleteClose}>No</Button>
-            <Button >Yes, Delete</Button>
+            <Button onClick={e => {onDeleteQuiz(selectedQuiz)}}>Yes, Delete</Button>
           </DialogActions>
         </Dialog>
       </Box>
