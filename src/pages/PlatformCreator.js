@@ -123,8 +123,6 @@ export default function PlatformCreator(props) {
   const history = useHistory();
 
   const onSave = (e) => {
-    imageDetails();
-
     axios
       .put(
         `${constants.API_PATH}/platform/${props.match.params.platform_id}/creator`,
@@ -141,6 +139,7 @@ export default function PlatformCreator(props) {
       .catch((err) => {
         console.log("PUT on Save: ", err);
       });
+    uploadImage();
   };
 
   const onDelete = (e) => {
@@ -240,6 +239,7 @@ export default function PlatformCreator(props) {
   };
 
   const imageDetails = () => {
+    const hello = "hello";
     const data = new FormData();
     data.append("file", image);
     data.append("upload_preset", "sprout");
@@ -263,7 +263,7 @@ export default function PlatformCreator(props) {
         console.log(err);
         setCloudinaryErr(err.message);
       });
-    uploadImage();
+    console.log("platimage");
   };
 
   const uploadImage = () => {
@@ -301,9 +301,17 @@ export default function PlatformCreator(props) {
           onChange={handleFileInputChange}
         ></Input>
         {cloudinaryErr}
-        {/* <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button> */}
+        <Button
+          className={classes.thumbnailButton}
+          size="large"
+          onClick={imageDetails}
+          endIcon={<FileUploadIcon />}
+          disableElevation
+          pl={1}
+        >
+          Upload
+        </Button>
       </Box>
-      {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
       <Box className={classes.Opt} ml={3} mr={1} mt={3}>
         <Button
           size="small"
