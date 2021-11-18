@@ -111,23 +111,6 @@ export default function PlatformCreator(props) {
     return [new_name, new_quizzes];
   };
 
-  useEffect(() => {
-    axios
-      .get(
-        `${constants.API_PATH}/platform/${props.match.params.platform_id}/quizzes`
-      )
-      .then((res) => {
-        console.log(res);
-        setState({
-          platform_name: state.platform_name,
-          quizzes: res.data,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   const classes = useStyles();
   const history = useHistory();
 
@@ -176,20 +159,24 @@ export default function PlatformCreator(props) {
 
   useEffect(() => {
     if (props.location.state == null) {
-      axios
-        .get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`)
-        .then((res) => {
+      console.log("grabbing platform");
+      axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`, {
+        params: {
+          keyword: "",
+        }
+      }).then((res) => {
           console.log(res);
           setState({
             platform_name: res.data.platform_name,
             quizzes: res.data.quizzes,
           });
+          setImage(res.data.icon_photo);
         })
         .catch((err) => {
           console.log(err);
         });
-      console.log(previewSource);
     } else if (props.location.state) {
+      console.log("new platform");
       setState({
         platform_name: props.location.state.platform_name,
         quizzes: [],
@@ -245,7 +232,6 @@ export default function PlatformCreator(props) {
   }
 
   const handleDeleteOpen = (e, quiz_id) => {
-    e.preventDefault();
     console.log(`trying to delete quiz ${quiz_id}`)
     let [new_platform_name, new_quizzes] = copyState();
     setState({
@@ -338,7 +324,7 @@ export default function PlatformCreator(props) {
 
   return (
     <Box className={classes.PlatformCreatorContainer}>
-      <PlatformProfile platform_icon={previewSource} />
+      <PlatformProfile platform_icon={url} />
       <PlatformLead platform_id={props.match.params.platform_id} />
       <Box className={classes.editThumbnail}>
         <Input
