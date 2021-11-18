@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Link, useHistory } from "react-router-dom";
-import { Box, Grid, Button } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Sidebar from "../components/Sidebar.js";
-import * as constants from "../components/constants";
-import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import Search from "./Search";
 
 const ttheme = createTheme();
@@ -47,15 +44,14 @@ const useStyles = makeStyles((theme) => ({
 function Home(props) {
   const [keyword, setKeyword] = useState("");
   const classes = useStyles();
-  const history = useHistory();
 
   useEffect(() => {
     setKeyword(props.keyword);
-  }, []);
+  }, [props]);
 
   return (
     <Box className="homePage">
-      <Sidebar className={classes.drawer} user_id={props.user_id} />
+      <Sidebar className={classes.drawer} user_id={props.user_id} platform_id={props.platform_id} />
       <Search keyword={keyword} />
     </Box>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Box, Grid, Button } from "@material-ui/core";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -50,21 +50,7 @@ function Search(props) {
   const classes = useStyles();
   const history = useHistory();
   const onNavigateQuiz = (e, quiz_id) => {
-    if (!props.user_id) {
-      history.push(`/quiz/${quiz_id}`);
-    } else {
-      axios
-        .post(`${constants.API_PATH}/quiz/${quiz_id}/history`, {
-          user_id: props.user_id,
-        })
-        .then((res) => {
-          if (res.data.history) {
-            history.push(`/quiz/${quiz_id}/results`);
-          } else {
-            history.push(`/quiz/${quiz_id}`);
-          }
-        });
-    }
+    history.push(`/quiz/${quiz_id}`);
   };
 
   const onNavigatePlatform = (e, platform_id) => {

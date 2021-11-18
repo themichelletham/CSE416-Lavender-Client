@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, styled } from "@material-ui/core/styles";
 import { Box, Button, FormControl, InputBase, Grid } from "@mui/material";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import * as constants from "../components/constants";
 import Questions from "../components/Questions";
@@ -73,8 +73,11 @@ export default function QuizTake(props) {
     questions: [],
     answers: [],
     selected_answers: [],
+    redirect: false,
   });
   const [previewSource, setPreviewSource] = useState();
+  const classes = useStyles();
+  const history = useHistory();
 
   const copyState = () => {
     let ret = {};
@@ -84,12 +87,9 @@ export default function QuizTake(props) {
     ret.questions = state.questions.slice(0);
     ret.answers = state.answers.map((arr) => arr.slice(0));
     ret.selected_answers = state.selected_answers.slice(0);
+    ret.redirect = state.redirect;
     return ret;
   };
-
-  const classes = useStyles();
-  const location = useLocation();
-  const history = useHistory();
 
   const parseToState = (res) => {
     const platform_id = res.data.quiz.platform_id;
@@ -99,9 +99,6 @@ export default function QuizTake(props) {
     const answers = res.data.answers.map((ans_list) =>
       ans_list.map((ans_obj) => ans_obj.answer_text)
     );
-    //const correct_answers = res.data.answers.map(ans_list => (
-    //  ans_list.filter(ans_obj => ans_obj.is_correct).map(ans_objb => ans_objb.answer_text)
-    //));
     return {
       platform_id: platform_id,
       platform_name: platform_name,
@@ -109,23 +106,40 @@ export default function QuizTake(props) {
       questions: questions,
       answers: answers,
       selected_answers: [],
+      redirect: state.redirect,
     };
   };
 
+  const fetchQuiz = async () => {
+    let history_res;
+    if (props.user_id) {
+      history_res = await axios
+        .post(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/history`, {
+          user_id: props.user_id,
+        }).catch(err => {
+          console.log('QuizTaking History: ', err);
+        });
+    }
+    if (history_res && history_res.status == 200) {
+      setState({ redirect: true })
+    }
+    else {
+      await axios
+        .get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
+        .then((res) => {
+          let s = parseToState(res);
+          s.selected_answers = s.questions.map((q) => -1);
+          setState(s);
+          setPreviewSource(res.data.quiz.icon_photo);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
-      .then((res) => {
-        console.log(res);
-        let s = parseToState(res);
-        s.selected_answers = s.questions.map((q) => -1);
-        setState(s);
-        setPreviewSource(res.data.quiz.icon_photo);
-        console.log(previewSource);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    fetchQuiz();
   }, []);
 
   const onSelect = (e, q_k, a_k) => {
@@ -192,7 +206,7 @@ export default function QuizTake(props) {
     }
   };
 
-  return (
+  return state.redirect ? <Redirect to={`/quiz/${props.match.params.quiz_id}/results`} /> : (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_name}</h1>
       <img className={classes.icon} src={previewSource} />
@@ -240,7 +254,7 @@ export default function QuizTake(props) {
                           ans,
                           q_key,
                           a_key +
-                            parseInt((state.answers[q_key].length + 1) / 2, 10)
+                          parseInt((state.answers[q_key].length + 1) / 2, 10)
                         )
                       )}
                   </Grid>

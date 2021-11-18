@@ -1,7 +1,6 @@
-import React, { useState, useEffect, forwardRef, useRef, useImperativeHandle } from 'react'
+import React  from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Button, FormControl, InputBase, TextField } from '@mui/material'
-import { useHistory, useLocation } from 'react-router-dom';
+import { Box, TextField } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   answerWrapper: {

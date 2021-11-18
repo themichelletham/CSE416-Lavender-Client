@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import {Toolbar, Divider } from '@material-ui/core';
@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Profile from "../pages/Profile"
-import Platform from "../pages/Platform"
 import * as constants from '../components/constants';
 import PlatformCreator from '../pages/PlatformCreator';
 
@@ -45,8 +44,14 @@ export default function Sidebar(props) {
   const classes = useStyles();
   const history = useHistory();
 
+  const [topTen, setTopTen] = useState([]);
+
   const onViewProfile = (e) => {
     history.push(`/profile/${props.user_id}`)
+  }
+
+  const onViewPlatform = (e) => {
+    history.push(`/platform/${props.platform_id}`)
   }
 
   const onCreatePlatform = (e) => {
@@ -59,15 +64,24 @@ export default function Sidebar(props) {
     }).then(res => {
       console.log(res)
       if (res.status == 201) {
-        history.push('/platform/' + res.data.platform_id + '/creator', {
-          platform: { ...res.data }
-        });
+        history.push('/platform/' + res.data.platform_id + '/creator');
       }
     }).catch(err => {
       console.log('Sidebar Create Platform Button: ', err);
     })
   }
 
+  useEffect(() => {
+    axios.get(`${constants.API_PATH}/users`, {
+      params: {
+        limit: 10,
+      }
+    }).then(res => {
+      setTopTen(res.data.map(user => user.username));
+    }).catch(err => {
+      console.log('GET USERS Sidebar: ', err);
+    })
+  }, []);
   return (
     <Box className={classes.mainbox}>
       <Drawer variant="permanent" className={classes.drawer}>
@@ -84,12 +98,12 @@ export default function Sidebar(props) {
                 </ListItemText>
               </ListItem>)
             }
-            <ListItem button key={"Create Platform"} onClick={onCreatePlatform}>
+            <ListItem button key={"Create Platform"} onClick={props.platform_id?onViewPlatform:onCreatePlatform}>
               <ListItemIcon>
                 <AddCircleOutlineIcon />
               </ListItemIcon>
               <ListItemText>
-                Create Platform
+                {props.platform_id?'View Platform':'Create Platform'}
               </ListItemText>
             </ListItem>
           </List>
@@ -97,7 +111,7 @@ export default function Sidebar(props) {
           <br />
           <Typography ml={5} className={classes.topten}>Top 10 Sprouts</Typography>
           <List sx={{  marginLeft: 2}}>
-            {["annie", "judy", "michelle", "steven"].map((text, index) => (
+            {topTen.map((text, index) => (
               <ListItem>
                 <ListItemText primary={(index + 1) + ".\t" + text} />
               </ListItem>

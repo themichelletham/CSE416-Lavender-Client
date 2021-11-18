@@ -13,7 +13,6 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import sproutLogo from "../images/sprout.png";
 import googleLogin from "../images/google-login-button.png";
 import {
-  BrowserRouter as Router,
   Route,
   Switch,
   Link,
@@ -87,11 +86,9 @@ export default function NavBar() {
       })
       .then((res) => {
         console.log(res);
-        if (res.status == 201) {
+        if (res.status === 201) {
           console.log("yes owo");
-          history.push("/platform/" + res.data.platform_id + "/creator", {
-            platform: { ...res.data },
-          });
+          history.push("/platform/" + res.data.platform_id + "/creator");
         }
       })
       .catch((err) => {
@@ -99,10 +96,16 @@ export default function NavBar() {
       });
   };
 
+  const onViewPlatform = (e) => {
+    e.preventDefault();
+    history.push(`/platform/${state.user.platform_id}`);
+  }
+
   const handleProfileClick = (event) => {
     setState({ ...state, anchorEl: event.currentTarget });
   };
   const onViewProfile = (e) => {
+    e.preventDefault();
     history.push(`/profile/${state.user.user_id}`);
   };
 
@@ -121,8 +124,7 @@ export default function NavBar() {
       })
       .catch((err) => {
         console.log("fetchAuthUser: ", err);
-      });
-      console.log(res);
+      })
     if (res && res.data) {
       setState({
         authenticated: true,
@@ -163,11 +165,12 @@ export default function NavBar() {
       .catch((err) => {
         console.log("Logout: ", err);
       });
-    history.push("/", {});
+    if (res.status === 200)
+      history.push("/", {});
   };
 
   const search = (e) => {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
       setKeyword(e.target.value);
       history.push(`/search/${e.target.value}`);
     }
@@ -244,15 +247,15 @@ export default function NavBar() {
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             transformOrigin={{ vertical: "bottom", horizontal: "right" }}
             keepMounted
-            open={Boolean(state.anchorEl)}
+            //open={Boolean(state.anchorEl)}
             MenuListProps={{
               "aria-labelledby": "basic-button",
             }}
           >
             <MenuItem onClick={onViewProfile}>View Profile</MenuItem>
-            <MenuItem onClick={(handleCloseProfileMenu, onCreatePlatform)}>
+            <MenuItem onClick={(handleCloseProfileMenu, (state.user && state.user.platform_id) ? onViewPlatform : onCreatePlatform)}>
               {" "}
-              My Platform
+              {(state.user && state.user.platform_id) ? 'My Platform' : 'Create Platform'}
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleSignOut}>Logout</MenuItem>
@@ -274,6 +277,7 @@ export default function NavBar() {
             render={(props) => (
               <Home
                 user_id={state.user && state.user.user_id}
+                platform_id={state.user && state.user.platform_id}
                 keyword={keyword}
                 {...props}
               />
