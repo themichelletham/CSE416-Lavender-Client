@@ -125,6 +125,10 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(25),
     height: theme.spacing(15)
   },
+  card: {
+    width: theme.spacing(24),
+    height: "100%",
+  },
 }));
 
 export default function PlatformCreator(props) {
@@ -412,7 +416,7 @@ export default function PlatformCreator(props) {
       >
         <Grid container spacing={3} ml={1} mt={1}>
           {props.user_id ? (
-            <Grid item className={classes.gridItem} key={"Create quiz"}>
+            <Grid item className={classes.gridItem} key={"Create quiz"} xs={2} md={2}>
               <ColorButton
                 className={classes.createQuiz}
                 onClick={onCreateQuiz}
@@ -427,7 +431,7 @@ export default function PlatformCreator(props) {
           {state.quizzes ? (
             state.quizzes.map((quiz, index) => (
               <Grid item className={classes.gridItem} key={index}>
-                <Card>
+                <Card className={classes.card}>
                   <Link
                     to={{
                       pathname: `/quiz/${quiz.quiz_id}/creator`,
