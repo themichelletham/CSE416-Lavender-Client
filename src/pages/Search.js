@@ -20,25 +20,25 @@ const useStyles = makeStyles((theme) => ({
   homePage: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
     flexGrow: 1,
-    width: '80vw',
+    width: "80vw",
     //height: '100vh',
   },
   gridContainer: {
-    display: 'inline-flex', 
+    display: "inline-flex",
     padding: theme.spacing(2),
-    paddingLeft: '10%',
-    width: '100%',
+    paddingLeft: "10%",
+    width: "100%",
   },
   gridItem: {
     display: "inline-block",
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
-  card:{ 
-    width: theme.spacing(24), 
-    height: '100%'
-  }
+  card: {
+    width: theme.spacing(24),
+    height: "100%",
+  },
 }));
 
 function Search(props) {
@@ -78,7 +78,7 @@ function Search(props) {
   };
 
   useEffect(() => {
-    if (props.keyword === "") {
+    if (!props.match || props.keyword === "") {
       axios
         .get(constants.API_PATH + `/platform`)
         .then((res) => {
@@ -104,11 +104,19 @@ function Search(props) {
 
   return (
     <Box className={classes.homePage}>
-      <Typography mb={1} mt={2} pl={'8%'}>QUIZZES</Typography>
+      <Typography mb={1} mt={2} pl={"8%"}>
+        QUIZZES
+      </Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
         {state.quizzes ? (
           state.quizzes.map((quiz) => (
-            <Grid item className={classes.gridItem} key={quiz.quiz_id} xs={3} md={3}>
+            <Grid
+              item
+              className={classes.gridItem}
+              key={quiz.quiz_id}
+              xs={3}
+              md={3}
+            >
               <Button onClick={(e) => onNavigateQuiz(e, quiz.quiz_id)}>
                 <Card className={classes.card}>
                   <CardMedia
@@ -126,11 +134,19 @@ function Search(props) {
           <Grid item></Grid>
         )}
       </Grid>
-      <Typography mb={1} pl={'8%'}>PLATFORMS</Typography>
-      <Grid container spacing={3} className={classes.gridContainer} >
+      <Typography mb={1} pl={"8%"}>
+        PLATFORMS
+      </Typography>
+      <Grid container spacing={3} className={classes.gridContainer}>
         {state.platforms ? (
           state.platforms.map((platform) => (
-            <Grid item className={classes.gridItem} key={platform.platform_id} xs={3} md={3}>
+            <Grid
+              item
+              className={classes.gridItem}
+              key={platform.platform_id}
+              xs={3}
+              md={3}
+            >
               <Button
                 onClick={(e) => onNavigatePlatform(e, platform.platform_id)}
               >
