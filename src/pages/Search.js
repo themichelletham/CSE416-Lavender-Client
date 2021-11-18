@@ -22,17 +22,18 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "flex-start",
     flexGrow: 1,
-    width: "100vw",
-    height: "100vh",
+    width: "80vw",
+    //height: '100vh',
   },
   gridContainer: {
     display: "inline-flex",
     padding: theme.spacing(2),
-    paddingLeft: "20%",
+    paddingLeft: "10%",
     width: "100%",
   },
   gridItem: {
     display: "inline-block",
+    marginBottom: theme.spacing(1),
   },
   card: {
     width: theme.spacing(24),
@@ -103,7 +104,7 @@ function Search(props) {
 
   return (
     <Box className={classes.homePage}>
-      <Typography mb={1} mt={2} pl={"18%"}>
+      <Typography mb={1} mt={2} pl={"8%"}>
         QUIZZES
       </Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
@@ -113,9 +114,8 @@ function Search(props) {
               item
               className={classes.gridItem}
               key={quiz.quiz_id}
-              item
-              xs={2}
-              md={2}
+              xs={3}
+              md={3}
             >
               <Button onClick={(e) => onNavigateQuiz(e, quiz.quiz_id)}>
                 <Card className={classes.card}>
@@ -134,7 +134,7 @@ function Search(props) {
           <Grid item></Grid>
         )}
       </Grid>
-      <Typography mb={1} pl={"18%"}>
+      <Typography mb={1} pl={"8%"}>
         PLATFORMS
       </Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
@@ -144,9 +144,8 @@ function Search(props) {
               item
               className={classes.gridItem}
               key={platform.platform_id}
-              item
-              xs={2}
-              md={2}
+              xs={3}
+              md={3}
             >
               <Button
                 onClick={(e) => onNavigatePlatform(e, platform.platform_id)}

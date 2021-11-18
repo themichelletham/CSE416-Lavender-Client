@@ -19,15 +19,15 @@ const useStyles = makeStyles((theme) => ({
     width: "90%",
     height: "90%",
     flexGrow: 8,
-    left: 10
-    //width: '100%',
-    //height: '100%',*/
-    isplay: "flex",
+    left: 10*/
+    width: '100%',
+    height: '100%',
+    display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     flexGrow: 1,
-    width: theme.spacing(100),
-    height: theme.spacing(100),
+    //width: theme.spacing(100),
+    //height: theme.spacing(100),
   },
   gridContainer: {
     //marginTop: '2%',

@@ -266,7 +266,7 @@ export default function PlatformCreator(props) {
     uploadImage();
   };
 
-  const uploadImage = async () => {
+  const uploadImage = () => {
     console.log(url);
     axios
       .put(

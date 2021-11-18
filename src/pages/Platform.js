@@ -33,28 +33,33 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   gridContainer: {
+    display: 'inline-flex', 
+    padding: ttheme.spacing(2),
+    paddingLeft: '5%',
     marginBottom: ttheme.spacing(40),
-    marginLeft: ttheme.spacing(10),
-    width: ttheme.spacing(200),
+    marginLeft: ttheme.spacing(20),
+    width: '100%',
+  },
+  gridItem: {
+    display: "inline-block",
+    marginBottom: ttheme.spacing(1)
   },
   editPlat: {
     marginLeft: '73%'
-  },
-  createQuiz: {
-    //marginLeft: ttheme.spacing(3),
-    //marginRight: ttheme.spacing(3),
-    marginTop: ttheme.spacing(3),
-    height: ttheme.spacing(20),
-    width: ttheme.spacing(25),
   },
   search: {
     border: 1,
     borderColor: grey,
     borderRadius: 30,
-    margin: "0 auto",
+    margin: "auto",
+    //marginLeft: '25%',
     width: 600,
     height: 35,
   },
+  card:{ 
+    width: ttheme.spacing(24), 
+    height: '100%'
+  }
 }));
 
 export default function Platform(props) {
@@ -121,12 +126,12 @@ export default function Platform(props) {
       {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
       </Box>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', maxWidth: ttheme.spacing(150) }}>
-        <Grid container spacing={3} ml={4} mt={1} className={classes.gridContainer}>
+      <Box mt={2}>
+        <Grid container spacing={3} className={classes.gridContainer}>
           {state.quizzes ? state.quizzes.map(quiz => (
-            <Grid item className={classes.gridItem} key={quiz.quiz_id}>
+            <Grid item className={classes.gridItem} key={quiz.quiz_id} xs={2} md={2}>
               <Link to={{ pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id }}>
-                <Card>
+                <Card className={classes.card}>
                   <CardMedia component="img" height="140" width="200" image={quiz.icon_photo} />
                   <CardContent className={classes.quiz}>{quiz.quiz_name}</CardContent>
                 </Card>
