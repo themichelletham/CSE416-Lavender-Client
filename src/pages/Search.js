@@ -19,20 +19,25 @@ ttheme.spacing(1);
 const useStyles = makeStyles((theme) => ({
   homePage: {
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: "column",
+    justifyContent: 'flex-start',
     flexGrow: 1,
-    width: theme.spacing(100),
-    height: theme.spacing(100),
+    width: '100vw',
+    height: '100vh',
   },
   gridContainer: {
-    marginTop: theme.spacing(5),
-    marginLeft: theme.spacing(20),
-    width: theme.spacing(155),
+    display: 'inline-flex', 
+    padding: theme.spacing(2),
+    paddingLeft: '20%',
+    width: '100%',
   },
   gridItem: {
     display: "inline-block",
   },
+  card:{ 
+    width: theme.spacing(24), 
+    height: '100%'
+  }
 }));
 
 function Search(props) {
@@ -97,16 +102,14 @@ function Search(props) {
   }, [props]);
 
   return (
-    <Box>
-      <Typography ml={"6%"} mt={ttheme.spacing(0.5)} mb={ttheme.spacing(0.5)}>
-        QUIZZES
-      </Typography>
+    <Box className={classes.homePage}>
+      <Typography mb={1} mt={2} pl={'18%'}>QUIZZES</Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
         {state.quizzes ? (
           state.quizzes.map((quiz) => (
-            <Grid item className={classes.gridItem} key={quiz.quiz_id}>
+            <Grid item className={classes.gridItem} key={quiz.quiz_id} item xs={2} md={2}>
               <Button onClick={(e) => onNavigateQuiz(e, quiz.quiz_id)}>
-                <Card>
+                <Card className={classes.card}>
                   <CardMedia
                     component="img"
                     height="140"
@@ -122,17 +125,15 @@ function Search(props) {
           <Grid item></Grid>
         )}
       </Grid>
-      <Typography mt={ttheme.spacing(1)} ml={"6%"} mb={ttheme.spacing(0.5)}>
-        PLATFORMS
-      </Typography>
-      <Grid container spacing={3} className={classes.gridContainer}>
+      <Typography mb={1} pl={'18%'}>PLATFORMS</Typography>
+      <Grid container spacing={3} className={classes.gridContainer} >
         {state.platforms ? (
           state.platforms.map((platform) => (
-            <Grid item className={classes.gridItem} key={platform.platform_id}>
+            <Grid item className={classes.gridItem} key={platform.platform_id} item xs={2} md={2}>
               <Button
                 onClick={(e) => onNavigatePlatform(e, platform.platform_id)}
               >
-                <Card>
+                <Card className={classes.card}>
                   <CardMedia
                     component="img"
                     height="140"

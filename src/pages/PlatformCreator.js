@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   editThumbnail: {
     display: 'inline-block',
     width: theme.spacing(200),
-    paddingLeft: theme.spacing(103),
+    paddingLeft: theme.spacing(117),
     zIndex: 'tooltip'
   },
   createQuiz: { 
@@ -288,7 +288,7 @@ export default function PlatformCreator(props) {
   return (
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile platform_icon={previewSource} />
-      <PlatformLead />
+      <PlatformLead platform_id={props.match.params.platform_id}/>
       <Box className={classes.editThumbnail}>
         <Input type="file" name="image" accept=".jpg .png .jpeg" multiple={false} onChange={handleFileInputChange}></Input>
         {/* <Button className={classes.thumbnailButton} size='large' onClick={handleSubmitFile} endIcon={<FileUploadIcon />} disableElevation pl={1}>Upload</Button> */}

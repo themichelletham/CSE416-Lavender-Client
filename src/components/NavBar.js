@@ -122,6 +122,7 @@ export default function NavBar() {
       .catch((err) => {
         console.log("fetchAuthUser: ", err);
       });
+      console.log(res);
     if (res && res.data) {
       setState({
         authenticated: true,

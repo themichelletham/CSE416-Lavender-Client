@@ -28,9 +28,8 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   banner: {
-    width: theme.spacing(166.5),
+    width: '100%',
     height: theme.spacing(30),
-    width: "100%",
     overflow: "hidden",
     position: 'absolute',
     top: 0,
