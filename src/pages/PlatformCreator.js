@@ -231,6 +231,7 @@ export default function PlatformCreator(props) {
         console.log(res);
         new_state.quizzes.splice(index, 1);
 
+        setState(new_state);
         setQuizDialog(false);
         setSelectedQuiz(null);
 
@@ -418,7 +419,7 @@ export default function PlatformCreator(props) {
                   </Link>
                   <Button onClick={(e) => { handleDeleteOpen(index) }}>
                     <HighlightOffIcon style={{ fill: "red" }} />
-                    Delete Quiz {index}
+                    Delete Quiz
                   </Button>
                 </Card>
               </Grid>
