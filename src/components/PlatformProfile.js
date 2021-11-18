@@ -32,8 +32,9 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 'modal',
   },
   icon: {
-    float: 'center',
-    marginLeft: '1%', 
+    left: 0, 
+    float: 'left',
+    marginLeft: '10%', 
     marginTop: theme.spacing(10),
     marginBottom: theme.spacing(5), 
     height: theme.spacing(22),
@@ -43,20 +44,24 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 'tooltip'
   }, 
   title:{
-    paddingTop: '23%', 
-    paddingLeft: '8%'  
+    display: "flex", 
+    flexGrow: 1, 
+    left: 0, 
+    paddingTop: '15%', 
+    paddingLeft: '15%'  
+    //marginLeft: theme.spacing(20)
   }
 }));
 
 export default function PlatformProfile(props) {
   const classes = useStyles();
   return ( 
-    <Grid container className={classes.PlatformProfileContainer}>
+    <Grid container className={classes.PlatformProfileContainer} >
       <Box item sx={{display: 'flex'}} >
         <img className={classes.banner} src={Banner}/></Box>
       <Box item sx={{display: 'flex'}} >
         <img className={classes.icon} src={props.platform_icon}/>
-      <Box className={classes.title}>
+      <Box item sx={{display: 'flex'}} className={classes.title}>
         <Typography variant='h4' ml={2} mt={2}> {props.platform_name}</Typography>
       </Box>
     </Box>
