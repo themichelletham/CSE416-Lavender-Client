@@ -181,7 +181,7 @@ export default function PlatformCreator(props) {
         quizzes: res.data.quizzes,
         topFiveUsers: res.data.topFiveUsers,
       });
-      setPreviewSource(res.data.icon_photo);
+      setUrl(res.data.icon_photo);
     }).catch(err => {
       console.log(err);
     })
@@ -226,8 +226,6 @@ export default function PlatformCreator(props) {
     e.preventDefault();
     console.log(`Deleting Quiz index ${index}`);
     let new_state = copyState();
-    console.log(`${constants.API_PATH}/quiz/${state.quizzes[index].quiz_id}`);
-
     axios.delete(`${constants.API_PATH}/quiz/${state.quizzes[index].quiz_id}`)
       .then(res => {
         console.log(res);
