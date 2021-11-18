@@ -243,13 +243,16 @@ export default function PlatformCreator(props) {
     const data = new FormData();
     data.append("file", image);
     data.append("upload_preset", "sprout");
-    data.append("cloud_name", `${constants.CLOUDINARY_NAME}`);
+    data.append("cloud_name", "lavender-sprout-herokuapp-com");
 
     //please note: Maximum file size is 10485760, may out to display this
-    fetch(`${constants.CLOUDINARY_API_LINK}/image/upload`, {
-      method: "post",
-      body: data,
-    })
+    fetch(
+      `https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload`,
+      {
+        method: "post",
+        body: data,
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -263,12 +266,8 @@ export default function PlatformCreator(props) {
     uploadImage();
   };
 
-  const handleSubmitFile = () => {
-    if (!previewSource) return;
-    uploadImage(previewSource);
-  };
-
   const uploadImage = async () => {
+    console.log(url);
     axios
       .put(
         `${constants.API_PATH}/platform/${props.match.params.platform_id}/image-upload`,
