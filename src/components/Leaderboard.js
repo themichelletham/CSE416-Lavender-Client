@@ -35,7 +35,11 @@ export default function Leaderboard() {
     history.push(`/profile/${user_id}`)
   };
   useEffect(() => {
-    axios.get(`${constants.API_PATH}/users`)
+    axios.get(`${constants.API_PATH}/users`, {
+      params: {
+        limit: 100,
+      }
+    })
       .catch(err => {
         console.log('Leaderboard: ', err);
       }).then(res => {

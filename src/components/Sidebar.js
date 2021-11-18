@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
 import { Route, Switch, useHistory } from 'react-router-dom';
@@ -44,6 +44,8 @@ export default function Sidebar(props) {
   const classes = useStyles();
   const history = useHistory();
 
+  const [topTen, setTopTen] = useState([]);
+
   const onViewProfile = (e) => {
     history.push(`/profile/${props.user_id}`)
   }
@@ -71,6 +73,17 @@ export default function Sidebar(props) {
     })
   }
 
+  useEffect(() => {
+    axios.get(`${constants.API_PATH}/users`, {
+      params: {
+        limit: 10,
+      }
+    }).then(res => {
+      setTopTen(res.data.map(user => user.username));
+    }).catch(err => {
+      console.log('GET USERS Sidebar: ', err);
+    })
+  }, []);
   return (
     <Box className={classes.mainbox}>
       <Drawer variant="permanent" className={classes.drawer}>
@@ -100,7 +113,7 @@ export default function Sidebar(props) {
           <br />
           <Typography ml={5} className={classes.topten}>Top 10 Sprouts</Typography>
           <List sx={{  marginLeft: 2}}>
-            {["annie", "judy", "michelle", "steven"].map((text, index) => (
+            {topTen.map((text, index) => (
               <ListItem>
                 <ListItemText primary={(index + 1) + ".\t" + text} />
               </ListItem>
