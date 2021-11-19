@@ -18,21 +18,21 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import PlatformProfile from "../components/PlatformProfile.js";
 import PlatformLead from "../components/PlatformLead.js";
 import SearchBar from "material-ui-search-bar";
-import { styled } from '@mui/material/styles';
-import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import { purple, grey } from '@mui/material/colors'
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import AddIcon from '@material-ui/icons/Add'
+import { styled } from "@mui/material/styles";
+import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import { purple, grey } from "@mui/material/colors";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import AddIcon from "@material-ui/icons/Add";
 
 const theme = createTheme();
 theme.spacing(1); // `${8 * 2}px` = '16px'
@@ -52,22 +52,22 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
     alignItems: "left",
     flexGrow: 1,
-    width: '100vw',
+    width: "100vw",
     marginLeft: theme.spacing(5),
   },
-  container:{ 
-    display: "flex", 
-    flexGrow: 1, 
-    width: '100%',
+  container: {
+    display: "flex",
+    flexGrow: 1,
+    width: "100%",
     left: 1,
-    display: "inline-block", 
-    width: '100%', 
+    display: "inline-block",
+    width: "100%",
   },
   Opt: {
     display: "flex",
     flexGrow: 1,
-    width: '100%',
-    paddingLeft: '60%',
+    width: "100%",
+    paddingLeft: "60%",
     //paddingBottom: theme.spacing(0.5),
     alignItems: "left",
   },
@@ -78,29 +78,29 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 30,
     //margin: "auto",
     left: 0,
-    marginLeft: '20%',
+    marginLeft: "20%",
     width: 600,
     height: 35,
-    marginBottom: theme.spacing(.5),
-    marginTop: theme.spacing(.5),
+    marginBottom: theme.spacing(0.5),
+    marginTop: theme.spacing(0.5),
     //align: "center"
   },
   editPlatform: {
     borderRadius: 15,
-    display: "flex", 
-    flexGrow: 1, 
-    width: '100%',
+    display: "flex",
+    flexGrow: 1,
+    width: "100%",
     borderTopLeftRadius: 15,
-    left: 1
+    left: 1,
   },
   title: {
-    display: 'flex', 
-    flexGrow: 1, 
+    display: "flex",
+    flexGrow: 1,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     height: theme.spacing(7.5),
     backgroundColor: "#7519BD",
-    width: '80vw',
+    width: "80vw",
     marginBottom: theme.spacing(2),
   },
   quiz: {
@@ -111,11 +111,11 @@ const useStyles = makeStyles((theme) => ({
   },
   editThumbnail: {
     display: "inline-block",
-    width: '100%',
-    paddingTop: 1, 
-    paddingLeft: '55%',
+    width: "100%",
+    paddingTop: 1,
+    paddingLeft: "55%",
     zIndex: "tooltip",
-    flexGrow: 1, 
+    flexGrow: 1,
   },
   createQuiz: {
     width: theme.spacing(25),
@@ -123,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
   },
   createQuiz: {
     width: theme.spacing(25),
-    height: theme.spacing(15)
+    height: theme.spacing(15),
   },
   card: {
     width: theme.spacing(24),
@@ -149,8 +149,8 @@ export default function PlatformCreator(props) {
   const copyState = () => {
     let ret = {};
     ret.platform_name = state.platform_name;
-    ret.quizzes = state.quizzes.length?[...state.quizzes]:[];
-    ret.topFiveUsers = state.quizzes.length?[...state.topFiveUsers]:[];
+    ret.quizzes = state.quizzes.length ? [...state.quizzes] : [];
+    ret.topFiveUsers = state.quizzes.length ? [...state.topFiveUsers] : [];
     return ret;
   };
 
@@ -198,21 +198,24 @@ export default function PlatformCreator(props) {
   };
 
   const fetchPlatformData = (keyword) => {
-    axios.get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`, {
-      params: {
-        keyword: keyword,
-      }
-    }).then(res => {
-      setState({
-        platform_name: res.data.platform_name,
-        quizzes: res.data.quizzes,
-        topFiveUsers: res.data.topFiveUsers,
+    axios
+      .get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`, {
+        params: {
+          keyword: keyword,
+        },
+      })
+      .then((res) => {
+        setState({
+          platform_name: res.data.platform_name,
+          quizzes: res.data.quizzes,
+          topFiveUsers: res.data.topFiveUsers,
+        });
+        setUrl(res.data.icon_photo);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      setUrl(res.data.icon_photo);
-    }).catch(err => {
-      console.log(err);
-    })
-  }
+  };
 
   const search = (e) => {
     if (e.key === "Enter") {
@@ -244,17 +247,19 @@ export default function PlatformCreator(props) {
         if (res.status === 201) {
           history.push(`/quiz/${res.data.quiz.quiz_id}/creator`);
         }
-      }).catch(err => {
-        console.log('Create Quiz Button: ', err);
       })
-  }
+      .catch((err) => {
+        console.log("Create Quiz Button: ", err);
+      });
+  };
 
   const onDeleteQuiz = (e, index) => {
     e.preventDefault();
     console.log(`Deleting Quiz index ${index}`);
     let new_state = copyState();
-    axios.delete(`${constants.API_PATH}/quiz/${state.quizzes[index].quiz_id}`)
-      .then(res => {
+    axios
+      .delete(`${constants.API_PATH}/quiz/${state.quizzes[index].quiz_id}`)
+      .then((res) => {
         console.log(res);
         new_state.quizzes.splice(index, 1);
 
@@ -262,27 +267,27 @@ export default function PlatformCreator(props) {
         setQuizDialog(false);
         setSelectedQuiz(null);
 
-        console.log(`deleted quiz ${state.quizzes[index].quiz_id}`)
+        console.log(`deleted quiz ${state.quizzes[index].quiz_id}`);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
-      })
-  }
+      });
+  };
 
   const handleDeleteOpen = (index) => {
     console.log(state);
     console.log(`trying to delete quiz ${index}`);
-    
+
     setSelectedQuiz(index);
     setQuizDialog(true);
-    console.log("delete dialog opened")
-  }
+    console.log("delete dialog opened");
+  };
 
   const handleDeleteClose = () => {
     setQuizDialog(false);
     setSelectedQuiz(null);
-    console.log("delete dialog closed")
-  }
+    console.log("delete dialog closed");
+  };
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -300,7 +305,6 @@ export default function PlatformCreator(props) {
   };
 
   const imageDetails = () => {
-    const hello = "hello";
     const data = new FormData();
     data.append("file", image);
     data.append("upload_preset", "sprout");
@@ -350,122 +354,138 @@ export default function PlatformCreator(props) {
       <PlatformProfile platform_icon={url} />
       <PlatformLead topFiveUsers={state.topFiveUsers} />
       <Box className={classes.container}>
-      <Box className={classes.editThumbnail}>
-        <Input
-          type="file"
-          name="image"
-          accept=".jpg .png .jpeg"
-          multiple={false}
-          onChange={handleFileInputChange}
-        ></Input>
-        {cloudinaryErr}
-        <Button
-          className={classes.thumbnailButton}
-          size="large"
-          onClick={imageDetails}
-          endIcon={<FileUploadIcon />}
-          disableElevation
-          pl={1}
-        >
-          Upload
-        </Button>
-      </Box>
-      <SearchBar
-        className={classes.search}
-        placeholder="Search..."
-        onKeyPress={search}
-      />
-      <Box className={classes.Opt} ml={3} mr={1} mt={3}>
-        <Button
-          size="small"
-          variant="contained"
-          onClick={onSave}
-          disableElevation
-        >
-          Save Platform
-        </Button>
-        <Button
-          size="small"
-          variant="contained"
-          onClick={onDelete}
-          disableElevation
-        >
-          Delete Platform
-        </Button>
-      </Box>
-      <FormControl className={classes.editPlatform}>
-        <InputBase
-          className={classes.title}
-          inputProps={{
-            min: 800,
-            style: {
-              textAlign: "center",
-              fontSize: 22,
-              paddingTop: 0,
-              paddingBottom: 0,
-              marginTop: 10,
-              fullWidth: "true"
-            },
-          }}
-          value={state.platform_name}
-          onChange={onTitleChange}
+        <Box className={classes.editThumbnail}>
+          <Input
+            type="file"
+            name="image"
+            accept=".jpg .png .jpeg"
+            multiple={false}
+            onChange={handleFileInputChange}
+          ></Input>
+          {cloudinaryErr}
+          <Button
+            className={classes.thumbnailButton}
+            size="large"
+            onClick={imageDetails}
+            endIcon={<FileUploadIcon />}
+            disableElevation
+            pl={1}
+          >
+            Upload
+          </Button>
+        </Box>
+        <SearchBar
+          className={classes.search}
+          placeholder="Search..."
+          onKeyPress={search}
         />
-      </FormControl>
-      <Box
-        sx={{ display: "flex", flexWrap: "wrap", maxWidth: '100%'}}
-      >
-        <Grid container spacing={3} ml={1} mt={1}>
-          {props.user_id ? (
-            <Grid item className={classes.gridItem} key={"Create quiz"} xs={2} md={2}>
-              <ColorButton
-                className={classes.createQuiz}
-                onClick={onCreateQuiz}
-                endIcon={<AddIcon />}
+        <Box className={classes.Opt} ml={3} mr={1} mt={3}>
+          <Button
+            size="small"
+            variant="contained"
+            onClick={onSave}
+            disableElevation
+          >
+            Save Platform
+          </Button>
+          <Button
+            size="small"
+            variant="contained"
+            onClick={onDelete}
+            disableElevation
+          >
+            Delete Platform
+          </Button>
+        </Box>
+        <FormControl className={classes.editPlatform}>
+          <InputBase
+            className={classes.title}
+            inputProps={{
+              min: 800,
+              style: {
+                textAlign: "center",
+                fontSize: 22,
+                paddingTop: 0,
+                paddingBottom: 0,
+                marginTop: 10,
+                fullWidth: "true",
+              },
+            }}
+            value={state.platform_name}
+            onChange={onTitleChange}
+          />
+        </FormControl>
+        <Box sx={{ display: "flex", flexWrap: "wrap", maxWidth: "100%" }}>
+          <Grid container spacing={3} ml={1} mt={1}>
+            {props.user_id ? (
+              <Grid
+                item
+                className={classes.gridItem}
+                key={"Create quiz"}
+                xs={2}
+                md={2}
               >
-                Create Quiz
-              </ColorButton>
-            </Grid>
-          ) : (
-            <></>
-          )}
-          {state.quizzes ? (
-            state.quizzes.map((quiz, index) => (
-              <Grid item className={classes.gridItem} key={index}>
-                <Card className={classes.card}>
-                  <Link
-                    to={{
-                      pathname: `/quiz/${quiz.quiz_id}/creator`,
-                      quiz_id: quiz.quiz_id,
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      width="200"
-                      image={quiz.icon_photo}
-                    />
-                    <CardContent>{quiz.quiz_name}</CardContent>
-                  </Link>
-                  <Button onClick={(e) => { handleDeleteOpen(index) }}>
-                    <HighlightOffIcon style={{ fill: "red" }} />
-                    Delete Quiz
-                  </Button>
-                </Card>
+                <ColorButton
+                  className={classes.createQuiz}
+                  onClick={onCreateQuiz}
+                  endIcon={<AddIcon />}
+                >
+                  Create Quiz
+                </ColorButton>
               </Grid>
-            ))
-          ) : (
-            <Grid item></Grid>
-          )}
-        </Grid>
+            ) : (
+              <></>
+            )}
+            {state.quizzes ? (
+              state.quizzes.map((quiz, index) => (
+                <Grid item className={classes.gridItem} key={index}>
+                  <Card className={classes.card}>
+                    <Link
+                      to={{
+                        pathname: `/quiz/${quiz.quiz_id}/creator`,
+                        quiz_id: quiz.quiz_id,
+                      }}
+                    >
+                      <CardMedia
+                        component="img"
+                        height="140"
+                        width="200"
+                        image={quiz.icon_photo}
+                      />
+                      <CardContent>{quiz.quiz_name}</CardContent>
+                    </Link>
+                    <Button
+                      onClick={(e) => {
+                        handleDeleteOpen(index);
+                      }}
+                    >
+                      <HighlightOffIcon style={{ fill: "red" }} />
+                      Delete Quiz
+                    </Button>
+                  </Card>
+                </Grid>
+              ))
+            ) : (
+              <Grid item></Grid>
+            )}
+          </Grid>
         </Box>
         <Dialog open={quizDialog} onClose={handleDeleteClose}>
           <DialogTitle>Delete Quiz</DialogTitle>
           <DialogContent>
-            <DialogContentText>Are you sure you want to delete this quiz?</DialogContentText>
+            <DialogContentText>
+              Are you sure you want to delete this quiz?
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDeleteClose}>No</Button>
-            <Button onClick={e => {onDeleteQuiz(e, selectedQuiz)}}>Yes, Delete</Button>
+            <Button
+              onClick={(e) => {
+                onDeleteQuiz(e, selectedQuiz);
+              }}
+            >
+              Yes, Delete
+            </Button>
           </DialogActions>
         </Dialog>
       </Box>
