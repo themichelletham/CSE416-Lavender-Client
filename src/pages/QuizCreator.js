@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   editThumbnail: {
     display: "inline-block",
     width: theme.spacing(200),
-    paddingLeft: theme.spacing(83),
+    paddingLeft: theme.spacing(68),
     zIndex: "tooltip",
   },
   //toolbar: theme.mixins.toolbar,
