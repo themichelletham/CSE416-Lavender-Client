@@ -81,7 +81,7 @@ export default function NavBar() {
       .post(`${constants.API_PATH}/platform`, {
         platform_fields: {
           platform_name: "Untitled Platform",
-          user_id: 1,
+          user_id: state.user.user_id,
         },
       })
       .then((res) => {
