@@ -23,13 +23,15 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
     flexGrow: 1,
     width: "80vw",
-    //height: '100vh',
+    //height: "100%",
+    overflowY: "hidden" 
   },
   gridContainer: {
     display: "inline-flex",
     padding: theme.spacing(2),
     paddingLeft: "10%",
     width: "100%",
+    //height: "100%"
   },
   gridItem: {
     display: "inline-block",
