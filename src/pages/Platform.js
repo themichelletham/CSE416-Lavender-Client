@@ -132,7 +132,7 @@ export default function Platform(props) {
       <Box mt={2}>
         <Grid container spacing={3} className={classes.gridContainer}>
           {state.quizzes ? state.quizzes.map(quiz => (
-            <Grid item className={classes.gridItem} key={quiz.quiz_id} xs={2} md={2}>
+            <Grid item className={classes.gridItem} key={quiz.quiz_id} xs={3} md={3}>
               <Link to={{ pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id }}>
                 <Card className={classes.card}>
                   <CardMedia component="img" height="140" width="200" image={quiz.icon_photo} />
