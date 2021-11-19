@@ -38,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '5%',
     marginBottom: ttheme.spacing(40),
     marginLeft: ttheme.spacing(20),
-    width: '100%',
+    flexWrap: "wrap", 
+    maxWidth: "80vw"
   },
   gridItem: {
     display: "inline-block",
