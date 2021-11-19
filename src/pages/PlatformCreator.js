@@ -103,6 +103,14 @@ const useStyles = makeStyles((theme) => ({
     width: "80vw",
     marginBottom: theme.spacing(2),
   },
+  gridContainer: {
+    display: "inline-flex",
+    padding: theme.spacing(2),
+    //paddingLeft: "10%",
+    width: "100%",
+    flexWrap: "wrap", 
+    maxWidth: "80vw"
+  },
   quiz: {
     color: "#FFFFFF",
     width: theme.spacing(15),
@@ -415,15 +423,14 @@ export default function PlatformCreator(props) {
             onChange={onTitleChange}
           />
         </FormControl>
-        <Box sx={{ display: "flex", flexWrap: "wrap", maxWidth: "100%" }}>
-          <Grid container spacing={3} ml={1} mt={1}>
+        <Box>
+          <Grid container spacing={3} className={classes.gridContainer}>
             {props.user_id ? (
               <Grid
                 item
                 className={classes.gridItem}
                 key={"Create quiz"}
-                xs={2}
-                md={2}
+               
               >
                 <ColorButton
                   className={classes.createQuiz}
@@ -451,6 +458,7 @@ export default function PlatformCreator(props) {
                         height="140"
                         width="200"
                         image={quiz.icon_photo}
+                        
                       />
                       <CardContent>{quiz.quiz_name}</CardContent>
                     </Link>
