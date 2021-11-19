@@ -163,7 +163,7 @@ export default function QuizResult(props) {
   };
 
   const onReturn = (e) => {
-    history.push(`/platform/${state.platform_id}/creator`);
+    history.push(`/platform/${state.platform_id}`);
   };
 
   return (
