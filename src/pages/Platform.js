@@ -32,6 +32,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'left',
     width: '100%',
   },
+  container: {
+    display: "flex",
+    flexGrow: 1,
+    width: "100%",
+    left: 1,
+    display: "inline-block",
+    width: "100%",
+  },
   gridContainer: {
     display: 'inline-flex',
     padding: ttheme.spacing(2),
@@ -116,6 +124,7 @@ export default function Platform(props) {
     <Box className={classes.PlatformContainer}>
       <PlatformProfile platform_name={state.platform_name} platform_icon={previewSource} />
       <PlatformLead topFiveUsers={[...state.topFiveUsers]} />
+      <Box container className={classes.container}>
       <Box className={classes.editPlat}>
         <Link to={`/platform/${props.match.params.platform_id}/creator`}>
           <ColorButton>Edit Platform</ColorButton>
@@ -142,6 +151,7 @@ export default function Platform(props) {
             </Grid>
           )) : <Grid item></Grid>}
         </Grid>
+      </Box>
       </Box>
     </Box>
   )
