@@ -323,7 +323,7 @@ export default function QuizCreate(props) {
           ca.push(i);
         }
       }
-      console.log(ca);
+      //console.log(ca);
       //ans_list.filter(ans_obj => ans_obj.is_correct).map(ans_objb => ans_objb.answer_text)
       return ca;
     });
@@ -340,6 +340,7 @@ export default function QuizCreate(props) {
       .get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
       .then((res) => {
         setState(parseToState(res));
+        setUrl(res.data.icon_photo);
       })
       .catch((err) => {
         console.log(err);
