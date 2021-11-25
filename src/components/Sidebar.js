@@ -71,13 +71,19 @@ export default function Sidebar(props) {
     })
   }
 
+  const onViewLeaderProfile = (e, user_id) => {
+    e.preventDefault();
+    history.push(`/profile/${user_id}`)
+  }
+
   useEffect(() => {
     axios.get(`${constants.API_PATH}/users`, {
       params: {
         limit: 10,
       }
     }).then(res => {
-      setTopTen(res.data.map(user => user.username));
+      console.log(res.data);
+      setTopTen(res.data.map(user => user));
     }).catch(err => {
       console.log('GET USERS Sidebar: ', err);
     })
@@ -111,9 +117,9 @@ export default function Sidebar(props) {
           <br />
           <Typography ml={5} className={classes.topten}>Top 10 Sprouts</Typography>
           <List sx={{  marginLeft: 2}}>
-            {topTen.map((text, index) => (
+            {topTen.map((user, index) => (
               <ListItem>
-                <ListItemText primary={(index + 1) + ".\t" + text} />
+                <ListItemText button onClick={e => onViewLeaderProfile(e, user.user_id)} primary={(index + 1) + ".\t" + user.username} />
               </ListItem>
             ))}
           </List>
