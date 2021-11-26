@@ -118,8 +118,8 @@ export default function Sidebar(props) {
           <Typography ml={5} className={classes.topten}>Top 10 Sprouts</Typography>
           <List sx={{  marginLeft: 2}}>
             {topTen.map((user, index) => (
-              <ListItem>
-                <ListItemText button onClick={e => onViewLeaderProfile(e, user.user_id)} primary={(index + 1) + ".\t" + user.username} />
+              <ListItem  button key={"View Leaderboard User"} onClick={e => onViewLeaderProfile(e, user.user_id)}>
+                <ListItemText primary={(index + 1) + ".\t" + user.username} />
               </ListItem>
             ))}
           </List>
