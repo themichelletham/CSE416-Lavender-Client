@@ -148,6 +148,7 @@ export default function PlatformCreator(props) {
 
   const [selectedQuiz, setSelectedQuiz] = useState();
   const [quizDialog, setQuizDialog] = useState(false);
+  const [platformDialog, setPlatformDialog] = useState(false);
 
   const [previewSource, setPreviewSource] = useState();
   const [image, setImage] = useState("");
@@ -198,6 +199,14 @@ export default function PlatformCreator(props) {
         console.log(err);
       });
   };
+
+  const handleDeletePlatformOpen = (e) => {
+    setPlatformDialog(true);
+  }
+
+  const handleDeletePlatformClose = (e) => {
+    setPlatformDialog(false);
+  }
 
   const onTitleChange = (e) => {
     let new_state = copyState();
@@ -282,19 +291,19 @@ export default function PlatformCreator(props) {
       });
   };
 
-  const handleDeleteOpen = (index) => {
-    console.log(state);
-    console.log(`trying to delete quiz ${index}`);
+  const handleDeleteQuizOpen = (index) => {
+    // console.log(state);
+    // console.log(`trying to delete quiz ${index}`);
 
     setSelectedQuiz(index);
     setQuizDialog(true);
-    console.log("delete dialog opened");
+    // console.log("delete dialog opened");
   };
 
-  const handleDeleteClose = () => {
+  const handleDeleteQuizClose = () => {
     setQuizDialog(false);
     setSelectedQuiz(null);
-    console.log("delete dialog closed");
+    // console.log("delete dialog closed");
   };
 
   const handleFileInputChange = (e) => {
@@ -399,12 +408,30 @@ export default function PlatformCreator(props) {
           <Button
             size="small"
             variant="contained"
-            onClick={onDelete}
+            onClick={(e) => {handleDeletePlatformOpen();}}
             disableElevation
           >
             Delete Platform
           </Button>
         </Box>
+        <Dialog open={platformDialog} onClose={handleDeletePlatformClose}>
+          <DialogTitle>Delete Platform {state.platform_name}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this platform?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDeletePlatformClose}>No</Button>
+            <Button
+              onClick={(e) => {
+                onDelete();
+              }}
+            >
+              Yes, Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
         <FormControl className={classes.editPlatform}>
           <InputBase
             className={classes.title}
@@ -464,7 +491,7 @@ export default function PlatformCreator(props) {
                     </Link>
                     <Button
                       onClick={(e) => {
-                        handleDeleteOpen(index);
+                        handleDeleteQuizOpen(index);
                       }}
                     >
                       <HighlightOffIcon style={{ fill: "red" }} />
@@ -478,7 +505,7 @@ export default function PlatformCreator(props) {
             )}
           </Grid>
         </Box>
-        <Dialog open={quizDialog} onClose={handleDeleteClose}>
+        <Dialog open={quizDialog} onClose={handleDeleteQuizClose}>
           <DialogTitle>Delete Quiz</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -486,7 +513,7 @@ export default function PlatformCreator(props) {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleDeleteClose}>No</Button>
+            <Button onClick={handleDeleteQuizClose}>No</Button>
             <Button
               onClick={(e) => {
                 onDeleteQuiz(e, selectedQuiz);
