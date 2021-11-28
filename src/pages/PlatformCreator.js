@@ -30,6 +30,9 @@ import { styled } from "@mui/material/styles";
 import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { purple, grey } from "@mui/material/colors";
+import IconButton from '@mui/material/IconButton';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AddIcon from "@material-ui/icons/Add";
@@ -254,6 +257,7 @@ export default function PlatformCreator(props) {
             platform_id: props.match.params.platform_id,
             quiz_name: "Untitled",
             time_limit: null,
+            is_published: false,
           },
           user_id: props.user_id,
         },
@@ -292,19 +296,20 @@ export default function PlatformCreator(props) {
   };
 
   const handleDeleteQuizOpen = (index) => {
-    // console.log(state);
-    // console.log(`trying to delete quiz ${index}`);
-
     setSelectedQuiz(index);
     setQuizDialog(true);
-    // console.log("delete dialog opened");
   };
 
   const handleDeleteQuizClose = () => {
     setQuizDialog(false);
     setSelectedQuiz(null);
-    // console.log("delete dialog closed");
   };
+
+  const handleVisibility = (index) => {
+    let new_state = copyState();
+    new_state.quizzes[index].is_published = !new_state.quizzes[index].is_published ;
+    setState(new_state);
+  }
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -489,14 +494,12 @@ export default function PlatformCreator(props) {
                       />
                       <CardContent>{quiz.quiz_name}</CardContent>
                     </Link>
-                    <Button
-                      onClick={(e) => {
-                        handleDeleteQuizOpen(index);
-                      }}
-                    >
+                    <IconButton onClick={(e) => {handleVisibility(index)}}>
+                      {quiz.is_published ? <VisibilityOffIcon/> : <VisibilityIcon/>}
+                    </IconButton>
+                    <IconButton onClick={(e) => {handleDeleteQuizOpen(index);}}>
                       <HighlightOffIcon style={{ fill: "red" }} />
-                      Delete Quiz
-                    </Button>
+                    </IconButton>
                   </Card>
                 </Grid>
               ))
@@ -514,11 +517,7 @@ export default function PlatformCreator(props) {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDeleteQuizClose}>No</Button>
-            <Button
-              onClick={(e) => {
-                onDeleteQuiz(e, selectedQuiz);
-              }}
-            >
+            <Button onClick={(e) => {onDeleteQuiz(e, selectedQuiz);}}>
               Yes, Delete
             </Button>
           </DialogActions>

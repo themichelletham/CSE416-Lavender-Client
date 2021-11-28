@@ -141,6 +141,7 @@ export default function Platform(props) {
       <Box mt={2}>
         <Grid container spacing={3} className={classes.gridContainer}>
           {state.quizzes ? state.quizzes.map(quiz => (
+            quiz.is_published ?
             <Grid item className={classes.gridItem} key={quiz.quiz_id} xs={3} md={3}>
               <Link to={{ pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id }}>
                 <Card className={classes.card}>
@@ -149,6 +150,7 @@ export default function Platform(props) {
                 </Card>
               </Link>
             </Grid>
+            : <></>
           )) : <Grid item></Grid>}
         </Grid>
       </Box>

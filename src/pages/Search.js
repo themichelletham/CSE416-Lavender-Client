@@ -97,7 +97,7 @@ function Search(props) {
       </Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
         {state.quizzes ? (
-          state.quizzes.map((quiz) => (
+          state.quizzes.map((quiz) => ( quiz.is_published ?
             <Grid
               item
               className={classes.gridItem}
@@ -116,7 +116,7 @@ function Search(props) {
                   <CardContent>{quiz.quiz_name}</CardContent>
                 </Card>
               </Button>
-            </Grid>
+            </Grid> : <></>
           ))
         ) : (
           <Grid item></Grid>
