@@ -58,13 +58,19 @@ export default function PlatformProfile(props) {
       <Box item sx={{ display: "flex" }}>
         <img
           className={classes.banner}
-          src={props.banner === "" ? Banner : props.banner}
+          src={
+            props.banner === "" || props.banner === null ? Banner : props.banner
+          }
         />
       </Box>
       <Box item sx={{ display: "flex" }}>
         <img
           className={classes.icon}
-          src={props.platform_icon === "" ? defaultIcon : props.platform_icon}
+          src={
+            props.platform_icon === "" || props.platform_icon === null
+              ? defaultIcon
+              : props.platform_icon
+          }
         />
         <Box item sx={{ display: "flex" }} className={classes.title}>
           <Typography variant="h4" ml={2} mt={2}>

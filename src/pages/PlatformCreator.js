@@ -315,7 +315,7 @@ export default function PlatformCreator(props) {
     setState(new_state);
   };
 
-  const handleFileInputChange = (e) => {
+  const handleFileInputChange = (e, imagetype) => {
     const file = e.target.files[0];
     if (!file) return;
     if (imagetype === "icon") {
@@ -339,32 +339,34 @@ export default function PlatformCreator(props) {
     imageDetails(banner, "banner");
   };
   const imageDetails = (new_photo, imagetype) => {
-    const data = new FormData();
-    data.append("file", new_photo);
-    data.append("upload_preset", "sprout");
-    data.append("cloud_name", "lavender-sprout-herokuapp-com");
+    if (new_photo !== "") {
+      const data = new FormData();
+      data.append("file", new_photo);
+      data.append("upload_preset", "sprout");
+      data.append("cloud_name", "lavender-sprout-herokuapp-com");
 
-    //please note: Maximum file size is 10485760, may want to display this
-    fetch(
-      `https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload`,
-      {
-        method: "post",
-        body: data,
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (imagetype === "icon") {
-          setUrl(data.url);
-        } else {
-          setBannerUrl(data.url);
+      //please note: Maximum file size is 10485760, may want to display this
+      fetch(
+        `https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload`,
+        {
+          method: "post",
+          body: data,
         }
-        setCloudinaryErr("");
-      })
-      .catch((err) => {
-        console.log(err);
-        setCloudinaryErr(err.message);
-      });
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (imagetype === "icon") {
+            setUrl(data.url);
+          } else {
+            setBannerUrl(data.url);
+          }
+          setCloudinaryErr("");
+        })
+        .catch((err) => {
+          console.log(err);
+          setCloudinaryErr(err.message);
+        });
+    }
   };
 
   const uploadImage = () => {
