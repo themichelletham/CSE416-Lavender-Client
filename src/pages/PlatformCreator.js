@@ -189,6 +189,23 @@ export default function PlatformCreator(props) {
         console.log("PUT on Save: ", err);
       });
     uploadImage();
+
+    axios
+      .put(
+        `${constants.API_PATH}/quiz/toggle_publish/${props.match.params.platform_id}`,
+        {
+          quiz_fields: {
+            platform_id: props.match.params.platform_id,
+            quizzes: state.quizzes,
+          },
+        }
+      )
+      .then((res) => {
+        // updated
+      })
+      .catch((err) => {
+        console.log("PUT on Save Quizzes: ", err);
+      });
   };
 
   const onDelete = (e) => {
