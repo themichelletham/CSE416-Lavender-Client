@@ -108,8 +108,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     //paddingLeft: "10%",
     width: "100%",
-    flexWrap: "wrap", 
-    maxWidth: "80vw"
+    flexWrap: "wrap",
+    maxWidth: "80vw",
   },
   quiz: {
     color: "#FFFFFF",
@@ -152,7 +152,9 @@ export default function PlatformCreator(props) {
 
   const [previewSource, setPreviewSource] = useState();
   const [image, setImage] = useState("");
+  const [banner, setBanner] = useState("");
   const [url, setUrl] = useState("");
+  const [bannerUrl, setBannerUrl] = useState("");
   const [cloudinaryErr, setCloudinaryErr] = useState("");
 
   const copyState = () => {
@@ -202,11 +204,11 @@ export default function PlatformCreator(props) {
 
   const handleDeletePlatformOpen = (e) => {
     setPlatformDialog(true);
-  }
+  };
 
   const handleDeletePlatformClose = (e) => {
     setPlatformDialog(false);
-  }
+  };
 
   const onTitleChange = (e) => {
     let new_state = copyState();
@@ -228,6 +230,7 @@ export default function PlatformCreator(props) {
           topFiveUsers: res.data.topFiveUsers,
         });
         setUrl(res.data.icon_photo);
+        setBannerUrl(res.data.banner_photo);
       })
       .catch((err) => {
         console.log(err);
@@ -306,10 +309,14 @@ export default function PlatformCreator(props) {
     // console.log("delete dialog closed");
   };
 
-  const handleFileInputChange = (e) => {
+  const handleFileInputChange = (e, imagetype) => {
     const file = e.target.files[0];
     if (!file) return;
-    setImage(file);
+    if (imagetype === "icon") {
+      setImage(file);
+    } else {
+      setBanner(file);
+    }
     previewFile(file);
   };
 
@@ -321,13 +328,17 @@ export default function PlatformCreator(props) {
     };
   };
 
-  const imageDetails = () => {
+  const uploadImages = () => {
+    imageDetails(image, "icon");
+    imageDetails(banner, "banner");
+  };
+  const imageDetails = (new_photo, imagetype) => {
     const data = new FormData();
-    data.append("file", image);
+    data.append("file", new_photo);
     data.append("upload_preset", "sprout");
     data.append("cloud_name", "lavender-sprout-herokuapp-com");
 
-    //please note: Maximum file size is 10485760, may out to display this
+    //please note: Maximum file size is 10485760, may want to display this
     fetch(
       `https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload`,
       {
@@ -337,7 +348,11 @@ export default function PlatformCreator(props) {
     )
       .then((res) => res.json())
       .then((data) => {
-        setUrl(data.url);
+        if (imagetype === "icon") {
+          setUrl(data.url);
+        } else {
+          setBannerUrl(data.url);
+        }
         setCloudinaryErr("");
       })
       .catch((err) => {
@@ -354,6 +369,7 @@ export default function PlatformCreator(props) {
         {
           platform_fields: {
             icon_photo: url,
+            banner_photo: bannerUrl,
           },
         }
       )
@@ -368,22 +384,31 @@ export default function PlatformCreator(props) {
 
   return (
     <Box className={classes.PlatformCreatorContainer}>
-      <PlatformProfile platform_icon={url} />
+      <PlatformProfile platform_icon={url} banner={bannerUrl} />
       <PlatformLead topFiveUsers={state.topFiveUsers} />
       <Box className={classes.container}>
         <Box className={classes.editThumbnail}>
+          Banner photo:
           <Input
             type="file"
             name="image"
             accept=".jpg .png .jpeg"
             multiple={false}
-            onChange={handleFileInputChange}
+            onChange={(e) => handleFileInputChange(e, "banner")}
+          ></Input>
+          <br></br>Icon photo:
+          <Input
+            type="file"
+            name="image"
+            accept=".jpg .png .jpeg"
+            multiple={false}
+            onChange={(e) => handleFileInputChange(e, "icon")}
           ></Input>
           {cloudinaryErr}
           <Button
             className={classes.thumbnailButton}
             size="large"
-            onClick={imageDetails}
+            onClick={uploadImages}
             endIcon={<FileUploadIcon />}
             disableElevation
             pl={1}
@@ -408,7 +433,9 @@ export default function PlatformCreator(props) {
           <Button
             size="small"
             variant="contained"
-            onClick={(e) => {handleDeletePlatformOpen();}}
+            onClick={(e) => {
+              handleDeletePlatformOpen();
+            }}
             disableElevation
           >
             Delete Platform
@@ -453,12 +480,7 @@ export default function PlatformCreator(props) {
         <Box>
           <Grid container spacing={3} className={classes.gridContainer}>
             {props.user_id ? (
-              <Grid
-                item
-                className={classes.gridItem}
-                key={"Create quiz"}
-               
-              >
+              <Grid item className={classes.gridItem} key={"Create quiz"}>
                 <ColorButton
                   className={classes.createQuiz}
                   onClick={onCreateQuiz}
@@ -485,7 +507,6 @@ export default function PlatformCreator(props) {
                         height="140"
                         width="200"
                         image={quiz.icon_photo}
-                        
                       />
                       <CardContent>{quiz.quiz_name}</CardContent>
                     </Link>
