@@ -48,19 +48,23 @@ export default function PointCard(props) {
   }
   const displayBadges = (points) => {
     if (points > 50) {
+      return(
       <div>
         <img height="100" width="100"src={Badge_1}/>
         <img height="100" width="100"src={Badge_2}/>        
         <img height="100" width="100"src={Badge_3}/>      
         <img height="100" width="100"src={Badge_4}/>
       </div>
+      ); 
     }
     else if (points > 20) {
+      return(
       <div>
         <img height="100" width="100"src={Badge_1}/>
         <img height="100" width="100"src={Badge_2}/>        
         <img height="100" width="100"src={Badge_3}/>
       </div>
+      );
     } 
     else if (points > 10) {
       return (
