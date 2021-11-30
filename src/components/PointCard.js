@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, Grid, Typography, Card, CardContent } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core';
+import Badge_1 from "../images/Seed.png";
+import Badge_2 from "../images/Sprout_badge.png";
+import Badge_3 from "../images/Seedling.png";
+import Badge_4 from "../images/Blossom.png";
 import * as constants from '../components/constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +43,35 @@ export default function PointCard(props) {
     c.platform_name = state.platform_name;
     return c;
   }
+  const displayBadges = (points) => {
+    if (points > 0) {
+      return (
+        <div>
+          <img height="100" width="100"src={Badge_1}/>
+        </div>
+      );
+    } else if (points > 10) {
+      return (
+        <div>
+          <img height="100" width="100"src={Badge_1}/>
+          <img height="100" width="100"src={Badge_2}/>
+        </div>
+      );
+    } else if (points > 20) {
+      <div>
+        <img height="100" width="100"src={Badge_1}/>
+        <img height="100" width="100"src={Badge_2}/>        
+        <img height="100" width="100"src={Badge_3}/>
+      </div>
+    } else if (points > 50) {
+      <div>
+        <img height="100" width="100"src={Badge_1}/>
+        <img height="100" width="100"src={Badge_2}/>        
+        <img height="100" width="100"src={Badge_3}/>      
+        <img height="100" width="100"src={Badge_4}/>
+      </div>
+    }
+  }
   useEffect(() => {
     axios.get(`${constants.API_PATH}/platform/${props.platform_id}`)
       .then(res => {
@@ -53,12 +86,13 @@ export default function PointCard(props) {
     <Box>
     <Grid container spacing={3} className={classes.pointCards}>
       <Grid item className={classes.cardItems} item xs={10} md={10}>
-      <Card className={classes.cards} variant="outlined">
-        <CardContent >
-          <Typography align="center">{`Platform_id:${state.platform_name}`}</Typography>
-          <Typography align="center">{`Points:${props.points}`}</Typography>
-        </CardContent>
-      </Card>
+        <Card className={classes.cards} variant="outlined">
+          <CardContent >
+            <Typography align="center">{`Platform_id:${state.platform_name}`}</Typography>
+            <Typography align="center">{`Points:${props.points}`}</Typography>
+          </CardContent>
+          {displayBadges(props.points)}
+        </Card>
       </Grid>
     </Grid>
     </Box>
