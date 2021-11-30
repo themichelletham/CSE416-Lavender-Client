@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
     padding: '1%',
     zIndex: 'tooltip',
     stroke:'black',
-
   },
   drawer: {
     width: drawerWidth,
@@ -27,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   pleaderboard: {
-    borderRadius: "12%",
+    width: 220,
+    borderRadius: "15%",
     backgroundColor: "#FFFFFF",
     margin: "5%",
     paddingLeft: "5%",
