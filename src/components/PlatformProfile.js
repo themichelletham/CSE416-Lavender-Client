@@ -3,82 +3,86 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Container";
 import Banner from "../images/banner.png";
 import defaultIcon from "../images/platformicon.jpeg";
-import Typography from "@mui/material/Typography";
-import { makeStyles } from "@material-ui/core";
-import { createTheme } from "@material-ui/core/styles";
+import Typography from '@mui/material/Typography';
+import Toolbar from '@mui/material/Toolbar';
+import { makeStyles } from '@material-ui/core';
+import { createTheme } from '@material-ui/core/styles';
 
 const theme = createTheme();
 theme.spacing(1); // `${8 * 2}px` = '16px'
 
 const useStyles = makeStyles((theme) => ({
   PlatformProfileContainer: {
-    display: "flex",
-    overflow: "hidden",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    width: "100%",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+    flexGrow: 1,
+    marginBottom: -theme.spacing(11),
+  },
+  bannerContainer: {
+    display: 'flex',
+    width: '100%',
+    //height: '30vh',
+    height: theme.spacing(35),
+    background: 'black',
   },
   banner: {
-    width: "100%",
-    height: theme.spacing(30),
+    width: '100%',
+    //height: '30vh',
+    height: theme.spacing(35),
     overflow: "hidden",
-    position: "absolute",
-    float: "left",
-    top: 0,
+    zIndex: 'modal',
+  },
+  headerContainer: {
+    display: 'flex',
+    position: 'relative',
+    top: -theme.spacing(11),
     left: 0,
-    zIndex: "modal",
+    float: 'left',
+    width: '90%',
+    zIndex: 'tooltip',
   },
   icon: {
+    position: 'relative',
+    top: 0,
     left: 0,
-    float: "left",
-    marginLeft: "10%",
-    marginTop: theme.spacing(10),
-    marginBottom: theme.spacing(5),
+    //float: 'left',
     height: theme.spacing(22),
     width: theme.spacing(22),
     borderRadius: "100%",
-    position: "absolute",
-    zIndex: "tooltip",
+    zIndex: 'tooltip'
   },
   title: {
     display: "flex",
-    flexGrow: 1,
+    position: 'relative',
     left: 0,
-    paddingTop: "15%",
-    paddingLeft: "15%",
-    //marginLeft: theme.spacing(20)
-  },
+    top: theme.spacing(11),
+  }
 }));
 
 export default function PlatformProfile(props) {
   const classes = useStyles();
   return (
-    <Grid container className={classes.PlatformProfileContainer}>
-      <Box item sx={{ display: "flex" }}>
-        <img
-          className={classes.banner}
+    <Box className={classes.PlatformProfileContainer} >
+      <Box className={classes.bannerContainer} >
+        <img 
+          className={classes.banner} 
           src={
             props.banner === "" || props.banner === null ? Banner : props.banner
           }
         />
       </Box>
-      <Box item sx={{ display: "flex" }}>
-        <img
-          className={classes.icon}
+      <Box className={classes.headerContainer} >
+        <img 
+          className={classes.icon} 
           src={
             props.platform_icon === "" || props.platform_icon === null
-              ? defaultIcon
-              : props.platform_icon
-          }
-        />
-        <Box item sx={{ display: "flex" }} className={classes.title}>
-          <Typography variant="h4" ml={2} mt={2}>
-            {" "}
-            {props.platform_name}
-          </Typography>
-        </Box>
+            ? defaultIcon
+            : props.platform_icon} />
+        <Typography variant='h3' ml={2} mt={2} className={classes.title}> {props.platform_name}</Typography>
       </Box>
-    </Grid>
-  );
+    </Box>
+  )
 }

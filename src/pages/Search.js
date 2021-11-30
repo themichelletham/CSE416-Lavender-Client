@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     width: "80vw",
     //height: "100%",
-    overflowY: "hidden" 
+    overflowY: "hidden"
   },
   gridContainer: {
     display: "inline-flex",
@@ -56,13 +56,12 @@ function Search(props) {
   };
 
   const onNavigatePlatform = (e, platform_id) => {
-    axios
-      .get(`${constants.API_PATH}/platform/${platform_id}/`, {
-        user_id: 1,
-      })
-      .then((res) => {
-        history.push(`/platform/${platform_id}`);
-      });
+    history.push(`/platform/${platform_id}`);
+    //axios
+    //  .get(`${constants.API_PATH}/platform/${platform_id}/`)
+    //  .then((res) => {
+    //    history.push(`/platform/${platform_id}`);
+    //  });
   };
 
   useEffect(() => {

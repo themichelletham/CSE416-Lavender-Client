@@ -38,7 +38,7 @@ import * as constants from "../components/constants";
 const useStyles = makeStyles((theme) => ({
   AppBar: {
     display: "inline-block",
-    position: "fixed",
+    position: "relative",
     backgroundColor: "#241452",
     height: 63,
     zIndex: 1250,
@@ -191,7 +191,7 @@ export default function NavBar() {
         justifyContent: "start",
       }}
     >
-      <div className={classes.toolbar} />
+      {/**<div className={classes.toolbar} />*/}
       <AppBar className={classes.AppBar} elevation={0}>
         <Toolbar>
           <Link to="/">
@@ -245,7 +245,7 @@ export default function NavBar() {
             open={openProfileMenu}
             onClose={handleCloseProfileMenu}
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-            transformOrigin={{ vertical: "bottom", horizontal: "right" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
             keepMounted
             //open={Boolean(state.anchorEl)}
             MenuListProps={{

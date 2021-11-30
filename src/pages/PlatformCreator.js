@@ -56,7 +56,23 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "left",
     flexGrow: 1,
     width: "100vw",
+  },
+  hContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    flexGrow: 1,
+    justifyContent: 'center',
     marginLeft: theme.spacing(5),
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
   },
   container: {
     display: "flex",
@@ -393,175 +409,177 @@ export default function PlatformCreator(props) {
   return (
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile platform_icon={url} banner={bannerUrl} />
-      <PlatformLead topFiveUsers={state.topFiveUsers} />
-      <Box className={classes.container}>
-        <Box className={classes.editThumbnail}>
-          Banner photo:
-          <Input
-            type="file"
-            name="image"
-            accept=".jpg .png .jpeg"
-            multiple={false}
-            onChange={(e) => handleFileInputChange(e, "banner")}
-          ></Input>
-          <br></br>Icon photo:
-          <Input
-            type="file"
-            name="image"
-            accept=".jpg .png .jpeg"
-            multiple={false}
-            onChange={(e) => handleFileInputChange(e, "icon")}
-          ></Input>
-          {cloudinaryErr}
-          <Button
-            className={classes.thumbnailButton}
-            size="large"
-            onClick={uploadImages}
-            endIcon={<FileUploadIcon />}
-            disableElevation
-            pl={1}
-          >
-            Upload
-          </Button>
-        </Box>
-        <SearchBar
-          className={classes.search}
-          placeholder="Search..."
-          onKeyPress={search}
-        />
-        <Box className={classes.Opt} ml={3} mr={1} mt={3}>
-          <Button
-            size="small"
-            variant="contained"
-            onClick={onSave}
-            disableElevation
-          >
-            Save Platform
-          </Button>
-          <Button
-            size="small"
-            variant="contained"
-            onClick={(e) => {
-              handleDeletePlatformOpen();
-            }}
-            disableElevation
-          >
-            Delete Platform
-          </Button>
-        </Box>
-        <Dialog open={platformDialog} onClose={handleDeletePlatformClose}>
-          <DialogTitle>Delete Platform {state.platform_name}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to delete this platform?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleDeletePlatformClose}>No</Button>
+      <Box className={classes.hContainer}>
+        <Box className={classes.container}>
+          <Box className={classes.editThumbnail}>
+            Banner photo:
+            <Input
+              type="file"
+              name="image"
+              accept=".jpg .png .jpeg"
+              multiple={false}
+              onChange={(e) => handleFileInputChange(e, "banner")}
+            ></Input>
+            <br></br>Icon photo:
+            <Input
+              type="file"
+              name="image"
+              accept=".jpg .png .jpeg"
+              multiple={false}
+              onChange={(e) => handleFileInputChange(e, "icon")}
+            ></Input>
+            {cloudinaryErr}
             <Button
-              onClick={(e) => {
-                onDelete();
-              }}
+              className={classes.thumbnailButton}
+              size="large"
+              onClick={uploadImages}
+              endIcon={<FileUploadIcon />}
+              disableElevation
+              pl={1}
             >
-              Yes, Delete
+              Upload
             </Button>
-          </DialogActions>
-        </Dialog>
-        <FormControl className={classes.editPlatform}>
-          <InputBase
-            className={classes.title}
-            inputProps={{
-              min: 800,
-              style: {
-                textAlign: "center",
-                fontSize: 22,
-                paddingTop: 0,
-                paddingBottom: 0,
-                marginTop: 10,
-                fullWidth: "true",
-              },
-            }}
-            value={state.platform_name}
-            onChange={onTitleChange}
+          </Box>
+          <SearchBar
+            className={classes.search}
+            placeholder="Search..."
+            onKeyPress={search}
           />
-        </FormControl>
-        <Box>
-          <Grid container spacing={3} className={classes.gridContainer}>
-            {props.user_id ? (
-              <Grid item className={classes.gridItem} key={"Create quiz"}>
-                <ColorButton
-                  className={classes.createQuiz}
-                  onClick={onCreateQuiz}
-                  endIcon={<AddIcon />}
-                >
-                  Create Quiz
-                </ColorButton>
-              </Grid>
-            ) : (
-              <></>
-            )}
-            {state.quizzes ? (
-              state.quizzes.map((quiz, index) => (
-                <Grid item className={classes.gridItem} key={index}>
-                  <Card className={classes.card}>
-                    <Link
-                      to={{
-                        pathname: `/quiz/${quiz.quiz_id}/creator`,
-                        quiz_id: quiz.quiz_id,
-                      }}
-                    >
-                      <CardMedia
-                        component="img"
-                        height="140"
-                        width="200"
-                        image={quiz.icon_photo}
-                      />
-                      <CardContent>{quiz.quiz_name}</CardContent>
-                    </Link>
-                    <IconButton
-                      onClick={(e) => {
-                        handleVisibility(index);
-                      }}
-                    >
-                      {quiz.is_published ? (
-                        <VisibilityOffIcon />
-                      ) : (
-                        <VisibilityIcon />
-                      )}
-                    </IconButton>
-                    <IconButton
-                      onClick={(e) => {
-                        handleDeleteQuizOpen(index);
-                      }}
-                    >
-                      <HighlightOffIcon style={{ fill: "red" }} />
-                    </IconButton>
-                  </Card>
-                </Grid>
-              ))
-            ) : (
-              <Grid item></Grid>
-            )}
-          </Grid>
-        </Box>
-        <Dialog open={quizDialog} onClose={handleDeleteQuizClose}>
-          <DialogTitle>Delete Quiz</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to delete this quiz?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleDeleteQuizClose}>No</Button>
+          <Box className={classes.Opt} ml={3} mr={1} mt={3}>
             <Button
-              onClick={(e) => {
-                onDeleteQuiz(e, selectedQuiz);
-              }}
+              size="small"
+              variant="contained"
+              onClick={onSave}
+              disableElevation
             >
-              Yes, Delete
+              Save Platform
             </Button>
-          </DialogActions>
-        </Dialog>
+            <Button
+              size="small"
+              variant="contained"
+              onClick={(e) => {
+                handleDeletePlatformOpen();
+              }}
+              disableElevation
+            >
+              Delete Platform
+            </Button>
+          </Box>
+          <Dialog open={platformDialog} onClose={handleDeletePlatformClose}>
+            <DialogTitle>Delete Platform {state.platform_name}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to delete this platform?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDeletePlatformClose}>No</Button>
+              <Button
+                onClick={(e) => {
+                  onDelete();
+                }}
+              >
+                Yes, Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <FormControl className={classes.editPlatform}>
+            <InputBase
+              className={classes.title}
+              inputProps={{
+                min: 800,
+                style: {
+                  textAlign: "center",
+                  fontSize: 22,
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                  marginTop: 10,
+                  fullWidth: "true",
+                },
+              }}
+              value={state.platform_name}
+              onChange={onTitleChange}
+            />
+          </FormControl>
+          <Box>
+            <Grid container spacing={3} className={classes.gridContainer}>
+              {props.user_id ? (
+                <Grid item className={classes.gridItem} key={"Create quiz"}>
+                  <ColorButton
+                    className={classes.createQuiz}
+                    onClick={onCreateQuiz}
+                    endIcon={<AddIcon />}
+                  >
+                    Create Quiz
+                  </ColorButton>
+                </Grid>
+              ) : (
+                <></>
+              )}
+              {state.quizzes ? (
+                state.quizzes.map((quiz, index) => (
+                  <Grid item className={classes.gridItem} key={index}>
+                    <Card className={classes.card}>
+                      <Link
+                        to={{
+                          pathname: `/quiz/${quiz.quiz_id}/creator`,
+                          quiz_id: quiz.quiz_id,
+                        }}
+                      >
+                        <CardMedia
+                          component="img"
+                          height="140"
+                          width="200"
+                          image={quiz.icon_photo}
+                        />
+                        <CardContent>{quiz.quiz_name}</CardContent>
+                      </Link>
+                      <IconButton
+                        onClick={(e) => {
+                          handleVisibility(index);
+                        }}
+                      >
+                        {quiz.is_published ? (
+                          <VisibilityOffIcon />
+                        ) : (
+                          <VisibilityIcon />
+                        )}
+                      </IconButton>
+                      <IconButton
+                        onClick={(e) => {
+                          handleDeleteQuizOpen(index);
+                        }}
+                      >
+                        <HighlightOffIcon style={{ fill: "red" }} />
+                      </IconButton>
+                    </Card>
+                  </Grid>
+                ))
+              ) : (
+                <Grid item></Grid>
+              )}
+            </Grid>
+          </Box>
+          <Dialog open={quizDialog} onClose={handleDeleteQuizClose}>
+            <DialogTitle>Delete Quiz</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to delete this quiz?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDeleteQuizClose}>No</Button>
+              <Button
+                onClick={(e) => {
+                  onDeleteQuiz(e, selectedQuiz);
+                }}
+              >
+                Yes, Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
+        <PlatformLead topFiveUsers={state.topFiveUsers} />
       </Box>
     </Box>
   );

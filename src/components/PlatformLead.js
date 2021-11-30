@@ -7,9 +7,13 @@ import Drawer from '@mui/material/Drawer';
 
 const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
-  mainbox: {
+  LeadContainer: {
     display: "flex",
+    width: '20%',
+    padding: '1%',
     zIndex: 'tooltip',
+    stroke:'black',
+
   },
   drawer: {
     width: drawerWidth,
@@ -39,20 +43,17 @@ function PlatformLead(props) {
   };
 
   return (
-    <Box className={classes.mainbox}>
-      <Drawer anchor="right" variant="permanent" className={classes.drawer}>
-        <Toolbar />
-        <Typography variant="h6" align='center' mt={50}>Leaderboard</Typography>
-        <Box className={classes.pleaderboard}>
-          <List>
-            {props.topFiveUsers && props.topFiveUsers.map((user, index) => (
-              <ListItem button onClick={e => onViewLeaderProfile(e, user.user_id)} key={index}>
-                <ListItemText primary={(index + 1) + "\t" + user.username} />
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-      </Drawer>
+    <Box className={classes.LeadContainer}>
+      <Typography variant="h6" align='center' mt={50}>Leaderboard</Typography>
+      <Box className={classes.pleaderboard}>
+        <List>
+          {props.topFiveUsers && props.topFiveUsers.map((user, index) => (
+            <ListItem button onClick={e => onViewLeaderProfile(e, user.user_id)} key={index}>
+              <ListItemText primary={(index + 1) + "\t" + user.username} />
+            </ListItem>
+          ))}
+        </List>
+      </Box>
     </Box>
   )
 }
