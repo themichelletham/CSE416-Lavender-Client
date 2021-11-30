@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    marginBottom: '2%'
   },
   pointsRow: {
     flexDirection: 'row',
