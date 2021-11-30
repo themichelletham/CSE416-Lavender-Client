@@ -1,10 +1,13 @@
-import { Button, Card, CardContent, CardMedia } from "@material-ui/core";
-import { Box, Grid } from "@mui/material";
-import { makeStyles } from "@material-ui/styles";
-import * as constants from "../components/constants";
-import { BrowserRouter as Router, Link, useHistory } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { Button, Card, CardContent, CardMedia } from '@material-ui/core';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import { Box, Grid } from '@mui/material';
+import { makeStyles } from '@material-ui/styles';
+import * as constants from '../components/constants';
+import { BrowserRouter as Router, Link, useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import PlatformLead from "../components/PlatformLead.js";
 import PlatformCreator from "./PlatformCreator.js";
 import PlatformProfile from "../components/PlatformProfile.js";
@@ -26,11 +29,28 @@ const ColorButton = styled(Button)(({ theme }) => ({
 const useStyles = makeStyles((theme) => ({
   PlatformContainer: {
     display: "flex",
-    overflow: "hidden",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "left",
-    width: "100%",
+    overflow: 'hidden',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+  },
+  hContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '90%',
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
+    borderBottom: '0.2em solid #dcdce3'
   },
   container: {
     display: "flex",
@@ -38,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     left: 1,
     display: "inline-block",
-    width: "100%",
+    borderRight: '0.2em solid #dcdce3'
   },
   gridContainer: {
     display: "inline-flex",
@@ -47,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: ttheme.spacing(40),
     marginLeft: ttheme.spacing(20),
     flexWrap: "wrap",
-    maxWidth: "80vw",
+    maxWidth: "80vw"
   },
   gridItem: {
     display: "inline-block",
@@ -60,9 +80,9 @@ const useStyles = makeStyles((theme) => ({
     border: 1,
     borderColor: grey,
     borderRadius: 30,
-    margin: "auto",
-    //marginLeft: '25%',
-    width: 600,
+    marginLeft: 30,
+    marginRight: 30,
+    width: '60%',
     height: 35,
   },
   card: {
@@ -78,6 +98,7 @@ export default function Platform(props) {
     platform_name: "Untitled Platform",
     quizzes: [],
     topFiveUsers: [],
+    sortBy: 'dd',
   });
   const [previewSource, setPreviewSource] = useState();
   const [bannerUrl, setBannerUrl] = useState("");
@@ -90,6 +111,7 @@ export default function Platform(props) {
       platform_name: new_name,
       quizzes: new_quizzes,
       topFiveUsers: new_topFiveUsers,
+      sortBy: state.sortBy,
     };
   };
 
@@ -105,6 +127,7 @@ export default function Platform(props) {
           platform_name: res.data.platform_name,
           quizzes: res.data.quizzes,
           topFiveUsers: res.data.topFiveUsers,
+          sortBy: 'dd',
         });
         setPreviewSource(res.data.icon_photo);
         setBannerUrl(res.data.banner_photo);
@@ -120,6 +143,18 @@ export default function Platform(props) {
     }
   };
 
+  const sortQuizzes = (e) => {
+    const new_state = copyState();
+    new_state.sortBy = e.target.value;
+    new_state.quizzes.sort((f, s) => {
+      if(new_state.sortBy === 'dd')
+        return f.createdAt < s.createdAt;
+      if(new_state.sortBy === 'da')
+        return f.createdAt > s.createdAt;
+      return f.title < s.title;
+    })
+    setState(new_state);
+  }
   useEffect(() => {
     //console.log(props.user_id)
     fetchPlatformData("");
@@ -127,72 +162,48 @@ export default function Platform(props) {
 
   return (
     <Box className={classes.PlatformContainer}>
-      <PlatformProfile
-        platform_name={state.platform_name}
-        platform_icon={previewSource}
-        banner={bannerUrl}
-      />
-      <PlatformLead topFiveUsers={[...state.topFiveUsers]} />
-      <Box container className={classes.container}>
-        <Box className={classes.editPlat}>
-          <Link to={`/platform/${props.match.params.platform_id}/creator`}>
-            <ColorButton>Edit Platform</ColorButton>
-          </Link>
+      <PlatformProfile platform_name={state.platform_name} platform_icon={previewSource} banner={bannerUrl} />
+      <Box className={classes.hContainer}>
+        <Box container className={classes.container}>
+          <Box className={classes.header} >
+            <Typography variant='h4'>Quizzes</Typography>
+            <SearchBar
+              className={classes.search}
+              placeholder="Search..."
+              onKeyPress={search}
+            />
+            <Select
+              label='Sort By'
+              value={state.sortBy}
+              autoWidth
+              onChange={sortQuizzes}>
+              <MenuItem value='da'>Date Oldest</MenuItem>
+              <MenuItem value='dd'>Date Newest</MenuItem>
+              <MenuItem value='t'>Title</MenuItem>
+            </Select>
+            <Link to={`/platform/${props.match.params.platform_id}/creator`}>
+              <ColorButton>Edit Platform</ColorButton>
+            </Link>
+          </Box>
+          {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
+          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexGrow: 1 }}>
+          </Box>
+          <Box mt={2}>
+            <Grid container spacing={3} className={classes.gridContainer}>
+              {state.quizzes ? state.quizzes.map(quiz => (
+                <Grid item className={classes.gridItem} key={quiz.quiz_id} xs={3} md={3}>
+                  <Link to={{ pathname: `/quiz/${quiz.quiz_id}`, quiz_id: quiz.quiz_id }}>
+                    <Card className={classes.card}>
+                      <CardMedia component="img" height="140" width="200" image={quiz.icon_photo} />
+                      <CardContent className={classes.quiz}>{quiz.quiz_name}</CardContent>
+                    </Card>
+                  </Link>
+                </Grid>
+              )) : <Grid item></Grid>}
+            </Grid>
+          </Box>
         </Box>
-        <SearchBar
-          className={classes.search}
-          placeholder="Search..."
-          onKeyPress={search}
-        />
-        {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            flexGrow: 1,
-          }}
-        ></Box>
-        <Box mt={2}>
-          <Grid container spacing={3} className={classes.gridContainer}>
-            {state.quizzes ? (
-              state.quizzes.map((quiz) =>
-                quiz.is_published ? (
-                  <Grid
-                    item
-                    className={classes.gridItem}
-                    key={quiz.quiz_id}
-                    xs={3}
-                    md={3}
-                  >
-                    <Link
-                      to={{
-                        pathname: `/quiz/${quiz.quiz_id}`,
-                        quiz_id: quiz.quiz_id,
-                      }}
-                    >
-                      <Card className={classes.card}>
-                        <CardMedia
-                          component="img"
-                          height="140"
-                          width="200"
-                          image={quiz.icon_photo}
-                        />
-                        <CardContent className={classes.quiz}>
-                          {quiz.quiz_name}
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  </Grid>
-                ) : (
-                  <></>
-                )
-              )
-            ) : (
-              <Grid item></Grid>
-            )}
-          </Grid>
-        </Box>
+        <PlatformLead topFiveUsers={[...state.topFiveUsers]} />
       </Box>
     </Box>
   );
