@@ -104,14 +104,16 @@ export default function Sidebar(props) {
                 </ListItemText>
               </ListItem>)
             }
-            <ListItem button key={"Create Platform"} onClick={props.platform_id?onViewPlatform:onCreatePlatform}>
-              <ListItemIcon>
-                <AddCircleOutlineIcon />
-              </ListItemIcon>
-              <ListItemText>
-                {props.platform_id?'View Platform':'Create Platform'}
-              </ListItemText>
-            </ListItem>
+            {props.user_id &&
+              <ListItem button key={"Create Platform"} onClick={props.platform_id?onViewPlatform:onCreatePlatform}>
+                <ListItemIcon>
+                  <AddCircleOutlineIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  {props.platform_id?'View Platform':'Create Platform'}
+                </ListItemText>
+              </ListItem>
+            }
           </List>
           <Divider />
           <br />
