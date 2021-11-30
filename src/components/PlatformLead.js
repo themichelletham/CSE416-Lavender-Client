@@ -9,6 +9,7 @@ const drawerWidth = 220;
 const useStyles = makeStyles((theme) => ({
   LeadContainer: {
     display: "flex",
+    flexDirection: "column",
     width: '20%',
     padding: '1%',
     zIndex: 'tooltip',
@@ -29,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "12%",
     backgroundColor: "#FFFFFF",
     margin: "5%",
+    paddingLeft: "5%",
+    paddingRight: "5%",
   }
 }));
 

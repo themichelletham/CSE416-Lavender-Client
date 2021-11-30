@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import * as constants from "../components/constants";
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import { makeStyles } from "@material-ui/core";
 import { Card, CardContent, CardMedia } from "@material-ui/core";
 import {
@@ -53,17 +55,16 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     overflow: "hidden",
     justifyContent: "flex-start",
-    alignItems: "left",
+    alignItems: "center",
     flexGrow: 1,
     width: "100vw",
   },
   hContainer: {
     display: 'flex',
     flexDirection: 'row',
-    width: '100%',
+    width: '90%',
     flexGrow: 1,
     justifyContent: 'center',
-    marginLeft: theme.spacing(5),
   },
   header: {
     display: 'flex',
@@ -80,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     left: 1,
     display: "inline-block",
-    width: "100%",
+    borderRight: '0.2em solid #dcdce3',
   },
   Opt: {
     display: "flex",
@@ -89,6 +90,16 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "60%",
     //paddingBottom: theme.spacing(0.5),
     alignItems: "left",
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
+    borderBottom: '0.2em solid #dcdce3'
   },
   search: {
     //display: 'inline-block',
@@ -163,6 +174,7 @@ export default function PlatformCreator(props) {
     platform_name: "Untitled Platform",
     quizzes: [],
     topFiveUsers: [],
+    sortBy: 'dd',
   });
 
   const [selectedQuiz, setSelectedQuiz] = useState();
@@ -181,6 +193,7 @@ export default function PlatformCreator(props) {
     ret.platform_name = state.platform_name;
     ret.quizzes = state.quizzes.length ? [...state.quizzes] : [];
     ret.topFiveUsers = state.quizzes.length ? [...state.topFiveUsers] : [];
+    ret.sortBy = state.sortBy;
     return ret;
   };
 
@@ -247,6 +260,7 @@ export default function PlatformCreator(props) {
           platform_name: res.data.platform_name,
           quizzes: res.data.quizzes,
           topFiveUsers: res.data.topFiveUsers,
+          sortBy: 'dd',
         });
         setUrl(res.data.icon_photo);
         setBannerUrl(res.data.banner_photo);
@@ -261,6 +275,19 @@ export default function PlatformCreator(props) {
       fetchPlatformData(e.target.value);
     }
   };
+
+  const sortQuizzes = (e) => {
+    const new_state = copyState();
+    new_state.sortBy = e.target.value;
+    new_state.quizzes.sort((f, s) => {
+      if (new_state.sortBy === 'dd')
+        return f.createdAt < s.createdAt;
+      if (new_state.sortBy === 'da')
+        return f.createdAt > s.createdAt;
+      return f.title < s.title;
+    })
+    setState(new_state);
+  }
 
   useEffect(() => {
     fetchPlatformData("");
@@ -440,11 +467,22 @@ export default function PlatformCreator(props) {
               Upload
             </Button>
           </Box>
-          <SearchBar
-            className={classes.search}
-            placeholder="Search..."
-            onKeyPress={search}
-          />
+          <Box className={classes.header} >
+            <SearchBar
+              className={classes.search}
+              placeholder="Search..."
+              onKeyPress={search}
+            />
+            <Select
+              label='Sort By'
+              value={state.sortBy}
+              autoWidth
+              onChange={sortQuizzes}>
+              <MenuItem value='da'>Date Oldest</MenuItem>
+              <MenuItem value='dd'>Date Newest</MenuItem>
+              <MenuItem value='t'>Title</MenuItem>
+            </Select>
+          </Box>
           <Box className={classes.Opt} ml={3} mr={1} mt={3}>
             <Button
               size="small"

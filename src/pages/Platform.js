@@ -98,6 +98,7 @@ export default function Platform(props) {
     platform_name: "Untitled Platform",
     quizzes: [],
     topFiveUsers: [],
+    sortBy: 'dd',
   });
   const [previewSource, setPreviewSource] = useState();
   const [bannerUrl, setBannerUrl] = useState("");
@@ -110,6 +111,7 @@ export default function Platform(props) {
       platform_name: new_name,
       quizzes: new_quizzes,
       topFiveUsers: new_topFiveUsers,
+      sortBy: state.sortBy,
     };
   };
 
@@ -125,6 +127,7 @@ export default function Platform(props) {
           platform_name: res.data.platform_name,
           quizzes: res.data.quizzes,
           topFiveUsers: res.data.topFiveUsers,
+          sortBy: 'dd',
         });
         setPreviewSource(res.data.icon_photo);
         setBannerUrl(res.data.banner_photo);
@@ -140,6 +143,18 @@ export default function Platform(props) {
     }
   };
 
+  const sortQuizzes = (e) => {
+    const new_state = copyState();
+    new_state.sortBy = e.target.value;
+    new_state.quizzes.sort((f, s) => {
+      if(new_state.sortBy === 'dd')
+        return f.createdAt < s.createdAt;
+      if(new_state.sortBy === 'da')
+        return f.createdAt > s.createdAt;
+      return f.title < s.title;
+    })
+    setState(new_state);
+  }
   useEffect(() => {
     //console.log(props.user_id)
     fetchPlatformData("");
@@ -159,11 +174,12 @@ export default function Platform(props) {
             />
             <Select
               label='Sort By'
-              value='Date Asc'
-              autoWidth>
-              <MenuItem value='Date Asc'>Date Asc</MenuItem>
-              <MenuItem value='Date Desc'>Date Desc</MenuItem>
-              <MenuItem value='Title'>Title</MenuItem>
+              value={state.sortBy}
+              autoWidth
+              onChange={sortQuizzes}>
+              <MenuItem value='da'>Date Oldest</MenuItem>
+              <MenuItem value='dd'>Date Newest</MenuItem>
+              <MenuItem value='t'>Title</MenuItem>
             </Select>
             <Link to={`/platform/${props.match.params.platform_id}/creator`}>
               <ColorButton>Edit Platform</ColorButton>
