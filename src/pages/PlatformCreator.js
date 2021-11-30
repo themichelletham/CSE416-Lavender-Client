@@ -73,13 +73,13 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 5,
+    padding: 5,  
   },
   container: {
     display: "flex",
     flexGrow: 1,
     width: "100%",
-    left: 1,
+    //left: 1,
     display: "inline-block",
     borderRight: '0.2em solid #dcdce3',
   },
@@ -87,14 +87,14 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexGrow: 1,
     width: "100%",
-    paddingLeft: "60%",
-    //paddingBottom: theme.spacing(0.5),
+    paddingLeft: "71%",
     alignItems: "left",
+    marginBottom: theme.spacing(.1), 
   },
   header: {
     display: 'flex',
     flexDirection: 'row',
-    width: '100%',
+    width: '98%',
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -102,17 +102,16 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: '0.2em solid #dcdce3'
   },
   search: {
-    //display: 'inline-block',
     border: 1,
     borderColor: grey,
     borderRadius: 30,
-    //margin: "auto",
     left: 0,
-    marginLeft: "20%",
+    marginLeft: "5%", 
     width: 600,
     height: 35,
-    marginBottom: theme.spacing(0.5),
-    marginTop: theme.spacing(0.5),
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    marginRight: theme.spacing(1),
     //align: "center"
   },
   editPlatform: {
@@ -130,8 +129,9 @@ const useStyles = makeStyles((theme) => ({
     borderTopRightRadius: 15,
     height: theme.spacing(7.5),
     backgroundColor: "#7519BD",
-    width: "80vw",
+    width: "75vw",
     marginBottom: theme.spacing(2),
+    marginRight: theme.spacing(3),
   },
   gridContainer: {
     display: "inline-flex",
@@ -150,10 +150,12 @@ const useStyles = makeStyles((theme) => ({
   editThumbnail: {
     display: "inline-block",
     width: "100%",
-    paddingTop: 1,
-    paddingLeft: "55%",
+    //paddingTop: .5,
+    paddingBottom: 1, 
+    paddingLeft: "60%",
     zIndex: "tooltip",
     flexGrow: 1,
+    
   },
   createQuiz: {
     width: theme.spacing(25),
@@ -456,15 +458,16 @@ export default function PlatformCreator(props) {
       <Box className={classes.hContainer}>
         <Box className={classes.container}>
           <Box className={classes.editThumbnail}>
-            Banner photo:
-            <Input
+            Banner:
+            <Input 
+              maxWidth = '10px'
               type="file"
               name="image"
               accept=".jpg .png .jpeg"
               multiple={false}
               onChange={(e) => handleFileInputChange(e, "banner")}
             ></Input>
-            <br></br>Icon photo:
+            <br></br>Icon:
             <Input
               type="file"
               name="image"
@@ -494,6 +497,7 @@ export default function PlatformCreator(props) {
               label='Sort By'
               value={state.sortBy}
               autoWidth
+              size="small"
               onChange={sortQuizzes}>
               <MenuItem value='da'>Date Oldest</MenuItem>
               <MenuItem value='dd'>Date Newest</MenuItem>
