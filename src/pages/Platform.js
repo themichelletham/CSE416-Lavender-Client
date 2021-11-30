@@ -74,7 +74,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: ttheme.spacing(1),
   },
   editPlat: {
-    marginLeft: "73%",
+    marginLeft: ttheme.spacing(85),
+    marginBottom: ttheme.spacing(2)
   },
   search: {
     border: 1,
@@ -165,6 +166,9 @@ export default function Platform(props) {
         platform_icon={previewSource}
         banner={bannerUrl}
       />
+      <Link to={`/platform/${props.match.params.platform_id}/creator`}>
+              <ColorButton className={classes.editPlat}>Edit Platform</ColorButton>
+      </Link>
       <Box className={classes.hContainer}>
         <Box container className={classes.container}>
           <Box className={classes.header}>
@@ -175,18 +179,17 @@ export default function Platform(props) {
               onKeyPress={search}
             />
             <Select
-              label="Sort By"
+              label='Sort By'
               value={state.sortBy}
               autoWidth
+              size="small"
               onChange={sortQuizzes}
             >
               <MenuItem value="da">Date Oldest</MenuItem>
               <MenuItem value="dd">Date Newest</MenuItem>
               <MenuItem value="t">Title</MenuItem>
             </Select>
-            <Link to={`/platform/${props.match.params.platform_id}/creator`}>
-              <ColorButton>Edit Platform</ColorButton>
-            </Link>
+
           </Box>
           {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
           <Box
