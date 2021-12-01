@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     //width: theme.spacing(100),
     //height: theme.spacing(100),
   },
-  gridContainer: {
+  /*gridContainer: {
     //marginTop: '2%',
     //marginLeft: '10%',
     //width: '90%',
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   gridItem: {
     display: "inline-block",
-  },
+  },*/
 }));
 
 function Home(props) {

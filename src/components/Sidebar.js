@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     //flexGrow: 1,
   },
   mainbox: {
-    display: "flex",
+    display: "",
   },
   drawer: {
     width: drawerWidth,

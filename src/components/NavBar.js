@@ -38,7 +38,7 @@ import * as constants from "../components/constants";
 const useStyles = makeStyles((theme) => ({
   AppBar: {
     display: "inline-block",
-    position: "relative",
+    position: "fixed",
     backgroundColor: "#241452",
     height: 63,
     zIndex: 1250,

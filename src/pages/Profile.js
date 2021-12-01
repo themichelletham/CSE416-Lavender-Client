@@ -41,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
     float: 'center',
     //marginTop: 10,
     marginLeft: theme.spacing(0),
-    marginTop: theme.spacing(10),
-    marginBottom: theme.spacing(),
+    marginTop: theme.spacing(18),
+    marginBottom: theme.spacing(1),
     height: theme.spacing(22),
     width: theme.spacing(22),
     borderRadius: '100%',
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   username: {
     display: 'inline-flex',
-    marginTop: theme.spacing(35),
+    marginTop: theme.spacing(42),
     align: "center",
   },
   pointsContainer: {
@@ -58,8 +58,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    //alignItems: 'left',
-    //width: '100%',
+    marginBottom: '2%'
   },
   pointsRow: {
     flexDirection: 'row',
