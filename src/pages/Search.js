@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     width: "80vw",
     //height: "100%",
+    marginTop: "5%",
     overflowY: "hidden"
   },
   gridContainer: {
@@ -91,7 +92,7 @@ function Search(props) {
 
   return (
     <Box className={classes.homePage}>
-      <Typography mb={1} mt={2} pl={"8%"}>
+      <Typography variant="h6" mb={1} mt={2} pl={"8%"}>
         QUIZZES
       </Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
@@ -121,7 +122,7 @@ function Search(props) {
           <Grid item></Grid>
         )}
       </Grid>
-      <Typography mb={1} pl={"8%"}>
+      <Typography variant="h6" mb={1} pl={"8%"}>
         PLATFORMS
       </Typography>
       <Grid container spacing={3} className={classes.gridContainer}>
