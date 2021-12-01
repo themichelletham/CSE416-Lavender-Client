@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "15%",
     backgroundColor: "#FFFFFF",
     margin: "5%",
-    paddingLeft: "5%",
-    paddingRight: "5%",
+    paddingTop: "18%",
+    paddingBottom: "18%",
   }
 }));
 
