@@ -27,10 +27,13 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-block",
     float: "center",
     width: theme.spacing(80), 
-    height: theme.spacing(15),
+    height: theme.spacing(25),
     paddingTop: theme.spacing(3), 
     borderRadius: 15, 
   },
+  badges: { 
+    paddingLeft: theme.spacing(2)
+  }
 }));
 
 export default function PointCard(props) {
@@ -44,19 +47,40 @@ export default function PointCard(props) {
     return c;
   }
   const displayBadges = (points) => {
-    if (points > 0) {
-      return (
-        <div>
-          <img height="100" width="100"src={Badge_1}/>
-        </div>
+    if (points > 50) {
+      return(
+      <div>
+        <img height="100" width="100"src={Badge_1}/>
+        <img height="100" width="100"src={Badge_2}/>        
+        <img height="100" width="100"src={Badge_3}/>      
+        <img height="100" width="100"src={Badge_4}/>
+      </div>
+      ); 
+    }
+    else if (points > 20) {
+      return(
+      <div>
+        <img height="100" width="100"src={Badge_1}/>
+        <img height="100" width="100"src={Badge_2}/>        
+        <img height="100" width="100"src={Badge_3}/>
+      </div>
       );
-    } else if (points > 10) {
+    } 
+    else if (points > 10) {
       return (
         <div>
           <img height="100" width="100"src={Badge_1}/>
           <img height="100" width="100"src={Badge_2}/>
         </div>
       );
+    } 
+    else if (points > 0) {
+      return (
+        <div>
+          <img height="100" width="100"src={Badge_1}/>
+        </div>
+      );
+<<<<<<< HEAD
     } else if (points > 20) {
       return(
         <div>
@@ -74,6 +98,8 @@ export default function PointCard(props) {
           <img height="100" width="100"src={Badge_4}/>
         </div>
       );
+=======
+>>>>>>> ef0b10a6a8787a6d50319d3f796d44265a36453f
     }
   }
   useEffect(() => {
@@ -90,12 +116,14 @@ export default function PointCard(props) {
     <Box>
     <Grid container spacing={3} className={classes.pointCards}>
       <Grid item className={classes.cardItems} item xs={10} md={10}>
-        <Card className={classes.cards} variant="outlined">
-          <CardContent >
-            <Typography align="center">{`Platform_id:${state.platform_name}`}</Typography>
-            <Typography align="center">{`Points:${props.points}`}</Typography>
-          </CardContent>
-          {displayBadges(props.points)}
+        <Card className={classes.cards} variant="outlined"  sx={{ backgroundColor: "white"}}>
+            <CardContent>
+              <Typography align="center">{`Platform_id:${state.platform_name}`}</Typography>
+              <Typography align="center">{`Points:${props.points}`}</Typography>
+              <Box className={classes.badges}>
+                {displayBadges(props.points)}
+              </Box>
+            </CardContent>
         </Card>
       </Grid>
     </Grid>
