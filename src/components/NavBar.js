@@ -104,6 +104,7 @@ export default function NavBar() {
   const handleProfileClick = (event) => {
     setState({ ...state, anchorEl: event.currentTarget });
   };
+  
   const onViewProfile = (e) => {
     e.preventDefault();
     history.push(`/profile/${state.user.user_id}`);
@@ -112,6 +113,7 @@ export default function NavBar() {
   const resetKeyword = () => {
     setKeyword("");
   };
+
   const handleCloseProfileMenu = () => {
     setState({ ...state, anchorEl: null });
     setKeyword("");

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button, FormControl, InputBase, Input } from "@mui/material";
+import { Box, Button, FormControl, InputBase, Input, Switch, TextField, Typography } from "@mui/material";
 import { useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
 import * as constants from "../components/constants";
@@ -28,10 +28,38 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   duration: {
-    display: "inline-block",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     float: "left",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  timeContainer: {
+    display: "flex",
+    borderRadius: "20%",
+    alignItems: "center",
+    justifyContent: "center",
+    flexGrow: 1,
+    fontSize: 16,
+    fontWeight: "bold",
+    backgroundColor: "#acace1",
+    margin: "5%",
+    paddingLeft: "15%",
+    paddingRight: "15%",
+    paddingBottom: "2%",
+    paddingTop: "2%",
+  },
+  time: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  timeInput: {
+    display: "flex",
+    width: "1.5rem",
+    alignItems: "center",
+    align: "right",
+    margin: 0,
   },
   save: {
     display: "inline-block",
@@ -74,17 +102,21 @@ export default function QuizCreate(props) {
     answers: [],
     correct_answers: [],
   });
+  const [minutes, setMinutes] = useState(null);
+  const [seconds, setSeconds] = useState(null);
   const [previewSource, setPreviewSource] = useState();
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
   const [cloudinaryErr, setCloudinaryErr] = useState("");
 
   const copyState = () => {
-    let new_title = state.quiz_title;
-    let new_questions = [...state.questions];
-    let new_answers = state.answers.map((arr) => arr.slice());
-    let new_correct_answers = [...state.correct_answers];
-    return [new_title, new_questions, new_answers, new_correct_answers];
+    let ret = {};
+    ret.platform_name = state.platform_name;
+    ret.quiz_title = state.quiz_title;
+    ret.questions = [...state.questions];
+    ret.answers = state.answers.map((arr) => arr.slice());
+    ret.correct_answers = [...state.correct_answers];
+    return ret;
   };
 
   const classes = useStyles();
@@ -145,10 +177,35 @@ export default function QuizCreate(props) {
     borderRadius: 20,
   };
 
+  const onDurationToggle = (e) => {
+    if (e.target.checked) {
+      setMinutes(60);
+      setSeconds(0);
+    }
+    else {
+      setMinutes(null);
+      setSeconds(null);
+    }
+  }
+
+  const onMinutesChange = (e) => {
+    e.preventDefault();
+    setMinutes(Math.min(Math.max(e.target.value, 0), 999));
+  };
+
+  const onSecondsChange = (e) => {
+    e.preventDefault();
+    setSeconds(Math.min(Math.max(e.target.value, 0), 59));
+  };
+
   const onSave = (e) => {
+    const totalSeconds = minutes * 60 + seconds;
     axios
       .put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/creator`, {
-        quiz_fields: { quiz_name: state.quiz_title },
+        quiz_fields: {
+          quiz_name: state.quiz_title,
+          time_limit: totalSeconds
+        },
       })
       .then((res) => {
         // TODO: DO something after udpate
@@ -198,115 +255,66 @@ export default function QuizCreate(props) {
   };
 
   const onTitleChange = (e) => {
-    let [new_title, new_questions, new_answers, new_correct_answers] =
-      copyState();
-    new_title = e.target.value;
-    setState({
-      quiz_title: new_title,
-      questions: new_questions,
-      answers: new_answers,
-      correct_answers: new_correct_answers,
-    });
+    let new_state = copyState();
+    new_state.quiz_title = e.target.value;
+    setState(new_state);
   };
 
   const onQuestionChange = (e, q_k) => {
-    let [new_title, new_questions, new_answers, new_correct_answers] =
-      copyState();
-    new_questions[q_k] = e.target.value;
-    setState({
-      quiz_title: new_title,
-      questions: new_questions,
-      answers: new_answers,
-      correct_answers: new_correct_answers,
-    });
+    let new_state = copyState();
+    new_state.questions[q_k] = e.target.value;
+    setState(new_state);
   };
 
   const addQuestion = (e) => {
-    let [new_title, new_questions, new_answers, new_correct_answers] =
-      copyState();
-    new_questions.push("New question");
-    new_answers.push(["New Answer", "New Answer"]);
-    new_correct_answers.push([0]);
-    setState({
-      quiz_title: new_title,
-      questions: new_questions,
-      answers: new_answers,
-      correct_answers: new_correct_answers,
-    });
+    let new_state = copyState();
+    new_state.questions.push("New question");
+    new_state.answers.push(["New Answer", "New Answer"]);
+    new_state.correct_answers.push([0]);
+    setState(new_state);
   };
 
   const removeQuestion = (e, q_k) => {
-    let [new_title, new_questions, new_answers, new_correct_answers] =
-      copyState();
-    new_questions.splice(q_k, 1);
-    new_answers.splice(q_k, 1);
-    new_correct_answers.splice(q_k, 1);
-    setState({
-      quiz_title: new_title,
-      questions: new_questions,
-      answers: new_answers,
-      correct_answers: new_correct_answers,
-    });
+    let new_state = copyState();
+    new_state.questions.splice(q_k, 1);
+    new_state.answers.splice(q_k, 1);
+    new_state.correct_answers.splice(q_k, 1);
+    setState(new_state);
   };
 
   const onAnswerChange = (e, q_k, a_k) => {
-    let [new_title, new_questions, new_answers, new_correct_answers] =
-      copyState();
+    let new_state = copyState();
     //new_correct_answers[q_k][0] = a_k;
     //if ( new_answers[q_k][a_k] === new_correct_answers[q_k][0]){
     //  new_correct_answers[q_k][0] = e.target.value;
     //}
-    new_answers[q_k][a_k] = e.target.value;
-
-    setState({
-      quiz_title: new_title,
-      questions: new_questions,
-      answers: new_answers,
-      correct_answers: new_correct_answers,
-    });
+    new_state.answers[q_k][a_k] = e.target.value;
+    setState(new_state);
   };
 
   const addAnswer = (e, q_k) => {
-    let [new_title, new_questions, new_answers, new_correct_answers] =
-      copyState();
-    new_answers[q_k].push("New answer");
-    setState({
-      quiz_title: new_title,
-      questions: new_questions,
-      answers: new_answers,
-      correct_answers: new_correct_answers,
-    });
+    let new_state = copyState();
+    new_state.answers[q_k].push("New answer");
+    setState(new_state);
   };
 
   //adds/changes correct answer
   //this list will be used to compare with the other answers in the list to see which is correct
   const makeCorrect = (e, q_k, a_k) => {
-    let [new_title, new_questions, new_answers, new_correct_answers] =
-      copyState();
-    new_correct_answers[q_k] = [a_k];
-    setState({
-      quiz_title: new_title,
-      questions: new_questions,
-      answers: new_answers,
-      correct_answers: new_correct_answers,
-    });
+    let new_state = copyState();
+    new_state.correct_answers[q_k] = [a_k];
+    setState(new_state);
   };
 
   const removeAnswer = (e, q_k, a_k) => {
-    let [new_title, new_questions, new_answers, new_correct_answers] =
-      copyState();
-    new_answers[q_k].splice(a_k, 1);
-    if (a_k < new_correct_answers[q_k][0]) {
-      new_correct_answers[q_k][0]--;
-    } else if (a_k === new_correct_answers) {
-      new_correct_answers[q_k][0] = 0;
+    let new_state = copyState();
+    new_state.answers[q_k].splice(a_k, 1);
+    if (a_k < new_state.correct_answers[q_k][0]) {
+      new_state.correct_answers[q_k][0]--;
+    } else if (a_k === new_state.correct_answers[q_k][0]) {
+      new_state.correct_answers[q_k][0] = 0;
     }
-    setState({
-      quiz_title: new_title,
-      questions: new_questions,
-      answers: new_answers,
-      correct_answers: new_correct_answers,
-    });
+    setState(new_state);
   };
 
   const parseToState = (res) => {
@@ -319,7 +327,6 @@ export default function QuizCreate(props) {
     const correct_answers = res.data.answers.map((ans_list) => {
       const ca = [];
       for (let i = 0; i < ans_list.length; ++i) {
-        console.log(ans_list[i]);
         if (ans_list[i].is_correct) {
           ca.push(i);
         }
@@ -336,17 +343,24 @@ export default function QuizCreate(props) {
       correct_answers: correct_answers,
     };
   };
+
   useEffect(() => {
     axios
       .get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
       .then((res) => {
         setState(parseToState(res));
+        let seconds = res.data.quiz.time_limit;
+        console.log(seconds);
+        if (seconds !== null && seconds !== 0) {
+          setMinutes(Math.round(seconds / 60));
+          setSeconds(seconds % 60);
+        }
         setUrl(res.data.icon_photo);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [props]);
+  }, []);
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -408,6 +422,7 @@ export default function QuizCreate(props) {
       });
   };
 
+  const hasDuration = minutes || seconds;
   return (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_name}</h1>
@@ -431,7 +446,32 @@ export default function QuizCreate(props) {
         </Button>
       </Box>
       <Box className={classes.Opt} mt={3}>
-        <div className={classes.duration}>Duration: INF</div>
+        <Box className={classes.duration}>
+          <Typography>Duration: </Typography>
+          <Box className={classes.timeContainer}>
+            {hasDuration !== null
+              ? (
+                <Box className={classes.time}>
+                  <InputBase
+                    className={classes.timeInput}
+                    type={'number'}
+                    size={'small'}
+                    onChange={onMinutesChange}
+                    value={minutes} />
+                  <Typography>:</Typography>
+                  <InputBase
+                    className={classes.timeInput}
+                    type={'number'}
+                    size={'small'}
+                    onChange={onSecondsChange}
+                    value={seconds} />
+                </Box>
+              )
+              : <Typography>INF</Typography>
+            }
+          </Box>
+          <Switch onChange={onDurationToggle} checked={hasDuration !== null} />
+        </Box>
         <Button
           size="small"
           variant="contained"

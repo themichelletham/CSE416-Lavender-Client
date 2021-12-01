@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, styled } from "@material-ui/core/styles";
-import { Box, Button, FormControl, InputBase, Grid } from "@mui/material";
+import { Box, Button, FormControl, InputBase, Grid, Typography } from "@mui/material";
 import { useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import * as constants from "../components/constants";
@@ -22,10 +22,31 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   duration: {
-    display: "inline-block",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     float: "left",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  timeContainer: {
+    display: "flex",
+    borderRadius: "20%",
+    alignItems: "center",
+    justifyContent: "center",
+    flexGrow: 1,
+    fontSize: 16,
+    fontWeight: "bold",
+    backgroundColor: "#acace1",
+    margin: "5%",
+    paddingLeft: "15%",
+    paddingRight: "15%",
+    paddingBottom: "2%",
+    paddingTop: "2%",
+  },
+  time: {
+    display: "flex",
+    flexDirection: "row",
   },
   title: {
     borderTopLeftRadius: 15,
@@ -75,6 +96,8 @@ export default function QuizTake(props) {
     selected_answers: [],
     redirect: false,
   });
+  const [minutes, setMinutes] = useState(null);
+  const [seconds, setSeconds] = useState(null);
   const [previewSource, setPreviewSource] = useState();
   const classes = useStyles();
   const history = useHistory();
@@ -110,6 +133,10 @@ export default function QuizTake(props) {
     };
   };
 
+  const startQuiz = async () => {
+    await fetchQuiz();
+  };
+
   const fetchQuiz = async () => {
     let history_res;
     if (props.user_id) {
@@ -130,6 +157,11 @@ export default function QuizTake(props) {
           let s = parseToState(res);
           s.selected_answers = s.questions.map((q) => -1);
           setState(s);
+          let time_limit = res.data.quiz.time_limit;
+          if (time_limit !== null && seconds !== 0) {
+            setMinutes(Math.floor(time_limit / 60));
+            setSeconds(time_limit % 60);
+          }
           setPreviewSource(res.data.quiz.icon_photo);
         })
         .catch((err) => {
@@ -139,7 +171,31 @@ export default function QuizTake(props) {
   };
 
   useEffect(() => {
+    if ((seconds || minutes) !== null) {
+      let interval = setInterval(() => {
+        if (seconds > 0) {
+          setSeconds(seconds - 1);
+        }
+        else {
+          if (minutes > 0) {
+            setMinutes(minutes - 1);
+            setSeconds(59);
+          }
+          else {
+            onSubmit(null);
+            clearInterval(interval);
+          }
+        }
+      }, 1000)
+      return () => {
+        clearInterval(interval);
+      }
+    }
+  });
+
+  useEffect(() => {
     fetchQuiz();
+    //startQuiz();
   }, []);
 
   const onSelect = (e, q_k, a_k) => {
@@ -211,7 +267,19 @@ export default function QuizTake(props) {
       <h1>{state.platform_name}</h1>
       <img className={classes.icon} src={previewSource} />
       <Box className={classes.Opt} mt={3}>
-        <div className={classes.duration}>Duration: INF</div>
+        <Box className={classes.duration}>
+          <Typography>Duration: </Typography>
+          <Box className={classes.timeContainer}>
+            {(minutes || seconds) !== null
+              ? (
+                <Box className={classes.time}>
+                  <Typography>{`${minutes}:${seconds}`}</Typography>
+                </Box>
+              )
+              : <Typography>INF</Typography>
+            }
+          </Box>
+        </Box>
       </Box>
       <FormControl className={classes.quizform}>
         <InputBase
