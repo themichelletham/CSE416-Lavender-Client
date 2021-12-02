@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Button, FormControl, InputBase, Input, Switch, TextField, Typography } from "@mui/material";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, Redirect } from "react-router-dom";
 import axios from "axios";
 import * as constants from "../components/constants";
 import Questions from "../components/Questions";
@@ -95,6 +95,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function QuizCreate(props) {
+  const [redirect, setRedirect] = useState(false);
   const [state, setState] = useState({
     platform_name: "",
     quiz_title: "",
@@ -206,11 +207,11 @@ export default function QuizCreate(props) {
           quiz_name: state.quiz_title,
           time_limit: totalSeconds
         },
-      })
-      .then((res) => {
+      }, {
+        withCredentials: true,
+      }).then((res) => {
         // TODO: DO something after udpate
-      })
-      .catch((err) => {
+      }).catch((err) => {
         console.log("PUT on Save: ", err);
       });
 
@@ -346,7 +347,7 @@ export default function QuizCreate(props) {
 
   useEffect(() => {
     axios
-      .get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
+      .get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/creator`)
       .then((res) => {
         setState(parseToState(res));
         let seconds = res.data.quiz.time_limit;
@@ -359,6 +360,7 @@ export default function QuizCreate(props) {
       })
       .catch((err) => {
         console.log(err);
+        setRedirect(true);
       });
   }, []);
 
@@ -423,7 +425,7 @@ export default function QuizCreate(props) {
   };
 
   const hasDuration = minutes || seconds;
-  return (
+  return redirect?(<Redirect to={`/`} />):(
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_name}</h1>
       <img className={classes.icon} src={url} />

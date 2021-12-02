@@ -276,17 +276,13 @@ export default function PlatformCreator(props) {
 
   const fetchPlatformData = (keyword) => {
     axios
-      .get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`, {
+      .get(`${constants.API_PATH}/platform/${props.match.params.platform_id}/creator`, {
         params: {
           keyword: keyword,
         },
         withCredentials: true
       })
       .then((res) => {
-        if(res.data.user_id !== props.user_id){
-          setRedirect(true);
-          return;
-        }
         setState({
           platform_name: res.data.platform_name,
           user_id: res.data.user_id,
@@ -299,6 +295,7 @@ export default function PlatformCreator(props) {
       })
       .catch((err) => {
         console.log(err);
+        setRedirect(true);
       });
   };
 
@@ -323,7 +320,7 @@ export default function PlatformCreator(props) {
 
   useEffect(() => {
     fetchPlatformData("");
-  }, []);
+  }, [props]);
 
   const onCreateQuiz = (e) => {
     e.preventDefault();
@@ -337,7 +334,6 @@ export default function PlatformCreator(props) {
             time_limit: null,
             is_published: false,
           },
-          user_id: props.user_id,
         },
         { withCredentials: true }
       )

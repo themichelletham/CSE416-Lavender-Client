@@ -157,6 +157,7 @@ export default function Platform(props) {
     });
     setState(new_state);
   };
+
   useEffect(() => {
     //console.log(props.user_id)
     fetchPlatformData("");
