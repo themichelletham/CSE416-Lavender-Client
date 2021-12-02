@@ -80,26 +80,6 @@ export default function PointCard(props) {
           <img height="100" width="100"src={Badge_1}/>
         </div>
       );
-<<<<<<< HEAD
-    } else if (points > 20) {
-      return(
-        <div>
-          <img height="100" width="100"src={Badge_1}/>
-          <img height="100" width="100"src={Badge_2}/>        
-          <img height="100" width="100"src={Badge_3}/>
-        </div>
-      );
-    } else if (points > 50) {
-      return (
-        <div>
-          <img height="100" width="100"src={Badge_1}/>
-          <img height="100" width="100"src={Badge_2}/>        
-          <img height="100" width="100"src={Badge_3}/>      
-          <img height="100" width="100"src={Badge_4}/>
-        </div>
-      );
-=======
->>>>>>> ef0b10a6a8787a6d50319d3f796d44265a36453f
     }
   }
   useEffect(() => {
