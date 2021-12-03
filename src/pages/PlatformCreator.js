@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Redirect } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import * as constants from "../components/constants";
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@material-ui/core";
 import { Card, CardContent, CardMedia } from "@material-ui/core";
 import {
@@ -61,20 +61,20 @@ const useStyles = makeStyles((theme) => ({
     width: "100vw",
   },
   hContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '90%',
+    display: "flex",
+    flexDirection: "row",
+    width: "90%",
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   header: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
     flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5,  
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 5,
   },
   container: {
     display: "flex",
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     //left: 1,
     display: "inline-block",
-    borderRight: '0.2em solid #dcdce3',
+    borderRight: "0.2em solid #dcdce3",
   },
   Opt: {
     display: "flex",
@@ -90,24 +90,24 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     paddingLeft: "71%",
     alignItems: "left",
-    marginBottom: theme.spacing(.1), 
+    marginBottom: theme.spacing(0.1),
   },
   header: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '98%',
+    display: "flex",
+    flexDirection: "row",
+    width: "98%",
     flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 5,
-    borderBottom: '0.2em solid #dcdce3'
+    borderBottom: "0.2em solid #dcdce3",
   },
   search: {
     border: 1,
     borderColor: grey,
     borderRadius: 30,
     left: 0,
-    marginLeft: "5%", 
+    marginLeft: "5%",
     width: 600,
     height: 35,
     marginBottom: theme.spacing(2),
@@ -152,11 +152,10 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-block",
     width: "100%",
     //paddingTop: .5,
-    paddingBottom: 1, 
+    paddingBottom: 1,
     paddingLeft: "60%",
     zIndex: "tooltip",
     flexGrow: 1,
-    
   },
   createQuiz: {
     width: theme.spacing(25),
@@ -179,7 +178,7 @@ export default function PlatformCreator(props) {
     user_id: null,
     quizzes: [],
     topFiveUsers: [],
-    sortBy: 'dd',
+    sortBy: "dd",
   });
 
   const [selectedQuiz, setSelectedQuiz] = useState();
@@ -217,7 +216,7 @@ export default function PlatformCreator(props) {
           },
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       )
       .then((res) => {
@@ -228,22 +227,22 @@ export default function PlatformCreator(props) {
       });
     uploadImage();
 
-    axios
-      .put(
-        `${constants.API_PATH}/quiz/toggle_publish/${props.match.params.platform_id}`,
-        {
-          quiz_fields: {
-            platform_id: props.match.params.platform_id,
-            quizzes: state.quizzes,
-          },
-        }
-      )
-      .then((res) => {
-        // updated
-      })
-      .catch((err) => {
-        console.log("PUT on Save Quizzes: ", err);
-      });
+    // axios
+    //   .put(
+    //     `${constants.API_PATH}/quiz/toggle_publish/${props.match.params.platform_id}`,
+    //     {
+    //       quiz_fields: {
+    //         platform_id: props.match.params.platform_id,
+    //         quizzes: state.quizzes,
+    //       },
+    //     }
+    //   )
+    //   .then((res) => {
+    //     // updated
+    //   })
+    //   .catch((err) => {
+    //     console.log("PUT on Save Quizzes: ", err);
+    //   });
   };
 
   const onDelete = (e) => {
@@ -276,19 +275,22 @@ export default function PlatformCreator(props) {
 
   const fetchPlatformData = (keyword) => {
     axios
-      .get(`${constants.API_PATH}/platform/${props.match.params.platform_id}/creator`, {
-        params: {
-          keyword: keyword,
-        },
-        withCredentials: true
-      })
+      .get(
+        `${constants.API_PATH}/platform/${props.match.params.platform_id}/creator`,
+        {
+          params: {
+            keyword: keyword,
+          },
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         setState({
           platform_name: res.data.platform_name,
           user_id: res.data.user_id,
           quizzes: res.data.quizzes,
           topFiveUsers: res.data.topFiveUsers,
-          sortBy: 'dd',
+          sortBy: "dd",
         });
         setUrl(res.data.icon_photo);
         setBannerUrl(res.data.banner_photo);
@@ -309,14 +311,12 @@ export default function PlatformCreator(props) {
     const new_state = copyState();
     new_state.sortBy = e.target.value;
     new_state.quizzes.sort((f, s) => {
-      if (new_state.sortBy === 'dd')
-        return f.createdAt < s.createdAt;
-      if (new_state.sortBy === 'da')
-        return f.createdAt > s.createdAt;
+      if (new_state.sortBy === "dd") return f.createdAt < s.createdAt;
+      if (new_state.sortBy === "da") return f.createdAt > s.createdAt;
       return f.title < s.title;
-    })
+    });
     setState(new_state);
-  }
+  };
 
   useEffect(() => {
     fetchPlatformData("");
@@ -384,6 +384,18 @@ export default function PlatformCreator(props) {
     new_state.quizzes[index].is_published =
       !new_state.quizzes[index].is_published;
     setState(new_state);
+    axios
+      .put(`${constants.API_PATH}/quiz/toggle_publish/`, {
+        quiz_fields: {
+          quizzes: new_state.quizzes[index],
+        },
+      })
+      .then((res) => {
+        // updated
+      })
+      .catch((err) => {
+        console.log("PUT on Save Quizzes: ", err);
+      });
   };
 
   const handleFileInputChange = (e, imagetype) => {
@@ -461,15 +473,17 @@ export default function PlatformCreator(props) {
       });
   };
 
-  return redirect?(<Redirect to={`/platform/${props.match.params.platform_id}`} />):(
+  return redirect ? (
+    <Redirect to={`/platform/${props.match.params.platform_id}`} />
+  ) : (
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile platform_icon={url} banner={bannerUrl} />
       <Box className={classes.hContainer}>
         <Box className={classes.container}>
           <Box className={classes.editThumbnail}>
             Banner:
-            <Input 
-              maxWidth = '10px'
+            <Input
+              maxWidth="10px"
               type="file"
               name="image"
               accept=".jpg .png .jpeg"
@@ -496,21 +510,22 @@ export default function PlatformCreator(props) {
               Upload
             </Button>
           </Box>
-          <Box className={classes.header} >
+          <Box className={classes.header}>
             <SearchBar
               className={classes.search}
               placeholder="Search..."
               onKeyPress={search}
             />
             <Select
-              label='Sort By'
+              label="Sort By"
               value={state.sortBy}
               autoWidth
               size="small"
-              onChange={sortQuizzes}>
-              <MenuItem value='da'>Date Oldest</MenuItem>
-              <MenuItem value='dd'>Date Newest</MenuItem>
-              <MenuItem value='t'>Title</MenuItem>
+              onChange={sortQuizzes}
+            >
+              <MenuItem value="da">Date Oldest</MenuItem>
+              <MenuItem value="dd">Date Newest</MenuItem>
+              <MenuItem value="t">Title</MenuItem>
             </Select>
           </Box>
           <Box className={classes.Opt} ml={3} mr={1} mt={3}>
