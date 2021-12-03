@@ -3,13 +3,11 @@ import axios from 'axios';
 import Alert from '@mui/material/Alert';
 import PointCard from '../components/PointCard'
 import { Button, Box, Grid, Typography, ImageListItem, TextField } from '@mui/material'
-import { makeStyles } from '@material-ui/core';
-import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
+import { makeStyles, Tooltip } from '@material-ui/core';
 import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { ThemeProvider } from '@material-ui/styles';
 import * as constants from '../components/constants';
@@ -138,7 +136,11 @@ export default function Profile(props) {
       <img className={classes.icon} src={state.user && state.user.picture} />
       <Box className={classes.username}>
         <Typography variant="h5" align="center" mb={1}>{state.user && state.user.username}</Typography>
-        <IconButton onClick={handleClickOpen}><EditIcon /></IconButton>
+        <Tooltip title="Edit Username" placement="top">
+          <IconButton onClick={handleClickOpen}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Edit Username</DialogTitle>
           <DialogContent>

@@ -13,6 +13,7 @@ import {
   InputBase,
   Input,
   Grid,
+  Tooltip,
 } from "@mui/material";
 import {
   BrowserRouter as Router,
@@ -617,24 +618,36 @@ export default function PlatformCreator(props) {
                         />
                         <CardContent>{quiz.quiz_name}</CardContent>
                       </Link>
-                      <IconButton
-                        onClick={(e) => {
-                          handleVisibility(index);
-                        }}
-                      >
-                        {quiz.is_published ? (
-                          <VisibilityOffIcon />
+                      {quiz.is_published ? (
+                        <Tooltip title="Make Public">
+                          <IconButton
+                            onClick={(e) => {
+                              handleVisibility(index);
+                            }}
+                          >
+                            <VisibilityOffIcon />
+                          </IconButton>
+                        </Tooltip>
                         ) : (
-                          <VisibilityIcon />
-                        )}
-                      </IconButton>
-                      <IconButton
-                        onClick={(e) => {
-                          handleDeleteQuizOpen(index);
-                        }}
-                      >
-                        <HighlightOffIcon style={{ fill: "red" }} />
-                      </IconButton>
+                        <Tooltip title="Make Private">
+                          <IconButton
+                            onClick={(e) => {
+                              handleVisibility(index);
+                            }}
+                          >
+                            <VisibilityIcon />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                      <Tooltip title="Delete Quiz">
+                        <IconButton
+                          onClick={(e) => {
+                            handleDeleteQuizOpen(index);
+                          }}
+                        >
+                          <HighlightOffIcon style={{ fill: "red" }} />
+                        </IconButton>
+                      </Tooltip>
                     </Card>
                   </Grid>
                 ))
