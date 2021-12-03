@@ -14,11 +14,12 @@ import CircleIcon from "@mui/icons-material/CircleOutlined";
 
 const useStyles = makeStyles((theme) => ({
   QuizContainer: {
-    paddingTop: '5%',
+    //paddingTop: '5%',
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
     width: theme.spacing(120),
+    overflowX: "hidden"
   },
   Opt: {
     display: "inline-block",
@@ -353,7 +354,6 @@ export default function QuizCreate(props) {
       .then((res) => {
         setState(parseToState(res));
         let seconds = res.data.quiz.time_limit;
-        console.log(seconds);
         if (seconds !== null && seconds !== 0) {
           setMinutes(Math.round(seconds / 60));
           setSeconds(seconds % 60);

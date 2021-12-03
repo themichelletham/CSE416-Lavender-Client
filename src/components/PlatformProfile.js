@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     top: -theme.spacing(11),
     left: 0,
     float: 'left',
-    width: '90%',
+    width: '80%',
     zIndex: 'tooltip',
   },
   icon: {
@@ -81,7 +81,7 @@ export default function PlatformProfile(props) {
             props.platform_icon === "" || props.platform_icon === null
             ? defaultIcon
             : props.platform_icon} />
-        <Typography variant='h3' ml={2} mt={2} className={classes.title}> {props.platform_name}</Typography>
+        <Typography variant='h4' ml={2} mt={2} className={classes.title}> {props.platform_name}</Typography>
       </Box>
     </Box>
   )

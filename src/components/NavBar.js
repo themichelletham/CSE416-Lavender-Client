@@ -218,7 +218,6 @@ export default function NavBar() {
           </Link>
           {state.authenticated ? (
             <Box>
-              {state.user.username}
               <IconButton
                 sx={{ ml: "auto" }}
                 size="medium"
@@ -228,6 +227,7 @@ export default function NavBar() {
                 onClick={handleProfileClick}
                 color="inherit"
               >
+                {state.user.username}
                 <AccountCircle />
               </IconButton>
             </Box>

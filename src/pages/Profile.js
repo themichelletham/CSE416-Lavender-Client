@@ -10,19 +10,11 @@ import {
   ImageListItem,
   TextField,
 } from "@mui/material";
-import { makeStyles } from "@material-ui/core";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Link,
-  useHistory,
-} from "react-router-dom";
+import { makeStyles, Tooltip } from "@material-ui/core";
 import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { ThemeProvider } from "@material-ui/styles";
 import * as constants from "../components/constants";
@@ -157,6 +149,7 @@ export default function Profile(props) {
         </Typography>
         {state.user && props.user.user_id === state.user.user_id ? (
           <>
+            <Tooltip title="Edit Username" placement="top"></Tooltip>
             <IconButton onClick={handleClickOpen}>
               <EditIcon />
             </IconButton>
