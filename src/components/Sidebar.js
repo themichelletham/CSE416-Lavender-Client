@@ -61,6 +61,8 @@ export default function Sidebar(props) {
         platform_name: 'Untitled Platform',
         user_id: props.user_id,
       }
+    }, {
+      withCredentials: true,
     }).then(res => {
       console.log(res)
       if (res.status == 201) {
