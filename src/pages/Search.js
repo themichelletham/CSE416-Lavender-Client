@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     width: "80vw",
     //height: "100%",
-    marginTop: "5%",
+    //marginTop: "5%",
     overflowY: "hidden"
   },
   gridContainer: {
