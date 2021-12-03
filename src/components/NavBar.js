@@ -83,6 +83,8 @@ export default function NavBar() {
           platform_name: "Untitled Platform",
           user_id: state.user.user_id,
         },
+      }, {
+        withCredentials: true,
       })
       .then((res) => {
         console.log(res);
