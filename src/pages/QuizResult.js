@@ -228,7 +228,6 @@ export default function QuizResult(props) {
             variant="contained"
             onClick={onReturn}
             disableElevation
-            disabled={state.selected_answers.includes(-1)}
           >
             Return to Platform
           </Button>
