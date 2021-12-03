@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box, Grid, Typography, Card, CardContent } from '@material-ui/core'
+import { Box, Grid, Typography, Card, CardContent, Tooltip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core';
 import Badge_1 from "../images/Seed.png";
 import Badge_2 from "../images/Sprout_badge.png";
@@ -47,37 +47,57 @@ export default function PointCard(props) {
     return c;
   }
   const displayBadges = (points) => {
-    if (points > 50) {
+    if (points > 49) {
       return(
       <div>
-        <img height="100" width="100"src={Badge_1}/>
-        <img height="100" width="100"src={Badge_2}/>        
-        <img height="100" width="100"src={Badge_3}/>      
-        <img height="100" width="100"src={Badge_4}/>
+        <Tooltip title="Congrats! You started quizzes on this platform. This is your start as a promising seed!">
+          <img height="100" width="100"src={Badge_1}/>
+        </Tooltip>
+        <Tooltip title="Congrats! You earned 10 points. You've grown to be a sprout!">
+          <img height="100" width="100"src={Badge_2}/>
+        </Tooltip>
+        <Tooltip title="Congrats! You earned 20 points. You're a growing plant!">
+          <img height="100" width="100"src={Badge_3}/>
+        </Tooltip>
+        <Tooltip title="Congrats! You earned 50 points. You are now a blossomed lavendar!">
+          <img height="100" width="100"src={Badge_4}/>
+        </Tooltip>
       </div>
       ); 
     }
-    else if (points > 20) {
+    else if (points > 19) {
       return(
       <div>
-        <img height="100" width="100"src={Badge_1}/>
-        <img height="100" width="100"src={Badge_2}/>        
-        <img height="100" width="100"src={Badge_3}/>
+        <Tooltip title="Congrats! You started quizzes on this platform. This is your start as a promising seed!">
+          <img height="100" width="100"src={Badge_1}/>
+        </Tooltip>
+        <Tooltip title="Congrats! You earned 10 points. You've grown to be a sprout!">
+          <img height="100" width="100"src={Badge_2}/>
+        </Tooltip>
+        <Tooltip title="Congrats! You earned 20 points. You're a growing plant!">
+          <img height="100" width="100"src={Badge_3}/>
+        </Tooltip>
       </div>
       );
     } 
-    else if (points > 10) {
+    else if (points > 9) {
       return (
         <div>
-          <img height="100" width="100"src={Badge_1}/>
-          <img height="100" width="100"src={Badge_2}/>
+          <Tooltip title="Congrats! You started quizzes on this platform. This is your start as a promising seed!">
+            <img height="100" width="100"src={Badge_1}/>
+          </Tooltip>
+          <Tooltip title="Congrats! You earned 10 points. You've grown to be a sprout!">
+            <img height="100" width="100"src={Badge_2}/>
+          </Tooltip>
         </div>
       );
     } 
     else if (points > 0) {
       return (
         <div>
-          <img height="100" width="100"src={Badge_1}/>
+          <Tooltip title="Congrats! You started quizzes on this platform. This is your start as a promising seed!">
+            <img height="100" width="100"src={Badge_1}/>
+          </Tooltip>
         </div>
       );
     }
