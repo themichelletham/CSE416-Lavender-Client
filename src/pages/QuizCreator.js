@@ -347,7 +347,9 @@ export default function QuizCreate(props) {
 
   useEffect(() => {
     axios
-      .get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/creator`)
+      .get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/creator`, {
+        withCredentials: true,
+      })
       .then((res) => {
         setState(parseToState(res));
         let seconds = res.data.quiz.time_limit;
