@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
     width: "80vw",
     //height: "100%",
     //marginTop: "5%",
-    overflowY: "hidden"
+    overflowX:"hidden",
+    overflowY:"hidden"
   },
   gridContainer: {
     display: "inline-flex",

@@ -23,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     justifyContent: "center",
     flexGrow: 1,
+    overflowX:"hidden",
+    overflowY:"hidden"
     //width: theme.spacing(100),
     //height: theme.spacing(100),
   },

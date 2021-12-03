@@ -92,6 +92,11 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(68),
     zIndex: "tooltip",
   },
+  icon:{ 
+    paddignLeft: 10, 
+    maxHeight: "200px", 
+    maxWidth: "950px"
+  }
   //toolbar: theme.mixins.toolbar,
 }));
 

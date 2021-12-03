@@ -8,6 +8,7 @@ import {
   Button,
   Toolbar,
   Divider,
+  Typography
 } from "@material-ui/core";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import sproutLogo from "../images/sprout.png";
@@ -227,7 +228,7 @@ export default function NavBar() {
                 onClick={handleProfileClick}
                 color="inherit"
               >
-                {state.user.username}
+                <Typography variant="h6">{state.user.username}</Typography>
                 <AccountCircle />
               </IconButton>
             </Box>
