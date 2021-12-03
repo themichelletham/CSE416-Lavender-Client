@@ -14,11 +14,12 @@ import CircleIcon from "@mui/icons-material/CircleOutlined";
 
 const useStyles = makeStyles((theme) => ({
   QuizContainer: {
-    paddingTop: '5%',
+    //paddingTop: '5%',
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
     width: theme.spacing(120),
+    overflowX: "hidden"
   },
   Opt: {
     display: "inline-block",
