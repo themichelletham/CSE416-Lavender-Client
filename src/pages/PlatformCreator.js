@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Redirect } from 'react-router-dom';
 import axios from "axios";
 import * as constants from "../components/constants";
 import Select from '@mui/material/Select';
@@ -172,8 +173,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PlatformCreator(props) {
+  const [redirect, setRedirect] = useState(false);
   const [state, setState] = useState({
     platform_name: "Untitled Platform",
+    user_id: null,
     quizzes: [],
     topFiveUsers: [],
     sortBy: 'dd',
@@ -193,6 +196,7 @@ export default function PlatformCreator(props) {
   const copyState = () => {
     let ret = {};
     ret.platform_name = state.platform_name;
+    ret.user_id = state.user_id;
     ret.quizzes = state.quizzes.length ? [...state.quizzes] : [];
     ret.topFiveUsers = state.quizzes.length ? [...state.topFiveUsers] : [];
     ret.sortBy = state.sortBy;
@@ -211,6 +215,9 @@ export default function PlatformCreator(props) {
             platform_name: state.platform_name,
             quizzes: state.quizzes,
           },
+        },
+        {
+          withCredentials: true
         }
       )
       .then((res) => {
@@ -269,14 +276,16 @@ export default function PlatformCreator(props) {
 
   const fetchPlatformData = (keyword) => {
     axios
-      .get(`${constants.API_PATH}/platform/${props.match.params.platform_id}`, {
+      .get(`${constants.API_PATH}/platform/${props.match.params.platform_id}/creator`, {
         params: {
           keyword: keyword,
         },
+        withCredentials: true
       })
       .then((res) => {
         setState({
           platform_name: res.data.platform_name,
+          user_id: res.data.user_id,
           quizzes: res.data.quizzes,
           topFiveUsers: res.data.topFiveUsers,
           sortBy: 'dd',
@@ -286,6 +295,7 @@ export default function PlatformCreator(props) {
       })
       .catch((err) => {
         console.log(err);
+        setRedirect(true);
       });
   };
 
@@ -324,7 +334,6 @@ export default function PlatformCreator(props) {
             time_limit: null,
             is_published: false,
           },
-          user_id: props.user_id,
         },
         { withCredentials: true }
       )
@@ -452,7 +461,7 @@ export default function PlatformCreator(props) {
       });
   };
 
-  return (
+  return redirect?(<Redirect to={`/platform/${props.match.params.platform_id}`} />):(
     <Box className={classes.PlatformCreatorContainer}>
       <PlatformProfile platform_icon={url} banner={bannerUrl} />
       <Box className={classes.hContainer}>
@@ -505,15 +514,15 @@ export default function PlatformCreator(props) {
             </Select>
           </Box>
           <Box className={classes.Opt} ml={3} mr={1} mt={3}>
-            <Button
+            <ColorButton
               size="small"
               variant="contained"
               onClick={onSave}
               disableElevation
             >
               Save Platform
-            </Button>
-            <Button
+            </ColorButton>
+            <ColorButton
               size="small"
               variant="contained"
               onClick={(e) => {
@@ -522,7 +531,7 @@ export default function PlatformCreator(props) {
               disableElevation
             >
               Delete Platform
-            </Button>
+            </ColorButton>
           </Box>
           <Dialog open={platformDialog} onClose={handleDeletePlatformClose}>
             <DialogTitle>Delete Platform {state.platform_name}</DialogTitle>

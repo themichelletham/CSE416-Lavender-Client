@@ -97,6 +97,7 @@ export default function Platform(props) {
   const history = useHistory();
   const [state, setState] = useState({
     platform_name: "Untitled Platform",
+    user_id: null,
     quizzes: [],
     topFiveUsers: [],
     sortBy: "dd",
@@ -110,6 +111,7 @@ export default function Platform(props) {
     let new_topFiveUsers = [...state.topFiveUsers];
     return {
       platform_name: new_name,
+      user_id: state.user_id,
       quizzes: new_quizzes,
       topFiveUsers: new_topFiveUsers,
       sortBy: state.sortBy,
@@ -126,6 +128,7 @@ export default function Platform(props) {
       .then((res) => {
         setState({
           platform_name: res.data.platform_name,
+          user_id: res.data.user_id,
           quizzes: res.data.quizzes,
           topFiveUsers: res.data.topFiveUsers,
           sortBy: "dd",
@@ -154,6 +157,7 @@ export default function Platform(props) {
     });
     setState(new_state);
   };
+
   useEffect(() => {
     //console.log(props.user_id)
     fetchPlatformData("");
@@ -166,9 +170,11 @@ export default function Platform(props) {
         platform_icon={previewSource}
         banner={bannerUrl}
       />
-      <Link to={`/platform/${props.match.params.platform_id}/creator`}>
-              <ColorButton className={classes.editPlat}>Edit Platform</ColorButton>
-      </Link>
+      {props.user_id === state.user_id ? (
+        <Link to={`/platform/${props.match.params.platform_id}/creator`}>
+          <ColorButton className={classes.editPlat}>Edit Platform</ColorButton>
+        </Link>
+      ) : (<></>)}
       <Box className={classes.hContainer}>
         <Box container className={classes.container}>
           <Box className={classes.header}>

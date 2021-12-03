@@ -38,7 +38,7 @@ import * as constants from "../components/constants";
 const useStyles = makeStyles((theme) => ({
   AppBar: {
     display: "inline-block",
-    position: "fixed",
+    position: "sticky",
     backgroundColor: "#241452",
     height: 63,
     zIndex: 1250,
@@ -104,7 +104,7 @@ export default function NavBar() {
   const handleProfileClick = (event) => {
     setState({ ...state, anchorEl: event.currentTarget });
   };
-  
+
   const onViewProfile = (e) => {
     e.preventDefault();
     history.push(`/profile/${state.user.user_id}`);
@@ -318,7 +318,14 @@ export default function NavBar() {
               />
             )}
           />
-          <Route path="/platform/:platform_id" component={Platform} />
+          <Route path="/platform/:platform_id"
+            render={(props) => (
+              <Platform
+                user_id={state.user && state.user.user_id}
+                {...props}
+              />
+            )}
+          />
           <Route path="/quiz/:quiz_id/creator" component={QuizCreate} />
           <Route
             path="/quiz/:quiz_id/results"
