@@ -102,8 +102,6 @@ export default function Profile(props) {
 
   const handleClickOpen = () => {
     setOpen(true);
-    // console.log(props.user);
-    // console.log(state.user);
   };
   const handleClose = () => {
     setOpen(false);
