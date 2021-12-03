@@ -44,6 +44,9 @@ export default function Sidebar(props) {
   const classes = useStyles();
   const history = useHistory();
 
+  const [state, setState] = useState({
+    platform_id: null,
+  });
   const [topTen, setTopTen] = useState([]);
 
   const onViewProfile = (e) => {
@@ -66,6 +69,9 @@ export default function Sidebar(props) {
     }).then(res => {
       console.log(res)
       if (res.status == 201) {
+        setState({
+          platform_id: res.data.platform_id,
+        })
         history.push('/platform/' + res.data.platform_id + '/creator');
       }
     }).catch(err => {
@@ -88,6 +94,19 @@ export default function Sidebar(props) {
       setTopTen(res.data.map(user => user));
     }).catch(err => {
       console.log('GET USERS Sidebar: ', err);
+    })
+
+    axios.get(`${constants.API_PATH}/platform/${state.platform_id}`, {
+      params: {
+        platform_id: state.platform_id,
+      }
+    }).then(res => {
+      console.log(res.data);
+    }).catch(err => {
+      setState({
+        platform_id: null,
+      })
+      console.log('GET PLATFORM Sidebar: ', err);
     })
   }, []);
   return (
@@ -112,7 +131,7 @@ export default function Sidebar(props) {
                   <AddCircleOutlineIcon />
                 </ListItemIcon>
                 <ListItemText>
-                  {props.platform_id?'View Platform':'Create Platform'}
+                  {state.platform_id?'View Platform':'Create Platform'}
                 </ListItemText>
               </ListItem>
             }
