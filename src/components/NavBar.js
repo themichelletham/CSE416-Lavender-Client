@@ -12,12 +12,7 @@ import {
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import sproutLogo from "../images/sprout.png";
 import googleLogin from "../images/google-login-button.png";
-import {
-  Route,
-  Switch,
-  Link,
-  useHistory,
-} from "react-router-dom";
+import { Route, Switch, Link, useHistory } from "react-router-dom";
 import SearchBar from "material-ui-search-bar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -78,14 +73,18 @@ export default function NavBar() {
   const onCreatePlatform = (e) => {
     e.preventDefault();
     axios
-      .post(`${constants.API_PATH}/platform`, {
-        platform_fields: {
-          platform_name: "Untitled Platform",
-          user_id: state.user.user_id,
+      .post(
+        `${constants.API_PATH}/platform`,
+        {
+          platform_fields: {
+            platform_name: "Untitled Platform",
+            user_id: state.user.user_id,
+          },
         },
-      }, {
-        withCredentials: true,
-      })
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         console.log(res);
         if (res.status === 201) {
@@ -101,7 +100,7 @@ export default function NavBar() {
   const onViewPlatform = (e) => {
     e.preventDefault();
     history.push(`/platform/${state.user.platform_id}`);
-  }
+  };
 
   const handleProfileClick = (event) => {
     setState({ ...state, anchorEl: event.currentTarget });
@@ -128,7 +127,7 @@ export default function NavBar() {
       })
       .catch((err) => {
         console.log("fetchAuthUser: ", err);
-      })
+      });
     if (res && res.data) {
       setState({
         authenticated: true,
@@ -169,8 +168,7 @@ export default function NavBar() {
       .catch((err) => {
         console.log("Logout: ", err);
       });
-    if (res.status === 200)
-      history.push("/", {});
+    if (res.status === 200) history.push("/", {});
   };
 
   const search = (e) => {
@@ -257,9 +255,18 @@ export default function NavBar() {
             }}
           >
             <MenuItem onClick={onViewProfile}>View Profile</MenuItem>
-            <MenuItem onClick={(handleCloseProfileMenu, (state.user && state.user.platform_id) ? onViewPlatform : onCreatePlatform)}>
+            <MenuItem
+              onClick={
+                (handleCloseProfileMenu,
+                state.user && state.user.platform_id
+                  ? onViewPlatform
+                  : onCreatePlatform)
+              }
+            >
               {" "}
-              {(state.user && state.user.platform_id) ? 'My Platform' : 'Create Platform'}
+              {state.user && state.user.platform_id
+                ? "My Platform"
+                : "Create Platform"}
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleSignOut}>Logout</MenuItem>
@@ -320,12 +327,10 @@ export default function NavBar() {
               />
             )}
           />
-          <Route path="/platform/:platform_id"
+          <Route
+            path="/platform/:platform_id"
             render={(props) => (
-              <Platform
-                user_id={state.user && state.user.user_id}
-                {...props}
-              />
+              <Platform user_id={state.user && state.user.user_id} {...props} />
             )}
           />
           <Route path="/quiz/:quiz_id/creator" component={QuizCreate} />
@@ -351,7 +356,10 @@ export default function NavBar() {
           />
           {/*<Route path='/quiz/:quiz_id' component={QuizTake} />*/}
           <Route path="/login/success" component={LoginSucess} />
-          <Route path="/profile/:user_id" component={Profile} />
+          <Route
+            path="/profile/:user_id"
+            render={(props) => <Profile user={state.user} {...props} />}
+          />
         </Switch>
       </Box>
     </Box>
