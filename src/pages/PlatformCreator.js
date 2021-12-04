@@ -249,6 +249,11 @@ export default function PlatformCreator(props) {
       .catch((err) => {
         console.log("PUT on Save: ", err);
       });
+<<<<<<< Updated upstream
+=======
+    uploadImage();
+
+>>>>>>> Stashed changes
   };
 
   const onDelete = (e) => {

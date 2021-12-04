@@ -133,10 +133,6 @@ export default function QuizTake(props) {
     };
   };
 
-  const startQuiz = async () => {
-    await fetchQuiz();
-  };
-
   const fetchQuiz = async () => {
     let history_res;
     if (props.user_id) {
@@ -158,7 +154,7 @@ export default function QuizTake(props) {
           s.selected_answers = s.questions.map((q) => -1);
           setState(s);
           let time_limit = res.data.quiz.time_limit;
-          if (time_limit !== null && seconds !== 0) {
+          if (time_limit !== null && time_limit !== 0) {
             setMinutes(Math.floor(time_limit / 60));
             setSeconds(time_limit % 60);
           }
