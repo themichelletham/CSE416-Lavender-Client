@@ -51,11 +51,12 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const InputButton = styled('input')({
+const InputButton = styled("input")({
   backgroundColor: "#8A8AEE",
   "&:hover": {
     backgroundColor: "#7373DF",
-}});
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   PlatformCreatorContainer: {
@@ -69,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     //zIndex: 'tooltip'
   },
   hContainer: {
-    //zIndex: 'tooltip', 
+    //zIndex: 'tooltip',
     display: "flex",
     flexDirection: "row",
     width: "90%",
@@ -159,7 +160,7 @@ const useStyles = makeStyles((theme) => ({
   editThumbnail: {
     display: "inline-block",
     width: "100%",
-    align: "right", 
+    align: "right",
     paddingBottom: 1,
     paddingLeft: "65%",
     //zIndex: "tooltip",
@@ -181,8 +182,8 @@ const useStyles = makeStyles((theme) => ({
 
 const style = {
   backgroundColor: "#ACACE1",
-  marginLeft: theme.spacing(.5),
-  marginBottom: theme.spacing(.1),
+  marginLeft: theme.spacing(0.5),
+  marginBottom: theme.spacing(0.1),
   color: "black",
 };
 
@@ -200,7 +201,6 @@ export default function PlatformCreator(props) {
   const [quizDialog, setQuizDialog] = useState(false);
   const [platformDialog, setPlatformDialog] = useState(false);
 
-  const [previewSource, setPreviewSource] = useState();
   const [image, setImage] = useState("");
   const [banner, setBanner] = useState("");
   const [url, setUrl] = useState("");
@@ -421,15 +421,21 @@ export default function PlatformCreator(props) {
     } else {
       setBanner(file);
     }
-    previewFile(file);
+    previewFile(file, imagetype);
   };
 
-  const previewFile = (file) => {
+  const previewFile = (file, imagetype) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setPreviewSource(reader.result);
-    };
+    if (imagetype === "icon") {
+      reader.onloadend = () => {
+        setUrl(reader.result);
+      };
+    } else {
+      reader.onloadend = () => {
+        setBannerUrl(reader.result);
+      };
+    }
   };
 
   const uploadImages = () => {
@@ -462,7 +468,7 @@ export default function PlatformCreator(props) {
         })
         .catch((err) => {
           console.log(err);
-          setCloudinaryErr(err.message);
+          alert(err.message);
         });
     }
   };
@@ -488,8 +494,6 @@ export default function PlatformCreator(props) {
       });
   };
 
-  
-
   return redirect ? (
     <Redirect to={`/platform/${props.match.params.platform_id}`} />
   ) : (
@@ -497,19 +501,19 @@ export default function PlatformCreator(props) {
       <PlatformProfile platform_icon={url} banner={bannerUrl} />
       <Box className={classes.hContainer}>
         <Box className={classes.container}>
-          <Box className={classes.editThumbnail} >
-          Banner:
+          <Box className={classes.editThumbnail}>
+            Banner:
             <Input
-             size = "small"
+              size="small"
               type="file"
               name="image"
-              accept="image/*" 
+              accept="image/*"
               multiple={false}
               onChange={(e) => handleFileInputChange(e, "banner")}
             ></Input>
             <br></br>Icon:
             <Input
-              size = "small"
+              size="small"
               type="file"
               name="image"
               accept="image/*"
@@ -517,15 +521,6 @@ export default function PlatformCreator(props) {
               onChange={(e) => handleFileInputChange(e, "icon")}
             ></Input>
             {cloudinaryErr}
-            <IconButton
-              className={classes.thumbnailButton}
-              size="large"
-              onClick={uploadImages}
-              disableElevation
-              pl={1}
-            >
-              <FileUploadIcon color="primary" />
-            </IconButton>
           </Box>
           <Box className={classes.header}>
             <SearchBar
@@ -637,16 +632,6 @@ export default function PlatformCreator(props) {
                         <CardContent>{quiz.quiz_name}</CardContent>
                       </Link>
                       {quiz.is_published ? (
-                        <Tooltip title="Make Public">
-                          <IconButton
-                            onClick={(e) => {
-                              handleVisibility(index);
-                            }}
-                          >
-                            <VisibilityOffIcon />
-                          </IconButton>
-                        </Tooltip>
-                        ) : (
                         <Tooltip title="Make Private">
                           <IconButton
                             onClick={(e) => {
@@ -654,6 +639,16 @@ export default function PlatformCreator(props) {
                             }}
                           >
                             <VisibilityIcon />
+                          </IconButton>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Make Public">
+                          <IconButton
+                            onClick={(e) => {
+                              handleVisibility(index);
+                            }}
+                          >
+                            <VisibilityOffIcon />
                           </IconButton>
                         </Tooltip>
                       )}
