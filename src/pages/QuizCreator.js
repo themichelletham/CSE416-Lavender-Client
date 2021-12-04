@@ -121,9 +121,9 @@ export default function QuizCreate(props) {
   });
   const [minutes, setMinutes] = useState(null);
   const [seconds, setSeconds] = useState(null);
-  const [tempImage, setTempImage] = useState("");
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
+  const [previewSource, setPreviewSource] = useState("");
   const [cloudinaryErr, setCloudinaryErr] = useState("");
 
   const copyState = () => {
@@ -394,6 +394,7 @@ export default function QuizCreate(props) {
     }
     if (!file) return;
     console.log(file);
+    setImage(file);
     previewFile(file);
   };
 
@@ -401,7 +402,7 @@ export default function QuizCreate(props) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setTempImage(reader.result);
+      setPreviewSource(reader.result);
     };
   };
 
@@ -431,22 +432,24 @@ export default function QuizCreate(props) {
   };
 
   const uploadImage = () => {
-    axios
-      .put(
-        `${constants.API_PATH}/quiz/${props.match.params.quiz_id}/image-upload`,
-        {
-          quiz_fields: { icon_photo: url === "" ? tempImage : url },
-        }
-      )
-      .then((res) => {
-        //stuff
-        console.log(res);
-        console.log("image sent");
-        return;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (url === "") {
+      axios
+        .put(
+          `${constants.API_PATH}/quiz/${props.match.params.quiz_id}/image-upload`,
+          {
+            quiz_fields: { icon_photo: url },
+          }
+        )
+        .then((res) => {
+          //stuff
+          console.log(res);
+          console.log("image sent");
+          return;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const hasDuration = minutes || seconds;
