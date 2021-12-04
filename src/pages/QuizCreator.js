@@ -96,6 +96,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
   },
+  box:{ 
+    backgroundColor: "#F9F9FF",
+  },
   editThumbnail: {
     display: "inline-block",
     width: theme.spacing(200),
@@ -104,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     paddignLeft: 10,
-    maxHeight: "100%",
+    maxHeight: "50%",
     maxWidth: "100%",
   },
   //toolbar: theme.mixins.toolbar,

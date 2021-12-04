@@ -12,9 +12,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
-    width: "60vw",
-    overflowX:"hidden",
-    overflowY:"hidden"
+    width: theme.spacing(120),
+    //overflowX: "hidden",
   },
   Opt: {
     display: "inline-block",
@@ -39,12 +38,23 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 15,
     borderTopLeftRadius: 15,
   },
+  box:{ 
+    backgroundColor: "#F9F9FF",
+  },
   noBorder: {
     border: "none",
   },
   quizbody: {
+    backgroundColor: "#F9F9FF",
     display: "flex",
-    backgroundColor: "#FFFFFF",
+  },
+  questions: {
+    //display: "flex",
+    width: "100%",
+  },
+  answer: {
+    display: "flex",
+    width: "100%",
   },
   answerWrapper: {
     display: "inline-block",
@@ -67,7 +77,7 @@ const returnStyle = {
   left: "8%",
   marginBottom: 10,
   color: "black",
-  width: "50vw",
+  width: "80%",
   borderRadius: 20,
   marginTop: 10,
 };
@@ -156,7 +166,7 @@ export default function QuizResult(props) {
     if (state.answers[q_key][a_key].is_correct) v = "show-correct";
     else if (state.selected_answers[q_key] == a_key) v = "show-incorrect";
     return (
-      <Grid container item key={a_key}>
+      <div classname={classes.answer} key={a_key}>
         <Answers
           a_key={a_key}
           q_key={q_key}
@@ -165,7 +175,7 @@ export default function QuizResult(props) {
           readOnly
           disableElevation
         />
-      </Grid>
+      </div>
     );
   };
 
@@ -200,7 +210,7 @@ export default function QuizResult(props) {
           <div className={classes.quizbody} />
           {state.questions &&
             state.questions.map((question, q_key) => (
-              <div key={q_key}>
+              <div className={classes.questions} key={q_key}>
                 <Questions q_key={q_key} q_text={question} readOnly />
                 <Grid direction="row" container>
                   <Grid direction="column" container item sm={6}>
@@ -230,6 +240,7 @@ export default function QuizResult(props) {
                 </Grid>
               </div>
             ))}
+          <div className={classes.quizbody} >
           <Button
             style={returnStyle}
             variant="contained"
@@ -238,6 +249,7 @@ export default function QuizResult(props) {
           >
             Return to Platform
           </Button>
+          </div>
         </Box>
       </FormControl>
     </Box>

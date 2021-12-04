@@ -3,9 +3,6 @@ import { makeStyles, styled } from '@material-ui/core/styles';
 import { Box, TextField } from '@mui/material'
 
 const useStyles = makeStyles((theme) => ({
-  box: {
-    backgroundColor: "#F9F9FF",
-  },
   questionWrapper: {
     display: 'inline-block',
     fontSize: 22,
@@ -13,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3)
   },
   questionText: {
-    textAlign: 'left', 
+    textAlign: 'inline-block', 
     marginTop: theme.spacing(5),
     width: theme.spacing(95),
     backgroundColor: "#FFFFFF",
