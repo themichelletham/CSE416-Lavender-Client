@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   answerText: {
     display: 'inline-block',
     textAlign: 'left',  
-    width: '38vw',
+    //width: '38vw',
     backgroundColor: "#FFFFFF",
   },
   show_correct: {
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   correctAns:{
     display: 'inline-block',
     textAlign: 'left',  
-    width: '38vw',
+    //width: '38vw',
     backgroundColor: "#8ef5c7",
   }
 }));
@@ -73,6 +73,7 @@ export default function Answers(props) {
           inputProps={{
             readOnly: props.readOnly,
             style: {
+              minWidth: 600, 
               padding: 5,
               fontSize: 16,
             }
