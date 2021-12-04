@@ -187,7 +187,7 @@ export default function QuizTake(props) {
         clearInterval(interval);
       }
     }
-  });
+  }, []);
 
   useEffect(() => {
     fetchQuiz();
