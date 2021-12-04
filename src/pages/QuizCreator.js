@@ -121,7 +121,7 @@ export default function QuizCreate(props) {
   });
   const [minutes, setMinutes] = useState(null);
   const [seconds, setSeconds] = useState(null);
-  const [previewSource, setPreviewSource] = useState();
+  const [tempImage, setTempImage] = useState("");
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
   const [cloudinaryErr, setCloudinaryErr] = useState("");
@@ -378,7 +378,7 @@ export default function QuizCreate(props) {
           setMinutes(Math.round(seconds / 60));
           setSeconds(seconds % 60);
         }
-        setUrl(res.data.icon_photo);
+        setTempImage(res.data.icon_photo);
       })
       .catch((err) => {
         console.log(err);
@@ -394,8 +394,6 @@ export default function QuizCreate(props) {
     }
     if (!file) return;
     console.log(file);
-    setImage(file);
-    setCloudinaryErr("");
     previewFile(file);
   };
 
@@ -403,13 +401,13 @@ export default function QuizCreate(props) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setUrl(reader.result);
+      setTempImage(reader.result);
     };
   };
 
-  const imageDetails = () => {
+  const imageDetails = (photo) => {
     const data = new FormData();
-    data.append("file", image);
+    data.append("file", photo);
     data.append("upload_preset", "sprout");
     data.append("cloud_name", "lavender-sprout-herokuapp-com");
 
@@ -437,7 +435,7 @@ export default function QuizCreate(props) {
       .put(
         `${constants.API_PATH}/quiz/${props.match.params.quiz_id}/image-upload`,
         {
-          quiz_fields: { icon_photo: url },
+          quiz_fields: { icon_photo: url === "" ? tempImage : url },
         }
       )
       .then((res) => {
@@ -457,7 +455,7 @@ export default function QuizCreate(props) {
   ) : (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_name}</h1>
-      <img className={classes.icon} src={url} />
+      <img className={classes.icon} src={url === "" ? tempImage : url} />
       <Box className={classes.editThumbnail}>
         <Input
           size="small"
@@ -472,6 +470,16 @@ export default function QuizCreate(props) {
         ) : (
           <></>
         )}
+        <Button
+          className={classes.thumbnailButton}
+          size="large"
+          onClick={imageDetails(tempImage)}
+          endIcon={<FileUploadIcon />}
+          disableElevation
+          pl={1}
+        >
+          Upload
+        </Button>
       </Box>
       <Box className={classes.Opt} mt={3}>
         <Box className={classes.duration}>
