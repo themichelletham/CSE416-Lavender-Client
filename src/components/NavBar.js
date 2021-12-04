@@ -220,16 +220,17 @@ export default function NavBar() {
           {state.authenticated ? (
             <Box>
               <IconButton
+                disableRipple
                 sx={{ ml: "auto" }}
                 size="medium"
-                edge="end"
+                //endIcon={<AccountCircle sx={{ fontSize: 80}}/>}
                 aria-owns={openProfileMenu}
                 aria-haspopup="true"
                 onClick={handleProfileClick}
                 color="inherit"
               >
-                <Typography variant="h6">{state.user.username}</Typography>
-                <AccountCircle />
+                <Typography variant="subtitle1">{state.user.username}</Typography>&nbsp;
+                <AccountCircle sx={{ fontSize: 30}}/>
               </IconButton>
             </Box>
           ) : (

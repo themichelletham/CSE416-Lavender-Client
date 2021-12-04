@@ -13,7 +13,7 @@ import Profile from "../pages/Profile"
 import * as constants from '../components/constants';
 import PlatformCreator from '../pages/PlatformCreator';
 
-const drawerWidth = 205;
+const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
   homeMain: {
