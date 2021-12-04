@@ -156,6 +156,7 @@ export default function QuizTake(props) {
       await axios
         .get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
         .then((res) => {
+          console.log(res);
           let s = parseToState(res);
           s.selected_answers = s.questions.map((q) => -1);
           setState(s);
@@ -193,7 +194,7 @@ export default function QuizTake(props) {
         clearInterval(interval);
       }
     }
-  }, []);
+  });
 
   useEffect(() => {
     fetchQuiz();

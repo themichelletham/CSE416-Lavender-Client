@@ -155,7 +155,7 @@ export default function Platform(props) {
     new_state.quizzes.sort((f, s) => {
       if (new_state.sortBy === "dd") return f.createdAt < s.createdAt;
       if (new_state.sortBy === "da") return f.createdAt > s.createdAt;
-      return f.title < s.title;
+      return f.quiz_name > s.quiz_name;
     });
     setState(new_state);
   };
