@@ -20,6 +20,7 @@ import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CircleIcon from "@mui/icons-material/CircleOutlined";
+import Alert from "@mui/material/Alert";
 
 const useStyles = makeStyles((theme) => ({
   QuizContainer: {
@@ -93,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
   },
   answer: {
     display: "flex",
-    width: '100%'
+    width: "100%",
   },
   editThumbnail: {
     display: "inline-block",
@@ -387,9 +388,14 @@ export default function QuizCreate(props) {
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
+    if (file.size > 10485760) {
+      setCloudinaryErr("File size too large (Max file size: 10485760 bytes)");
+      return;
+    }
     if (!file) return;
     console.log(file);
     setImage(file);
+    setCloudinaryErr("");
     previewFile(file);
   };
 
@@ -461,7 +467,11 @@ export default function QuizCreate(props) {
           multiple={false}
           onChange={handleFileInputChange}
         ></Input>
-        {cloudinaryErr}
+        {cloudinaryErr !== "" ? (
+          <Alert severity="error">{cloudinaryErr}</Alert>
+        ) : (
+          <></>
+        )}
       </Box>
       <Box className={classes.Opt} mt={3}>
         <Box className={classes.duration}>
@@ -529,7 +539,7 @@ export default function QuizCreate(props) {
           onChange={onTitleChange}
         />
         <Box className={classes.box}>
-          <div className={classes.quizbody}/>
+          <div className={classes.quizbody} />
           {state.questions &&
             state.questions.map((question, q_key) => (
               <div key={q_key}>

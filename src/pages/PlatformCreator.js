@@ -5,6 +5,7 @@ import * as constants from "../components/constants";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@material-ui/core";
+import Alert from "@mui/material/Alert";
 import { Card, CardContent, CardMedia } from "@material-ui/core";
 import {
   Box,
@@ -201,8 +202,8 @@ export default function PlatformCreator(props) {
   const [quizDialog, setQuizDialog] = useState(false);
   const [platformDialog, setPlatformDialog] = useState(false);
 
-  const [image, setImage] = useState("");
-  const [banner, setBanner] = useState("");
+  const [tempImage, setTempImage] = useState("");
+  const [tempBanner, setTempBanner] = useState("");
   const [url, setUrl] = useState("");
   const [bannerUrl, setBannerUrl] = useState("");
   const [cloudinaryErr, setCloudinaryErr] = useState("");
@@ -221,6 +222,12 @@ export default function PlatformCreator(props) {
   const history = useHistory();
 
   const onSave = (e) => {
+    if (url === "") {
+      setUrl(tempImage);
+    }
+    if (bannerUrl === "") {
+      setBannerUrl(tempBanner);
+    }
     axios
       .put(
         `${constants.API_PATH}/platform/${props.match.params.platform_id}/creator`,
@@ -228,6 +235,8 @@ export default function PlatformCreator(props) {
           platform_fields: {
             platform_name: state.platform_name,
             quizzes: state.quizzes,
+            icon_photo: url,
+            banner_photo: bannerUrl,
           },
         },
         {
@@ -240,24 +249,6 @@ export default function PlatformCreator(props) {
       .catch((err) => {
         console.log("PUT on Save: ", err);
       });
-    uploadImage();
-
-    // axios
-    //   .put(
-    //     `${constants.API_PATH}/quiz/toggle_publish/${props.match.params.platform_id}`,
-    //     {
-    //       quiz_fields: {
-    //         platform_id: props.match.params.platform_id,
-    //         quizzes: state.quizzes,
-    //       },
-    //     }
-    //   )
-    //   .then((res) => {
-    //     // updated
-    //   })
-    //   .catch((err) => {
-    //     console.log("PUT on Save Quizzes: ", err);
-    //   });
   };
 
   const onDelete = (e) => {
@@ -307,8 +298,10 @@ export default function PlatformCreator(props) {
           topFiveUsers: res.data.topFiveUsers,
           sortBy: "dd",
         });
-        setUrl(res.data.icon_photo);
-        setBannerUrl(res.data.banner_photo);
+        //setUrl(res.data.icon_photo);
+        //setBannerUrl(res.data.banner_photo);
+        setTempImage(res.data.icon_photo);
+        setTempBanner(res.data.banner_photo);
       })
       .catch((err) => {
         console.log(err);
@@ -415,12 +408,16 @@ export default function PlatformCreator(props) {
 
   const handleFileInputChange = (e, imagetype) => {
     const file = e.target.files[0];
+
     if (!file) return;
-    if (imagetype === "icon") {
-      setImage(file);
-    } else {
-      setBanner(file);
+    if (file.size > 10485760) {
+      setCloudinaryErr(
+        "File size too large for " + imagetype + "Max file size: 10485760 bytes"
+      );
+      return;
     }
+    setCloudinaryErr("");
+
     previewFile(file, imagetype);
   };
 
@@ -429,20 +426,22 @@ export default function PlatformCreator(props) {
     reader.readAsDataURL(file);
     if (imagetype === "icon") {
       reader.onloadend = () => {
-        setUrl(reader.result);
+        setTempImage(reader.result);
       };
     } else {
       reader.onloadend = () => {
-        setBannerUrl(reader.result);
+        setTempBanner(reader.result);
       };
     }
+    // uploadImages();
   };
 
   const uploadImages = () => {
-    imageDetails(image, "icon");
-    imageDetails(banner, "banner");
+    imageDetails(tempImage, "icon");
+    imageDetails(tempBanner, "banner");
   };
-  const imageDetails = (new_photo, imagetype) => {
+
+  const imageDetails = async (new_photo, imagetype) => {
     if (new_photo !== "") {
       const data = new FormData();
       data.append("file", new_photo);
@@ -450,7 +449,7 @@ export default function PlatformCreator(props) {
       data.append("cloud_name", "lavender-sprout-herokuapp-com");
 
       //please note: Maximum file size is 10485760, may want to display this
-      fetch(
+      await fetch(
         `https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload`,
         {
           method: "post",
@@ -460,45 +459,25 @@ export default function PlatformCreator(props) {
         .then((res) => res.json())
         .then((data) => {
           if (imagetype === "icon") {
+            console.log(data.url);
             setUrl(data.url);
           } else {
+            console.log(data.url);
             setBannerUrl(data.url);
           }
-          setCloudinaryErr("");
         })
-        .catch((err) => {
-          console.log(err);
-          alert(err.message);
-        });
+        .catch((err) => {});
     }
-  };
-
-  const uploadImage = () => {
-    console.log(url);
-    axios
-      .put(
-        `${constants.API_PATH}/platform/${props.match.params.platform_id}/image-upload`,
-        {
-          platform_fields: {
-            icon_photo: url,
-            banner_photo: bannerUrl,
-          },
-        }
-      )
-      .then((res) => {
-        //stuff
-        return;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   return redirect ? (
     <Redirect to={`/platform/${props.match.params.platform_id}`} />
   ) : (
     <Box className={classes.PlatformCreatorContainer}>
-      <PlatformProfile platform_icon={url} banner={bannerUrl} />
+      <PlatformProfile
+        platform_icon={url === "" ? tempImage : url}
+        banner={bannerUrl === "" ? tempBanner : bannerUrl}
+      />
       <Box className={classes.hContainer}>
         <Box className={classes.container}>
           <Box className={classes.editThumbnail}>
@@ -520,7 +499,21 @@ export default function PlatformCreator(props) {
               multiple={false}
               onChange={(e) => handleFileInputChange(e, "icon")}
             ></Input>
-            {cloudinaryErr}
+            {cloudinaryErr !== "" ? (
+              <Alert severity="error">{cloudinaryErr}</Alert>
+            ) : (
+              <></>
+            )}
+            <Button
+              className={classes.thumbnailButton}
+              size="large"
+              onClick={uploadImages}
+              endIcon={<FileUploadIcon />}
+              disableElevation
+              pl={1}
+            >
+              Upload
+            </Button>
           </Box>
           <Box className={classes.header}>
             <SearchBar
