@@ -519,7 +519,7 @@ export default function QuizCreate(props) {
           onChange={onTitleChange}
         />
         <Box className={classes.box}>
-          <div className={classes.quizbody} />
+          <div className={classes.quizbody}/>
           {state.questions &&
             state.questions.map((question, q_key) => (
               <div key={q_key}>
