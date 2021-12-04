@@ -119,7 +119,7 @@ export default function Sidebar(props) {
           </List>
           <Divider />
           <br />
-          <Typography ml={5} className={classes.topten}>Top 10 Sprouts</Typography>
+          <Typography variant="h6" ml={4} className={classes.topten}>Top 10 Sprouts</Typography>
           <List sx={{  marginLeft: 2}}>
             {topTen.map((user, index) => (
               <ListItem  button key={"View Leaderboard User"} onClick={e => onViewLeaderProfile(e, user.user_id)}>

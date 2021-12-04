@@ -51,6 +51,12 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+const InputButton = styled('input')({
+  backgroundColor: "#8A8AEE",
+  "&:hover": {
+    backgroundColor: "#7373DF",
+}});
+
 const useStyles = makeStyles((theme) => ({
   PlatformCreatorContainer: {
     display: "flex",
@@ -60,8 +66,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     flexGrow: 1,
     width: "100vw",
+    //zIndex: 'tooltip'
   },
   hContainer: {
+    //zIndex: 'tooltip', 
     display: "flex",
     flexDirection: "row",
     width: "90%",
@@ -108,7 +116,6 @@ const useStyles = makeStyles((theme) => ({
     borderColor: grey,
     borderRadius: 30,
     left: 0,
-    marginLeft: "5%",
     width: 600,
     height: 35,
     marginBottom: theme.spacing(2),
@@ -130,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     height: theme.spacing(7.5),
-    backgroundColor: "#7519BD",
+    backgroundColor: "#8E71DF",
     width: "75vw",
     marginBottom: theme.spacing(2),
     marginRight: theme.spacing(3),
@@ -152,10 +159,10 @@ const useStyles = makeStyles((theme) => ({
   editThumbnail: {
     display: "inline-block",
     width: "100%",
-    //paddingTop: .5,
+    align: "right", 
     paddingBottom: 1,
-    paddingLeft: "60%",
-    zIndex: "tooltip",
+    paddingLeft: "65%",
+    //zIndex: "tooltip",
     flexGrow: 1,
   },
   createQuiz: {
@@ -481,24 +488,24 @@ export default function PlatformCreator(props) {
       <PlatformProfile platform_icon={url} banner={bannerUrl} />
       <Box className={classes.hContainer}>
         <Box className={classes.container}>
-          <Box className={classes.editThumbnail}>
-            Banner:
-            <Input
+          <Box className={classes.editThumbnail} >
+          Banner:
+            <InputButton
               maxWidth="10px"
               type="file"
               name="image"
-              accept=".jpg .png .jpeg"
+              accept="image/*" 
               multiple={false}
               onChange={(e) => handleFileInputChange(e, "banner")}
-            ></Input>
+            ></InputButton>
             <br></br>Icon:
-            <Input
+            <InputButton
               type="file"
               name="image"
-              accept=".jpg .png .jpeg"
+              accept="image/*"
               multiple={false}
               onChange={(e) => handleFileInputChange(e, "icon")}
-            ></Input>
+            ></InputButton>
             {cloudinaryErr}
             <Button
               className={classes.thumbnailButton}

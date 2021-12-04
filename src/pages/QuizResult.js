@@ -8,11 +8,13 @@ import Questions from "../components/Questions";
 import Answers from "../components/Answers";
 
 const useStyles = makeStyles((theme) => ({
-  QuizContainer: {
+  QuizContainer: { 
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
     width: "60vw",
+    overflowX:"hidden",
+    overflowY:"hidden"
   },
   Opt: {
     display: "inline-block",
@@ -53,6 +55,11 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 80,
     fontSize: 22,
   },
+  icon:{ 
+    paddignLeft: 10, 
+    maxHeight: "200px", 
+    maxWidth: "920px"
+  }
 }));
 
 const returnStyle = {
@@ -169,7 +176,7 @@ export default function QuizResult(props) {
   return (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_title}</h1>
-      <img className={classes.icon} src={previewSource} />
+      <img className={classes.icon} src={previewSource}/>
       <Box className={classes.Opt} mt={3}>
         <div className={classes.duration}>Duration: INF</div>
       </Box>
