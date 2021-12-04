@@ -222,12 +222,6 @@ export default function PlatformCreator(props) {
   const history = useHistory();
 
   const onSave = (e) => {
-    if (url === "") {
-      setUrl(tempImage);
-    }
-    if (bannerUrl === "") {
-      setBannerUrl(tempBanner);
-    }
     axios
       .put(
         `${constants.API_PATH}/platform/${props.match.params.platform_id}/creator`,
@@ -235,8 +229,8 @@ export default function PlatformCreator(props) {
           platform_fields: {
             platform_name: state.platform_name,
             quizzes: state.quizzes,
-            icon_photo: url,
-            banner_photo: bannerUrl,
+            icon_photo: url === "" ? tempImage : url,
+            banner_photo: bannerUrl === "" ? tempBanner : bannerUrl,
           },
         },
         {
