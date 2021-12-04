@@ -137,8 +137,6 @@ export default function Profile(props) {
           setState(new_state);
         }
       });
-    console.log("props");
-    console.log(props.user);
   }, [props]);
 
   return (
