@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   questionWrapper: {
     display: 'inline-block',
     fontSize: 22,
-    marginLeft: theme.spacing(8),
+    marginLeft: theme.spacing(7),
     marginTop: theme.spacing(3)
   },
   questionText: {

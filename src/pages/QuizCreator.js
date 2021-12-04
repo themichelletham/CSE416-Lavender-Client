@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "flex-start",
     width: theme.spacing(120),
-    overflowX: "hidden"
+    overflowX: "hidden", 
   },
   Opt: {
     display: "inline-block",
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "5%",
     paddingLeft: "15%",
     paddingRight: "15%",
-    paddingBottom: "2%",
+    //paddingBottom: "2%",
     paddingTop: "2%",
   },
   time: {
@@ -81,7 +81,6 @@ const useStyles = makeStyles((theme) => ({
   },
   quizbody: {
     display: "flex",
-    backgroundColor: "#FFFFFF",
   },
   answer: {
     display: "flex",
@@ -143,7 +142,7 @@ export default function QuizCreate(props) {
     backgroundColor: "#8A8AEE",
     left: theme.spacing(11),
     marginBottom: theme.spacing(1),
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(8),
     color: "black",
     width: theme.spacing(95),
     borderRadius: 20,
@@ -152,8 +151,8 @@ export default function QuizCreate(props) {
   const addAnsStyle = {
     backgroundColor: "#8A8AEE",
     marginTop: theme.spacing(1),
-    marginLeft: theme.spacing(6),
-    marginBottom: theme.spacing(2),
+    marginRight: theme.spacing(3),
+    marginBottom: theme.spacing(5),
     color: "black",
     float: "right",
     borderRadius: 20,
@@ -438,6 +437,7 @@ export default function QuizCreate(props) {
       <img className={classes.icon} src={url} />
       <Box className={classes.editThumbnail}>
         <Input
+          size = "small"
           type="file"
           name="image"
           accept=".jpg .png .jpeg"

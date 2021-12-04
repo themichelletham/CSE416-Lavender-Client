@@ -490,33 +490,33 @@ export default function PlatformCreator(props) {
         <Box className={classes.container}>
           <Box className={classes.editThumbnail} >
           Banner:
-            <InputButton
-              maxWidth="10px"
+            <Input
+             size = "small"
               type="file"
               name="image"
               accept="image/*" 
               multiple={false}
               onChange={(e) => handleFileInputChange(e, "banner")}
-            ></InputButton>
+            ></Input>
             <br></br>Icon:
-            <InputButton
+            <Input
+              size = "small"
               type="file"
               name="image"
               accept="image/*"
               multiple={false}
               onChange={(e) => handleFileInputChange(e, "icon")}
-            ></InputButton>
+            ></Input>
             {cloudinaryErr}
-            <Button
+            <IconButton
               className={classes.thumbnailButton}
               size="large"
               onClick={uploadImages}
-              endIcon={<FileUploadIcon />}
               disableElevation
               pl={1}
             >
-              Upload
-            </Button>
+              <FileUploadIcon color="primary" />
+            </IconButton>
           </Box>
           <Box className={classes.header}>
             <SearchBar
