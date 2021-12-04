@@ -179,6 +179,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const style = {
+  backgroundColor: "#ACACE1",
+  marginLeft: theme.spacing(.5),
+  marginBottom: theme.spacing(.1),
+  color: "black",
+};
+
 export default function PlatformCreator(props) {
   const [redirect, setRedirect] = useState(false);
   const [state, setState] = useState({
@@ -481,6 +488,8 @@ export default function PlatformCreator(props) {
       });
   };
 
+  
+
   return redirect ? (
     <Redirect to={`/platform/${props.match.params.platform_id}`} />
   ) : (
@@ -540,6 +549,7 @@ export default function PlatformCreator(props) {
             <ColorButton
               size="small"
               variant="contained"
+              style={style}
               onClick={onSave}
               disableElevation
             >
@@ -547,6 +557,7 @@ export default function PlatformCreator(props) {
             </ColorButton>
             <ColorButton
               size="small"
+              style={style}
               variant="contained"
               onClick={(e) => {
                 handleDeletePlatformOpen();
