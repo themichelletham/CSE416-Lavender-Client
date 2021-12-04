@@ -137,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     height: theme.spacing(7.5),
-    backgroundColor: "#7519BD",
+    backgroundColor: "#8E71DF",
     width: "75vw",
     marginBottom: theme.spacing(2),
     marginRight: theme.spacing(3),
