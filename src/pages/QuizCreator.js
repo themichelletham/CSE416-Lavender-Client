@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
   },
   answer: {
     display: "flex",
+    width: '100%'
   },
   editThumbnail: {
     display: "inline-block",
@@ -102,8 +103,8 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     paddignLeft: 10,
-    maxHeight: "200px",
-    maxWidth: "950px",
+    maxHeight: "100%",
+    maxWidth: "100%",
   },
   //toolbar: theme.mixins.toolbar,
 }));
