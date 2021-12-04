@@ -137,6 +137,8 @@ export default function Profile(props) {
           setState(new_state);
         }
       });
+    console.log("props");
+    console.log(props.user);
   }, [props]);
 
   return (
@@ -144,15 +146,18 @@ export default function Profile(props) {
       <Box className={classes.banner} />
       <img className={classes.icon} src={state.user && state.user.picture} />
       <Box className={classes.username}>
-        <Typography variant="h5" align="center" mb={1}>
-          {state.user && state.user.username}
-        </Typography>
-        {state.user && props.user.user_id === state.user.user_id ? (
+        {state.user &&
+        props.user &&
+        props.user.user_id === state.user.user_id ? (
           <>
-            <Tooltip title="Edit Username" placement="top"></Tooltip>
-            <IconButton onClick={handleClickOpen}>
-              <EditIcon />
-            </IconButton>
+            <Typography variant="h5" align="center" mb={1}>
+              {state.user && state.user.username}
+            </Typography>
+            <Tooltip title="Edit Username" placement="top">
+              <IconButton onClick={handleClickOpen}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
             <Dialog open={open} onClose={handleClose}>
               <DialogTitle>Edit Username</DialogTitle>
               <DialogContent>
@@ -179,7 +184,11 @@ export default function Profile(props) {
             </Dialog>
           </>
         ) : (
-          <></>
+          <>
+            <Typography variant="h5" align="center" mb={1}>
+              {state.user && state.user.username}
+            </Typography>
+          </>
         )}
       </Box>
       <Box className={classes.totalPoints} mt={1}>
