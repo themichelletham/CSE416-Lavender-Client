@@ -74,7 +74,7 @@ export default function Answers(props) {
             readOnly: props.readOnly,
             style: {
               maxWidth: 600, 
-              minWidth: 50, 
+              minWidth: 150, 
               padding: 5,
               fontSize: 16,
             }
