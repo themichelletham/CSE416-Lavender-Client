@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
   },
-  box:{ 
+  box: {
     backgroundColor: "#F9F9FF",
   },
   editThumbnail: {
@@ -124,9 +124,9 @@ export default function QuizCreate(props) {
   });
   const [minutes, setMinutes] = useState(null);
   const [seconds, setSeconds] = useState(null);
-  const [previewSource, setPreviewSource] = useState();
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
+  const [previewSource, setPreviewSource] = useState("");
   const [cloudinaryErr, setCloudinaryErr] = useState("");
 
   const copyState = () => {
@@ -381,7 +381,7 @@ export default function QuizCreate(props) {
           setMinutes(Math.round(seconds / 60));
           setSeconds(seconds % 60);
         }
-        setUrl(res.data.icon_photo);
+        setPreviewSource(res.data.icon_photo);
       })
       .catch((err) => {
         console.log(err);
@@ -391,14 +391,12 @@ export default function QuizCreate(props) {
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
+    if (!file) return;
     if (file.size > 10485760) {
       setCloudinaryErr("File size too large (Max file size: 10485760 bytes)");
       return;
     }
-    if (!file) return;
-    console.log(file);
     setImage(file);
-    setCloudinaryErr("");
     previewFile(file);
   };
 
@@ -406,52 +404,56 @@ export default function QuizCreate(props) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setUrl(reader.result);
+      setPreviewSource(reader.result);
     };
   };
 
-  const imageDetails = () => {
-    const data = new FormData();
-    data.append("file", image);
-    data.append("upload_preset", "sprout");
-    data.append("cloud_name", "lavender-sprout-herokuapp-com");
+  const imageDetails = (e, photo) => {
+    e.preventDefault();
+    if (photo !== "") {
+      const data = new FormData();
+      data.append("file", photo);
+      data.append("upload_preset", "sprout");
+      data.append("cloud_name", "lavender-sprout-herokuapp-com");
 
-    //please note: Maximum file size is 10485760, may out to display this
-    fetch(
-      `https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload`,
-      {
-        method: "post",
-        body: data,
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setUrl(data.url);
-        setCloudinaryErr("");
-      })
-      .catch((err) => {
-        console.log(err);
-        setCloudinaryErr(err.message);
-      });
+      //please note: Maximum file size is 10485760, may out to display this
+      fetch(
+        `https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload`,
+        {
+          method: "post",
+          body: data,
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setUrl(data.url);
+          setCloudinaryErr("");
+        })
+        .catch((err) => {
+          setCloudinaryErr(err.message);
+        });
+    }
   };
 
   const uploadImage = () => {
-    axios
-      .put(
-        `${constants.API_PATH}/quiz/${props.match.params.quiz_id}/image-upload`,
-        {
-          quiz_fields: { icon_photo: url },
-        }
-      )
-      .then((res) => {
-        //stuff
-        console.log(res);
-        console.log("image sent");
-        return;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (url !== "") {
+      axios
+        .put(
+          `${constants.API_PATH}/quiz/${props.match.params.quiz_id}/image-upload`,
+          {
+            quiz_fields: { icon_photo: url },
+          }
+        )
+        .then((res) => {
+          //stuff
+          // console.log(res);
+          // console.log("image sent");
+          return;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const hasDuration = minutes || seconds;
@@ -460,7 +462,7 @@ export default function QuizCreate(props) {
   ) : (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_name}</h1>
-      <img className={classes.icon} src={url} />
+      <img className={classes.icon} src={url === "" ? previewSource : url} />
       <Box className={classes.editThumbnail}>
         <Input
           size="small"
@@ -475,6 +477,18 @@ export default function QuizCreate(props) {
         ) : (
           <></>
         )}
+        <Button
+          className={classes.thumbnailButton}
+          size="large"
+          onClick={(e) => {
+            imageDetails(e, previewSource);
+          }}
+          endIcon={<FileUploadIcon />}
+          disableElevation
+          pl={1}
+        >
+          Upload
+        </Button>
       </Box>
       <Box className={classes.Opt} mt={3}>
         <Box className={classes.duration}>
