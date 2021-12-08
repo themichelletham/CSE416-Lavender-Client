@@ -81,6 +81,8 @@ const useStyles = makeStyles((theme) => ({
     border: 1,
     borderColor: grey,
     borderRadius: 30,
+    marginBottom: 20,
+    marginTop: 30,
     marginLeft: 30,
     marginRight: 30,
     width: "60%",
@@ -178,7 +180,6 @@ export default function Platform(props) {
       <Box className={classes.hContainer}>
         <Box container className={classes.container}>
           <Box className={classes.header}>
-            <Typography variant="h4">Quizzes</Typography>
             <SearchBar
               className={classes.search}
               placeholder="Search..."

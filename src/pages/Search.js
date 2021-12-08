@@ -23,14 +23,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
     flexGrow: 1,
     width: "80vw",
-    //height: "100%",
-    //marginTop: "5%",
-    overflowY: "hidden"
+    overflowX:"hidden",
+    overflowY:"hidden"
   },
   gridContainer: {
     display: "inline-flex",
     padding: theme.spacing(2),
-    paddingLeft: "10%",
+    paddingLeft: "13%",
     width: "100%",
     //height: "100%"
   },
@@ -39,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   card: {
-    width: theme.spacing(24),
+    width: theme.spacing(27),
     height: "100%",
   },
 }));
@@ -92,10 +91,10 @@ function Search(props) {
 
   return (
     <Box className={classes.homePage}>
-      <Typography variant="h6" mb={1} mt={2} pl={"8%"}>
+      <Typography variant="h6" mb={1} mt={2} pl={"10%"}>
         QUIZZES
       </Typography>
-      <Grid container spacing={3} className={classes.gridContainer}>
+      <Grid container spacing={4} className={classes.gridContainer}>
         {state.quizzes ? (
           state.quizzes.map((quiz) => ( quiz.is_published ?
             <Grid
@@ -103,7 +102,7 @@ function Search(props) {
               className={classes.gridItem}
               key={quiz.quiz_id}
               xs={3}
-              md={3}
+              md={3.5}
             >
               <Button onClick={(e) => onNavigateQuiz(e, quiz.quiz_id)}>
                 <Card className={classes.card}>
@@ -122,10 +121,10 @@ function Search(props) {
           <Grid item></Grid>
         )}
       </Grid>
-      <Typography variant="h6" mb={1} pl={"8%"}>
+      <Typography variant="h6" mb={1} pl={"10%"}>
         PLATFORMS
       </Typography>
-      <Grid container spacing={3} className={classes.gridContainer}>
+      <Grid container spacing={4} className={classes.gridContainer}>
         {state.platforms ? (
           state.platforms.map((platform) => (
             <Grid
@@ -133,7 +132,7 @@ function Search(props) {
               className={classes.gridItem}
               key={platform.platform_id}
               xs={3}
-              md={3}
+              md={3.5}
             >
               <Button
                 onClick={(e) => onNavigatePlatform(e, platform.platform_id)}

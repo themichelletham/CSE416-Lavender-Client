@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button, FormControl, InputBase, Input, Switch, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputBase,
+  Input,
+  Switch,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useHistory, useLocation, Redirect } from "react-router-dom";
 import axios from "axios";
 import * as constants from "../components/constants";
@@ -11,6 +20,7 @@ import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CircleIcon from "@mui/icons-material/CircleOutlined";
+import Alert from "@mui/material/Alert";
 
 const useStyles = makeStyles((theme) => ({
   QuizContainer: {
@@ -19,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "flex-start",
     width: theme.spacing(120),
-    overflowX: "hidden"
+    overflowX: "hidden",
   },
   Opt: {
     display: "inline-block",
@@ -48,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "5%",
     paddingLeft: "15%",
     paddingRight: "15%",
-    paddingBottom: "2%",
+    //paddingBottom: "2%",
     paddingTop: "2%",
   },
   time: {
@@ -81,16 +91,24 @@ const useStyles = makeStyles((theme) => ({
   },
   quizbody: {
     display: "flex",
-    backgroundColor: "#FFFFFF",
   },
   answer: {
     display: "flex",
+    width: "100%",
+  },
+  box:{ 
+    backgroundColor: "#F9F9FF",
   },
   editThumbnail: {
     display: "inline-block",
     width: theme.spacing(200),
     paddingLeft: theme.spacing(68),
     zIndex: "tooltip",
+  },
+  icon: {
+    paddignLeft: 10,
+    maxHeight: "50%",
+    maxWidth: "100%",
   },
   //toolbar: theme.mixins.toolbar,
 }));
@@ -138,7 +156,7 @@ export default function QuizCreate(props) {
     backgroundColor: "#8A8AEE",
     left: theme.spacing(11),
     marginBottom: theme.spacing(1),
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(8),
     color: "black",
     width: theme.spacing(95),
     borderRadius: 20,
@@ -147,8 +165,8 @@ export default function QuizCreate(props) {
   const addAnsStyle = {
     backgroundColor: "#8A8AEE",
     marginTop: theme.spacing(1),
-    marginLeft: theme.spacing(6),
-    marginBottom: theme.spacing(2),
+    marginRight: theme.spacing(3),
+    marginBottom: theme.spacing(5),
     color: "black",
     float: "right",
     borderRadius: 20,
@@ -183,12 +201,11 @@ export default function QuizCreate(props) {
     if (e.target.checked) {
       setMinutes(60);
       setSeconds(0);
-    }
-    else {
+    } else {
       setMinutes(null);
       setSeconds(null);
     }
-  }
+  };
 
   const onMinutesChange = (e) => {
     e.preventDefault();
@@ -203,16 +220,22 @@ export default function QuizCreate(props) {
   const onSave = (e) => {
     const totalSeconds = minutes * 60 + seconds;
     axios
-      .put(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/creator`, {
-        quiz_fields: {
-          quiz_name: state.quiz_title,
-          time_limit: totalSeconds
+      .put(
+        `${constants.API_PATH}/quiz/${props.match.params.quiz_id}/creator`,
+        {
+          quiz_fields: {
+            quiz_name: state.quiz_title,
+            time_limit: totalSeconds,
+          },
         },
-      }, {
-        withCredentials: true,
-      }).then((res) => {
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
         // TODO: DO something after udpate
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log("PUT on Save: ", err);
       });
 
@@ -368,9 +391,14 @@ export default function QuizCreate(props) {
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
+    if (file.size > 10485760) {
+      setCloudinaryErr("File size too large (Max file size: 10485760 bytes)");
+      return;
+    }
     if (!file) return;
     console.log(file);
     setImage(file);
+    setCloudinaryErr("");
     previewFile(file);
   };
 
@@ -378,7 +406,7 @@ export default function QuizCreate(props) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setPreviewSource(reader.result);
+      setUrl(reader.result);
     };
   };
 
@@ -427,52 +455,52 @@ export default function QuizCreate(props) {
   };
 
   const hasDuration = minutes || seconds;
-  return redirect?(<Redirect to={`/`} />):(
+  return redirect ? (
+    <Redirect to={`/`} />
+  ) : (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_name}</h1>
       <img className={classes.icon} src={url} />
       <Box className={classes.editThumbnail}>
         <Input
+          size="small"
           type="file"
           name="image"
           accept=".jpg .png .jpeg"
           multiple={false}
           onChange={handleFileInputChange}
         ></Input>
-        <Button
-          className={classes.thumbnailButton}
-          size="large"
-          onClick={imageDetails}
-          endIcon={<FileUploadIcon />}
-          disableElevation
-        >
-          Upload
-        </Button>
+        {cloudinaryErr !== "" ? (
+          <Alert severity="error">{cloudinaryErr}</Alert>
+        ) : (
+          <></>
+        )}
       </Box>
       <Box className={classes.Opt} mt={3}>
         <Box className={classes.duration}>
           <Typography>Duration: </Typography>
           <Box className={classes.timeContainer}>
-            {hasDuration !== null
-              ? (
-                <Box className={classes.time}>
-                  <InputBase
-                    className={classes.timeInput}
-                    type={'number'}
-                    size={'small'}
-                    onChange={onMinutesChange}
-                    value={minutes} />
-                  <Typography>:</Typography>
-                  <InputBase
-                    className={classes.timeInput}
-                    type={'number'}
-                    size={'small'}
-                    onChange={onSecondsChange}
-                    value={seconds} />
-                </Box>
-              )
-              : <Typography>INF</Typography>
-            }
+            {hasDuration !== null ? (
+              <Box className={classes.time}>
+                <InputBase
+                  className={classes.timeInput}
+                  type={"number"}
+                  size={"small"}
+                  onChange={onMinutesChange}
+                  value={minutes}
+                />
+                <Typography>:</Typography>
+                <InputBase
+                  className={classes.timeInput}
+                  type={"number"}
+                  size={"small"}
+                  onChange={onSecondsChange}
+                  value={seconds}
+                />
+              </Box>
+            ) : (
+              <Typography>INF</Typography>
+            )}
           </Box>
           <Switch onChange={onDurationToggle} checked={hasDuration !== null} />
         </Box>

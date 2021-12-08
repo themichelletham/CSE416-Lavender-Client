@@ -8,6 +8,7 @@ import {
   Button,
   Toolbar,
   Divider,
+  Typography
 } from "@material-ui/core";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import sproutLogo from "../images/sprout.png";
@@ -219,16 +220,17 @@ export default function NavBar() {
           {state.authenticated ? (
             <Box>
               <IconButton
+                disableRipple
                 sx={{ ml: "auto" }}
                 size="medium"
-                edge="end"
+                //endIcon={<AccountCircle sx={{ fontSize: 80}}/>}
                 aria-owns={openProfileMenu}
                 aria-haspopup="true"
                 onClick={handleProfileClick}
                 color="inherit"
               >
-                {state.user.username}
-                <AccountCircle />
+                <Typography variant="subtitle1">{state.user.username}</Typography>&nbsp;
+                <AccountCircle sx={{ fontSize: 30}}/>
               </IconButton>
             </Box>
           ) : (

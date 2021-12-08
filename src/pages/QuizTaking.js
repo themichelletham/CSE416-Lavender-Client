@@ -12,7 +12,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
-    width: "60vw",
+    width: theme.spacing(120),
+  },
+  box:{ 
+    backgroundColor: "#F9F9FF",
   },
   Opt: {
     display: "inline-block",
@@ -58,12 +61,15 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 15,
     borderTopLeftRadius: 15,
   },
+  questions: {
+    //display: "flex",
+    width: "100%",
+  },
   noBorder: {
     border: "none",
   },
   quizbody: {
     display: "flex",
-    backgroundColor: "#FFFFFF",
   },
   answerWrapper: {
     display: "inline-block",
@@ -81,7 +87,7 @@ const submitStyle = {
   left: "8%",
   marginBottom: 10,
   color: "black",
-  width: "50vw",
+  width: "80%",
   borderRadius: 20,
   marginTop: 10,
 };
@@ -133,10 +139,6 @@ export default function QuizTake(props) {
     };
   };
 
-  const startQuiz = async () => {
-    await fetchQuiz();
-  };
-
   const fetchQuiz = async () => {
     let history_res;
     if (props.user_id) {
@@ -158,7 +160,7 @@ export default function QuizTake(props) {
           s.selected_answers = s.questions.map((q) => -1);
           setState(s);
           let time_limit = res.data.quiz.time_limit;
-          if (time_limit !== null && seconds !== 0) {
+          if (time_limit !== null && time_limit !== 0) {
             setMinutes(Math.floor(time_limit / 60));
             setSeconds(time_limit % 60);
           }
@@ -191,7 +193,7 @@ export default function QuizTake(props) {
         clearInterval(interval);
       }
     }
-  });
+  }, []);
 
   useEffect(() => {
     fetchQuiz();
@@ -301,7 +303,7 @@ export default function QuizTake(props) {
           <div className={classes.quizbody} />
           {state.questions &&
             state.questions.map((question, q_key) => (
-              <div key={q_key}>
+              <div className={classes.questions} key={q_key}>
                 <Questions q_key={q_key} q_text={question} readOnly />
                 <Grid direction="row" container>
                   <Grid direction="column" container item sm={6}>
@@ -329,6 +331,7 @@ export default function QuizTake(props) {
                 </Grid>
               </div>
             ))}
+            <div className={classes.quizbody} >
           <Button
             style={submitStyle}
             variant="contained"
@@ -338,6 +341,7 @@ export default function QuizTake(props) {
           >
             Submit
           </Button>
+          </div>
         </Box>
       </FormControl>
     </Box>

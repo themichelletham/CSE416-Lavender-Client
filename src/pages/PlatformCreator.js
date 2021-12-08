@@ -5,6 +5,7 @@ import * as constants from "../components/constants";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@material-ui/core";
+import Alert from "@mui/material/Alert";
 import { Card, CardContent, CardMedia } from "@material-ui/core";
 import {
   Box,
@@ -51,6 +52,13 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+const InputButton = styled("input")({
+  backgroundColor: "#8A8AEE",
+  "&:hover": {
+    backgroundColor: "#7373DF",
+  },
+});
+
 const useStyles = makeStyles((theme) => ({
   PlatformCreatorContainer: {
     display: "flex",
@@ -60,8 +68,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     flexGrow: 1,
     width: "100vw",
+    //zIndex: 'tooltip'
   },
   hContainer: {
+    //zIndex: 'tooltip',
     display: "flex",
     flexDirection: "row",
     width: "90%",
@@ -108,7 +118,6 @@ const useStyles = makeStyles((theme) => ({
     borderColor: grey,
     borderRadius: 30,
     left: 0,
-    marginLeft: "5%",
     width: 600,
     height: 35,
     marginBottom: theme.spacing(2),
@@ -130,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     height: theme.spacing(7.5),
-    backgroundColor: "#7519BD",
+    backgroundColor: "#8E71DF",
     width: "75vw",
     marginBottom: theme.spacing(2),
     marginRight: theme.spacing(3),
@@ -152,10 +161,10 @@ const useStyles = makeStyles((theme) => ({
   editThumbnail: {
     display: "inline-block",
     width: "100%",
-    //paddingTop: .5,
+    align: "right",
     paddingBottom: 1,
-    paddingLeft: "60%",
-    zIndex: "tooltip",
+    paddingLeft: "65%",
+    //zIndex: "tooltip",
     flexGrow: 1,
   },
   createQuiz: {
@@ -172,6 +181,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const style = {
+  backgroundColor: "#ACACE1",
+  marginLeft: theme.spacing(0.5),
+  marginBottom: theme.spacing(0.1),
+  color: "black",
+};
+
 export default function PlatformCreator(props) {
   const [redirect, setRedirect] = useState(false);
   const [state, setState] = useState({
@@ -186,9 +202,8 @@ export default function PlatformCreator(props) {
   const [quizDialog, setQuizDialog] = useState(false);
   const [platformDialog, setPlatformDialog] = useState(false);
 
-  const [previewSource, setPreviewSource] = useState();
-  const [image, setImage] = useState("");
-  const [banner, setBanner] = useState("");
+  const [tempImage, setTempImage] = useState("");
+  const [tempBanner, setTempBanner] = useState("");
   const [url, setUrl] = useState("");
   const [bannerUrl, setBannerUrl] = useState("");
   const [cloudinaryErr, setCloudinaryErr] = useState("");
@@ -214,6 +229,8 @@ export default function PlatformCreator(props) {
           platform_fields: {
             platform_name: state.platform_name,
             quizzes: state.quizzes,
+            icon_photo: url === "" ? tempImage : url,
+            banner_photo: bannerUrl === "" ? tempBanner : bannerUrl,
           },
         },
         {
@@ -226,24 +243,6 @@ export default function PlatformCreator(props) {
       .catch((err) => {
         console.log("PUT on Save: ", err);
       });
-    uploadImage();
-
-    // axios
-    //   .put(
-    //     `${constants.API_PATH}/quiz/toggle_publish/${props.match.params.platform_id}`,
-    //     {
-    //       quiz_fields: {
-    //         platform_id: props.match.params.platform_id,
-    //         quizzes: state.quizzes,
-    //       },
-    //     }
-    //   )
-    //   .then((res) => {
-    //     // updated
-    //   })
-    //   .catch((err) => {
-    //     console.log("PUT on Save Quizzes: ", err);
-    //   });
   };
 
   const onDelete = (e) => {
@@ -293,8 +292,10 @@ export default function PlatformCreator(props) {
           topFiveUsers: res.data.topFiveUsers,
           sortBy: "dd",
         });
-        setUrl(res.data.icon_photo);
-        setBannerUrl(res.data.banner_photo);
+        //setUrl(res.data.icon_photo);
+        //setBannerUrl(res.data.banner_photo);
+        setTempImage(res.data.icon_photo);
+        setTempBanner(res.data.banner_photo);
       })
       .catch((err) => {
         console.log(err);
@@ -401,28 +402,40 @@ export default function PlatformCreator(props) {
 
   const handleFileInputChange = (e, imagetype) => {
     const file = e.target.files[0];
+
     if (!file) return;
-    if (imagetype === "icon") {
-      setImage(file);
-    } else {
-      setBanner(file);
+    if (file.size > 10485760) {
+      setCloudinaryErr(
+        "File size too large for " + imagetype + "Max file size: 10485760 bytes"
+      );
+      return;
     }
-    previewFile(file);
+    setCloudinaryErr("");
+
+    previewFile(file, imagetype);
   };
 
-  const previewFile = (file) => {
+  const previewFile = (file, imagetype) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setPreviewSource(reader.result);
-    };
+    if (imagetype === "icon") {
+      reader.onloadend = () => {
+        setTempImage(reader.result);
+      };
+    } else {
+      reader.onloadend = () => {
+        setTempBanner(reader.result);
+      };
+    }
+    // uploadImages();
   };
 
   const uploadImages = () => {
-    imageDetails(image, "icon");
-    imageDetails(banner, "banner");
+    imageDetails(tempImage, "icon");
+    imageDetails(tempBanner, "banner");
   };
-  const imageDetails = (new_photo, imagetype) => {
+
+  const imageDetails = async (new_photo, imagetype) => {
     if (new_photo !== "") {
       const data = new FormData();
       data.append("file", new_photo);
@@ -430,7 +443,7 @@ export default function PlatformCreator(props) {
       data.append("cloud_name", "lavender-sprout-herokuapp-com");
 
       //please note: Maximum file size is 10485760, may want to display this
-      fetch(
+      await fetch(
         `https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload`,
         {
           method: "post",
@@ -440,66 +453,51 @@ export default function PlatformCreator(props) {
         .then((res) => res.json())
         .then((data) => {
           if (imagetype === "icon") {
+            console.log(data.url);
             setUrl(data.url);
           } else {
+            console.log(data.url);
             setBannerUrl(data.url);
           }
-          setCloudinaryErr("");
         })
-        .catch((err) => {
-          console.log(err);
-          setCloudinaryErr(err.message);
-        });
+        .catch((err) => {});
     }
-  };
-
-  const uploadImage = () => {
-    console.log(url);
-    axios
-      .put(
-        `${constants.API_PATH}/platform/${props.match.params.platform_id}/image-upload`,
-        {
-          platform_fields: {
-            icon_photo: url,
-            banner_photo: bannerUrl,
-          },
-        }
-      )
-      .then((res) => {
-        //stuff
-        return;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   return redirect ? (
     <Redirect to={`/platform/${props.match.params.platform_id}`} />
   ) : (
     <Box className={classes.PlatformCreatorContainer}>
-      <PlatformProfile platform_icon={url} banner={bannerUrl} />
+      <PlatformProfile
+        platform_icon={url === "" ? tempImage : url}
+        banner={bannerUrl === "" ? tempBanner : bannerUrl}
+      />
       <Box className={classes.hContainer}>
         <Box className={classes.container}>
           <Box className={classes.editThumbnail}>
             Banner:
             <Input
-              maxWidth="10px"
+              size="small"
               type="file"
               name="image"
-              accept=".jpg .png .jpeg"
+              accept="image/*"
               multiple={false}
               onChange={(e) => handleFileInputChange(e, "banner")}
             ></Input>
             <br></br>Icon:
             <Input
+              size="small"
               type="file"
               name="image"
-              accept=".jpg .png .jpeg"
+              accept="image/*"
               multiple={false}
               onChange={(e) => handleFileInputChange(e, "icon")}
             ></Input>
-            {cloudinaryErr}
+            {cloudinaryErr !== "" ? (
+              <Alert severity="error">{cloudinaryErr}</Alert>
+            ) : (
+              <></>
+            )}
             <Button
               className={classes.thumbnailButton}
               size="large"
@@ -533,6 +531,7 @@ export default function PlatformCreator(props) {
             <ColorButton
               size="small"
               variant="contained"
+              style={style}
               onClick={onSave}
               disableElevation
             >
@@ -540,6 +539,7 @@ export default function PlatformCreator(props) {
             </ColorButton>
             <ColorButton
               size="small"
+              style={style}
               variant="contained"
               onClick={(e) => {
                 handleDeletePlatformOpen();
@@ -619,16 +619,6 @@ export default function PlatformCreator(props) {
                         <CardContent>{quiz.quiz_name}</CardContent>
                       </Link>
                       {quiz.is_published ? (
-                        <Tooltip title="Make Public">
-                          <IconButton
-                            onClick={(e) => {
-                              handleVisibility(index);
-                            }}
-                          >
-                            <VisibilityOffIcon />
-                          </IconButton>
-                        </Tooltip>
-                        ) : (
                         <Tooltip title="Make Private">
                           <IconButton
                             onClick={(e) => {
@@ -636,6 +626,16 @@ export default function PlatformCreator(props) {
                             }}
                           >
                             <VisibilityIcon />
+                          </IconButton>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Make Public">
+                          <IconButton
+                            onClick={(e) => {
+                              handleVisibility(index);
+                            }}
+                          >
+                            <VisibilityOffIcon />
                           </IconButton>
                         </Tooltip>
                       )}

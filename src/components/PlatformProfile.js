@@ -1,10 +1,9 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Container";
+import InputBase from "@mui/material/InputBase";
 import Banner from "../images/banner.png";
 import defaultIcon from "../images/platformicon.jpeg";
 import Typography from '@mui/material/Typography';
-import Toolbar from '@mui/material/Toolbar';
 import { makeStyles } from '@material-ui/core';
 import { createTheme } from '@material-ui/core/styles';
 
