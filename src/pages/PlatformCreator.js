@@ -41,6 +41,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AddIcon from "@material-ui/icons/Add";
+import Banner from "../images/banner.png";
 
 const theme = createTheme();
 theme.spacing(1); // `${8 * 2}px` = '16px'
@@ -435,32 +436,32 @@ export default function PlatformCreator(props) {
     imageDetails(tempBanner, "banner");
   };
 
+  //https://www.youtube.com/watch?v=uP568vOaBbQ
   const imageDetails = async (new_photo, imagetype) => {
     if (new_photo !== "") {
       const data = new FormData();
       data.append("file", new_photo);
       data.append("upload_preset", "sprout");
-      data.append("cloud_name", "lavender-sprout-herokuapp-com");
+      data.append("cloud_name", "di6unfiu0");
 
       //please note: Maximum file size is 10485760, may want to display this
-      await fetch(
-        `https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload`,
-        {
-          method: "post",
-          body: data,
-        }
-      )
+      await fetch(`https://api.cloudinary.com/v1_1/di6unfiu0/image/upload`, {
+        method: "post",
+        body: data,
+      })
         .then((res) => res.json())
         .then((data) => {
           if (imagetype === "icon") {
-            console.log(data.url);
+            // console.log(data.url);
             setUrl(data.url);
           } else {
-            console.log(data.url);
+            // console.log(data.url);
             setBannerUrl(data.url);
           }
         })
-        .catch((err) => {});
+        .catch((err) => {
+          console.log("error");
+        });
     }
   };
 
@@ -614,7 +615,9 @@ export default function PlatformCreator(props) {
                           component="img"
                           height="140"
                           width="200"
-                          image={quiz.icon_photo}
+                          image={
+                            quiz.icon_photo === "" ? Banner : quiz.icon_photo
+                          }
                         />
                         <CardContent>{quiz.quiz_name}</CardContent>
                       </Link>

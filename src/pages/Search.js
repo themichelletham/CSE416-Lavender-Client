@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Sidebar from "../components/Sidebar.js";
 import * as constants from "../components/constants";
 import PlatformIcon from "../images/platformicon.jpeg";
+import Banner from "../images/banner.png";
 import Typography from "@mui/material/Typography";
 import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
@@ -23,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
     flexGrow: 1,
     width: "80vw",
-    overflowX:"hidden",
-    overflowY:"hidden"
+    overflowX: "hidden",
+    overflowY: "hidden",
   },
   gridContainer: {
     display: "inline-flex",
@@ -96,27 +97,31 @@ function Search(props) {
       </Typography>
       <Grid container spacing={4} className={classes.gridContainer}>
         {state.quizzes ? (
-          state.quizzes.map((quiz) => ( quiz.is_published ?
-            <Grid
-              item
-              className={classes.gridItem}
-              key={quiz.quiz_id}
-              xs={3}
-              md={3.5}
-            >
-              <Button onClick={(e) => onNavigateQuiz(e, quiz.quiz_id)}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    width="200"
-                    image={quiz.icon_photo}
-                  />
-                  <CardContent>{quiz.quiz_name}</CardContent>
-                </Card>
-              </Button>
-            </Grid> : <></>
-          ))
+          state.quizzes.map((quiz) =>
+            quiz.is_published ? (
+              <Grid
+                item
+                className={classes.gridItem}
+                key={quiz.quiz_id}
+                xs={3}
+                md={3.5}
+              >
+                <Button onClick={(e) => onNavigateQuiz(e, quiz.quiz_id)}>
+                  <Card className={classes.card}>
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      width="200"
+                      image={quiz.icon_photo === "" ? Banner : quiz.icon_photo}
+                    />
+                    <CardContent>{quiz.quiz_name}</CardContent>
+                  </Card>
+                </Button>
+              </Grid>
+            ) : (
+              <></>
+            )
+          )
         ) : (
           <Grid item></Grid>
         )}
@@ -142,7 +147,11 @@ function Search(props) {
                     component="img"
                     height="140"
                     width="200"
-                    image={platform.icon_photo}
+                    image={
+                      platform.icon_photo === ""
+                        ? PlatformIcon
+                        : platform.icon_photo
+                    }
                   />
                   <CardContent>{platform.platform_name}</CardContent>
                 </Card>
