@@ -62,22 +62,22 @@ const InputButton = styled("input")({
 
 const useStyles = makeStyles((theme) => ({
   PlatformCreatorContainer: {
-    display: "flex",
+    width: '100%',
+    height: '100%',
+    display: "flex-start",
     flexDirection: "column",
-    overflow: "hidden",
-    justifyContent: "flex-start",
     alignItems: "center",
     flexGrow: 1,
-    width: "100vw",
-    //zIndex: 'tooltip'
+    overflowX:"hidden",
+    overflowY:"hidden"
   },
   hContainer: {
-    //zIndex: 'tooltip',
     display: "flex",
     flexDirection: "row",
-    width: "90%",
+    //width: "90%",
     flexGrow: 1,
     justifyContent: "center",
+    marginLeft: "5%"
   },
   header: {
     display: "flex",
@@ -97,11 +97,12 @@ const useStyles = makeStyles((theme) => ({
     borderRight: "0.2em solid #dcdce3",
   },
   Opt: {
-    display: "flex",
+    /*display: "flex",
     flexGrow: 1,
-    width: "100%",
     paddingLeft: "71%",
-    alignItems: "left",
+    alignItems: "left",*/
+    width: "100%", 
+    paddingLeft: "71%",
     marginBottom: theme.spacing(0.1),
   },
   header: {
@@ -118,13 +119,12 @@ const useStyles = makeStyles((theme) => ({
     border: 1,
     borderColor: grey,
     borderRadius: 30,
-    left: 0,
-    width: 600,
+    marginBottom: 20,
+    marginTop: 20,
+    marginLeft: 30,
+    marginRight: 30,
+    width: "60%",
     height: 35,
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    marginRight: theme.spacing(1),
-    //align: "center"
   },
   editPlatform: {
     borderRadius: 15,
@@ -161,10 +161,9 @@ const useStyles = makeStyles((theme) => ({
   },
   editThumbnail: {
     display: "inline-block",
-    width: "100%",
-    align: "right",
+    marginLeft: "60%",
     paddingBottom: 1,
-    paddingLeft: "65%",
+    //paddingLeft: "60%",
     //zIndex: "tooltip",
     flexGrow: 1,
   },
