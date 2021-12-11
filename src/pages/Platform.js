@@ -165,7 +165,6 @@ export default function Platform(props) {
   };
 
   useEffect(() => {
-    //console.log(props.user_id)
     fetchPlatformData("");
   }, []);
 

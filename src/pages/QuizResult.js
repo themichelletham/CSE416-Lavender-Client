@@ -8,7 +8,7 @@ import Questions from "../components/Questions";
 import Answers from "../components/Answers";
 
 const useStyles = makeStyles((theme) => ({
-  QuizContainer: { 
+  QuizContainer: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 15,
     borderTopLeftRadius: 15,
   },
-  box:{ 
+  box: {
     backgroundColor: "#F9F9FF",
   },
   noBorder: {
@@ -65,11 +65,11 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 80,
     fontSize: 22,
   },
-  icon:{ 
-    paddignLeft: 10, 
-    maxHeight: "200px", 
-    maxWidth: "920px"
-  }
+  icon: {
+    paddignLeft: 10,
+    maxHeight: "200px",
+    maxWidth: "920px",
+  },
 }));
 
 const returnStyle = {
@@ -124,7 +124,6 @@ export default function QuizResult(props) {
       })
     );
     const selected_answers = data.selected_answers.slice(0);
-    console.log(answers);
     return {
       platform_id: platform_id,
       platform_title: platform_title,
@@ -186,7 +185,7 @@ export default function QuizResult(props) {
   return (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_title}</h1>
-      <img className={classes.icon} src={previewSource}/>
+      <img className={classes.icon} src={previewSource} />
       <Box className={classes.Opt} mt={3}>
         <div className={classes.duration}>Duration: INF</div>
       </Box>
@@ -240,15 +239,15 @@ export default function QuizResult(props) {
                 </Grid>
               </div>
             ))}
-          <div className={classes.quizbody} >
-          <Button
-            style={returnStyle}
-            variant="contained"
-            onClick={onReturn}
-            disableElevation
-          >
-            Return to Platform
-          </Button>
+          <div className={classes.quizbody}>
+            <Button
+              style={returnStyle}
+              variant="contained"
+              onClick={onReturn}
+              disableElevation
+            >
+              Return to Platform
+            </Button>
           </div>
         </Box>
       </FormControl>

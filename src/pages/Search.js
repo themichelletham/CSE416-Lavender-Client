@@ -112,7 +112,11 @@ function Search(props) {
                       component="img"
                       height="140"
                       width="200"
-                      image={quiz.icon_photo === "" ? Banner : quiz.icon_photo}
+                      image={
+                        quiz.icon_photo === "" || quiz.icon_photo === null
+                          ? Banner
+                          : quiz.icon_photo
+                      }
                     />
                     <CardContent>{quiz.quiz_name}</CardContent>
                   </Card>
