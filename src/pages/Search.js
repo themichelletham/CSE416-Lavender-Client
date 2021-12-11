@@ -6,13 +6,11 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
-import Sidebar from "../components/Sidebar.js";
 import * as constants from "../components/constants";
 import PlatformIcon from "../images/platformicon.jpeg";
 import Banner from "../images/banner.png";
 import Typography from "@mui/material/Typography";
-import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
+import { createTheme } from "@material-ui/core/styles";
 
 const ttheme = createTheme();
 ttheme.spacing(1);
@@ -32,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     paddingLeft: "13%",
     width: "100%",
-    //height: "100%"
   },
   gridItem: {
     display: "inline-block",
@@ -58,11 +55,6 @@ function Search(props) {
 
   const onNavigatePlatform = (e, platform_id) => {
     history.push(`/platform/${platform_id}`);
-    //axios
-    //  .get(`${constants.API_PATH}/platform/${platform_id}/`)
-    //  .then((res) => {
-    //    history.push(`/platform/${platform_id}`);
-    //  });
   };
 
   useEffect(() => {
