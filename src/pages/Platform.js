@@ -29,17 +29,20 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 const useStyles = makeStyles((theme) => ({
   PlatformContainer: {
+    width: '100%',
+    height: '100%',
     display: "flex",
-    overflow: "hidden",
     flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    width: "100%",
+    justifyContent: "center",
+    flexGrow: 1,
+    overflowX:"hidden",
+    overflowY:"hidden"
+    
   },
   hContainer: {
     display: "flex",
     flexDirection: "row",
-    width: "90%",
+    //width: "90%",
     flexGrow: 1,
     justifyContent: "center",
   },
@@ -75,15 +78,15 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: ttheme.spacing(1),
   },
   editPlat: {
-    marginLeft: ttheme.spacing(85),
-    marginBottom: ttheme.spacing(2),
+    marginLeft: "70%"
+    //marginBottom: ttheme.spacing(10),
   },
   search: {
     border: 1,
     borderColor: grey,
     borderRadius: 30,
     marginBottom: 20,
-    marginTop: 30,
+    marginTop: 20,
     marginLeft: 30,
     marginRight: 30,
     width: "60%",
