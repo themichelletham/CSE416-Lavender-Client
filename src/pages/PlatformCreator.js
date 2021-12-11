@@ -341,7 +341,6 @@ export default function PlatformCreator(props) {
         { withCredentials: true }
       )
       .then((res) => {
-        console.log(res);
         if (res.status === 201) {
           history.push(`/quiz/${res.data.quiz.quiz_id}/creator`);
         }
@@ -358,7 +357,6 @@ export default function PlatformCreator(props) {
     axios
       .delete(`${constants.API_PATH}/quiz/${state.quizzes[index].quiz_id}`)
       .then((res) => {
-        console.log(res);
         new_state.quizzes.splice(index, 1);
 
         setState(new_state);
@@ -452,10 +450,8 @@ export default function PlatformCreator(props) {
         .then((res) => res.json())
         .then((data) => {
           if (imagetype === "icon") {
-            // console.log(data.url);
             setUrl(data.url);
           } else {
-            // console.log(data.url);
             setBannerUrl(data.url);
           }
         })
@@ -616,7 +612,10 @@ export default function PlatformCreator(props) {
                           height="140"
                           width="200"
                           image={
-                            quiz.icon_photo === "" ? Banner : quiz.icon_photo
+                            (quiz.icon_photo === "") |
+                            (quiz.icon_photo === null)
+                              ? Banner
+                              : quiz.icon_photo
                           }
                         />
                         <CardContent>{quiz.quiz_name}</CardContent>

@@ -356,7 +356,6 @@ export default function QuizCreate(props) {
           ca.push(i);
         }
       }
-      //console.log(ca);
       //ans_list.filter(ans_obj => ans_obj.is_correct).map(ans_objb => ans_objb.answer_text)
       return ca;
     });
@@ -381,7 +380,7 @@ export default function QuizCreate(props) {
           setMinutes(Math.round(seconds / 60));
           setSeconds(seconds % 60);
         }
-        setPreviewSource(res.data.icon_photo);
+        // setPreviewSource(res.data.icon_photo);
       })
       .catch((err) => {
         console.log(err);
@@ -442,9 +441,7 @@ export default function QuizCreate(props) {
           }
         )
         .then((res) => {
-          //stuff
           // console.log(res);
-          // console.log("image sent");
           return;
         })
         .catch((err) => {
