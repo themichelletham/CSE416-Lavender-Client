@@ -41,6 +41,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AddIcon from "@material-ui/icons/Add";
+import Banner from "../images/banner.png";
 
 const theme = createTheme();
 theme.spacing(1); // `${8 * 2}px` = '16px'
@@ -61,22 +62,22 @@ const InputButton = styled("input")({
 
 const useStyles = makeStyles((theme) => ({
   PlatformCreatorContainer: {
-    display: "flex",
+    width: '100%',
+    height: '100%',
+    display: "flex-start",
     flexDirection: "column",
-    overflow: "hidden",
-    justifyContent: "flex-start",
     alignItems: "center",
     flexGrow: 1,
-    width: "100vw",
-    //zIndex: 'tooltip'
+    overflowX:"hidden",
+    overflowY:"hidden"
   },
   hContainer: {
-    //zIndex: 'tooltip',
     display: "flex",
     flexDirection: "row",
-    width: "90%",
+    //width: "90%",
     flexGrow: 1,
     justifyContent: "center",
+    marginLeft: "5%"
   },
   header: {
     display: "flex",
@@ -96,11 +97,12 @@ const useStyles = makeStyles((theme) => ({
     borderRight: "0.2em solid #dcdce3",
   },
   Opt: {
-    display: "flex",
+    /*display: "flex",
     flexGrow: 1,
-    width: "100%",
     paddingLeft: "71%",
-    alignItems: "left",
+    alignItems: "left",*/
+    width: "100%", 
+    paddingLeft: "71%",
     marginBottom: theme.spacing(0.1),
   },
   header: {
@@ -117,13 +119,12 @@ const useStyles = makeStyles((theme) => ({
     border: 1,
     borderColor: grey,
     borderRadius: 30,
-    left: 0,
-    width: 600,
+    marginBottom: 20,
+    marginTop: 20,
+    marginLeft: 30,
+    marginRight: 30,
+    width: "60%",
     height: 35,
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    marginRight: theme.spacing(1),
-    //align: "center"
   },
   editPlatform: {
     borderRadius: 15,
@@ -160,10 +161,9 @@ const useStyles = makeStyles((theme) => ({
   },
   editThumbnail: {
     display: "inline-block",
-    width: "100%",
-    align: "right",
+    marginLeft: "60%",
     paddingBottom: 1,
-    paddingLeft: "65%",
+    //paddingLeft: "60%",
     //zIndex: "tooltip",
     flexGrow: 1,
   },
@@ -340,7 +340,6 @@ export default function PlatformCreator(props) {
         { withCredentials: true }
       )
       .then((res) => {
-        console.log(res);
         if (res.status === 201) {
           history.push(`/quiz/${res.data.quiz.quiz_id}/creator`);
         }
@@ -357,7 +356,6 @@ export default function PlatformCreator(props) {
     axios
       .delete(`${constants.API_PATH}/quiz/${state.quizzes[index].quiz_id}`)
       .then((res) => {
-        console.log(res);
         new_state.quizzes.splice(index, 1);
 
         setState(new_state);
@@ -435,32 +433,30 @@ export default function PlatformCreator(props) {
     imageDetails(tempBanner, "banner");
   };
 
+  //https://www.youtube.com/watch?v=uP568vOaBbQ
   const imageDetails = async (new_photo, imagetype) => {
     if (new_photo !== "") {
       const data = new FormData();
       data.append("file", new_photo);
       data.append("upload_preset", "sprout");
-      data.append("cloud_name", "lavender-sprout-herokuapp-com");
+      data.append("cloud_name", "di6unfiu0");
 
       //please note: Maximum file size is 10485760, may want to display this
-      await fetch(
-        `https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload`,
-        {
-          method: "post",
-          body: data,
-        }
-      )
+      await fetch(`https://api.cloudinary.com/v1_1/di6unfiu0/image/upload`, {
+        method: "post",
+        body: data,
+      })
         .then((res) => res.json())
         .then((data) => {
           if (imagetype === "icon") {
-            console.log(data.url);
             setUrl(data.url);
           } else {
-            console.log(data.url);
             setBannerUrl(data.url);
           }
         })
-        .catch((err) => {});
+        .catch((err) => {
+          console.log("error");
+        });
     }
   };
 
@@ -614,7 +610,12 @@ export default function PlatformCreator(props) {
                           component="img"
                           height="140"
                           width="200"
-                          image={quiz.icon_photo}
+                          image={
+                            (quiz.icon_photo === "") |
+                            (quiz.icon_photo === null)
+                              ? Banner
+                              : quiz.icon_photo
+                          }
                         />
                         <CardContent>{quiz.quiz_name}</CardContent>
                       </Link>

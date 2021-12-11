@@ -131,7 +131,6 @@ export default function Profile(props) {
         console.log("Profile: ", err);
       })
       .then((res) => {
-        console.log(res);
         if (res.status == 200) {
           const new_state = parseToState(res.data);
           setState(new_state);

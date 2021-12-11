@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, styled } from "@material-ui/core/styles";
-import { Box, Button, FormControl, InputBase, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputBase,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import * as constants from "../components/constants";
@@ -14,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
     width: theme.spacing(120),
   },
-  box:{ 
+  box: {
     backgroundColor: "#F9F9FF",
   },
   Opt: {
@@ -143,20 +150,22 @@ export default function QuizTake(props) {
     let history_res;
     if (props.user_id) {
       history_res = await axios
-        .post(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}/history`, {
-          user_id: props.user_id,
-        }).catch(err => {
-          console.log('QuizTaking History: ', err);
+        .post(
+          `${constants.API_PATH}/quiz/${props.match.params.quiz_id}/history`,
+          {
+            user_id: props.user_id,
+          }
+        )
+        .catch((err) => {
+          console.log("QuizTaking History: ", err);
         });
     }
     if (history_res && history_res.status == 200) {
-      setState({ redirect: true })
-    }
-    else {
+      setState({ redirect: true });
+    } else {
       await axios
         .get(`${constants.API_PATH}/quiz/${props.match.params.quiz_id}`)
         .then((res) => {
-          console.log(res);
           let s = parseToState(res);
           s.selected_answers = s.questions.map((q) => -1);
           setState(s);
@@ -178,21 +187,19 @@ export default function QuizTake(props) {
       let interval = setInterval(() => {
         if (seconds > 0) {
           setSeconds(seconds - 1);
-        }
-        else {
+        } else {
           if (minutes > 0) {
             setMinutes(minutes - 1);
             setSeconds(59);
-          }
-          else {
+          } else {
             onSubmit(null);
             clearInterval(interval);
           }
         }
-      }, 1000)
+      }, 1000);
       return () => {
         clearInterval(interval);
-      }
+      };
     }
   });
 
@@ -265,7 +272,9 @@ export default function QuizTake(props) {
     }
   };
 
-  return state.redirect ? <Redirect to={`/quiz/${props.match.params.quiz_id}/results`} /> : (
+  return state.redirect ? (
+    <Redirect to={`/quiz/${props.match.params.quiz_id}/results`} />
+  ) : (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_name}</h1>
       <img className={classes.icon} src={previewSource} />
@@ -273,14 +282,13 @@ export default function QuizTake(props) {
         <Box className={classes.duration}>
           <Typography>Duration: </Typography>
           <Box className={classes.timeContainer}>
-            {(minutes || seconds) !== null
-              ? (
-                <Box className={classes.time}>
-                  <Typography>{`${minutes}:${seconds}`}</Typography>
-                </Box>
-              )
-              : <Typography>INF</Typography>
-            }
+            {(minutes || seconds) !== null ? (
+              <Box className={classes.time}>
+                <Typography>{`${minutes}:${seconds}`}</Typography>
+              </Box>
+            ) : (
+              <Typography>INF</Typography>
+            )}
           </Box>
         </Box>
       </Box>
@@ -325,23 +333,23 @@ export default function QuizTake(props) {
                           ans,
                           q_key,
                           a_key +
-                          parseInt((state.answers[q_key].length + 1) / 2, 10)
+                            parseInt((state.answers[q_key].length + 1) / 2, 10)
                         )
                       )}
                   </Grid>
                 </Grid>
               </div>
             ))}
-            <div className={classes.quizbody} >
-          <Button
-            style={submitStyle}
-            variant="contained"
-            onClick={onSubmit}
-            disableElevation
-            disabled={state.selected_answers.includes(-1)}
-          >
-            Submit
-          </Button>
+          <div className={classes.quizbody}>
+            <Button
+              style={submitStyle}
+              variant="contained"
+              onClick={onSubmit}
+              disableElevation
+              disabled={state.selected_answers.includes(-1)}
+            >
+              Submit
+            </Button>
           </div>
         </Box>
       </FormControl>

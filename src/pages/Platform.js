@@ -15,6 +15,7 @@ import { createTheme } from "@material-ui/core/styles";
 import SearchBar from "material-ui-search-bar";
 import { styled } from "@mui/material/styles";
 import { purple, grey } from "@mui/material/colors";
+import Banner from "../images/banner.png";
 
 const ttheme = createTheme();
 ttheme.spacing(1); // `${8 * 2}px` = '16px'
@@ -28,17 +29,20 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 const useStyles = makeStyles((theme) => ({
   PlatformContainer: {
+    width: '100%',
+    height: '100%',
     display: "flex",
-    overflow: "hidden",
     flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    width: "100%",
+    justifyContent: "center",
+    flexGrow: 1,
+    overflowX:"hidden",
+    overflowY:"hidden"
+    
   },
   hContainer: {
     display: "flex",
     flexDirection: "row",
-    width: "90%",
+    //width: "90%",
     flexGrow: 1,
     justifyContent: "center",
   },
@@ -74,15 +78,15 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: ttheme.spacing(1),
   },
   editPlat: {
-    marginLeft: ttheme.spacing(85),
-    marginBottom: ttheme.spacing(2)
+    marginLeft: "70%"
+    //marginBottom: ttheme.spacing(10),
   },
   search: {
     border: 1,
     borderColor: grey,
     borderRadius: 30,
     marginBottom: 20,
-    marginTop: 30,
+    marginTop: 20,
     marginLeft: 30,
     marginRight: 30,
     width: "60%",
@@ -161,7 +165,6 @@ export default function Platform(props) {
   };
 
   useEffect(() => {
-    //console.log(props.user_id)
     fetchPlatformData("");
   }, []);
 
@@ -176,7 +179,9 @@ export default function Platform(props) {
         <Link to={`/platform/${props.match.params.platform_id}/creator`}>
           <ColorButton className={classes.editPlat}>Edit Platform</ColorButton>
         </Link>
-      ) : (<></>)}
+      ) : (
+        <></>
+      )}
       <Box className={classes.hContainer}>
         <Box container className={classes.container}>
           <Box className={classes.header}>
@@ -186,7 +191,7 @@ export default function Platform(props) {
               onKeyPress={search}
             />
             <Select
-              label='Sort By'
+              label="Sort By"
               value={state.sortBy}
               autoWidth
               size="small"
@@ -196,7 +201,6 @@ export default function Platform(props) {
               <MenuItem value="dd">Date Newest</MenuItem>
               <MenuItem value="t">Title</MenuItem>
             </Select>
-
           </Box>
           {/* {previewSource && (<img src={previewSource} alt="chosen"style={{height: '300px'}} />)} */}
           <Box
@@ -230,7 +234,9 @@ export default function Platform(props) {
                             component="img"
                             height="140"
                             width="200"
-                            image={quiz.icon_photo}
+                            image={
+                              quiz.icon_photo === "" ? Banner : quiz.icon_photo
+                            }
                           />
                           <CardContent className={classes.quiz}>
                             {quiz.quiz_name}

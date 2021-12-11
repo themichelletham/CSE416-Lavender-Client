@@ -356,7 +356,6 @@ export default function QuizCreate(props) {
           ca.push(i);
         }
       }
-      //console.log(ca);
       //ans_list.filter(ans_obj => ans_obj.is_correct).map(ans_objb => ans_objb.answer_text)
       return ca;
     });
@@ -381,7 +380,7 @@ export default function QuizCreate(props) {
           setMinutes(Math.round(seconds / 60));
           setSeconds(seconds % 60);
         }
-        setPreviewSource(res.data.icon_photo);
+        // setPreviewSource(res.data.icon_photo);
       })
       .catch((err) => {
         console.log(err);
@@ -414,16 +413,13 @@ export default function QuizCreate(props) {
       const data = new FormData();
       data.append("file", photo);
       data.append("upload_preset", "sprout");
-      data.append("cloud_name", "lavender-sprout-herokuapp-com");
+      data.append("cloud_name", "di6unfiu0");
 
       //please note: Maximum file size is 10485760, may out to display this
-      fetch(
-        `https://api.cloudinary.com/v1_1/lavender-sprout-herokuapp-com/image/upload`,
-        {
-          method: "post",
-          body: data,
-        }
-      )
+      fetch(`https://api.cloudinary.com/v1_1/di6unfiu0/image/upload`, {
+        method: "post",
+        body: data,
+      })
         .then((res) => res.json())
         .then((data) => {
           setUrl(data.url);
@@ -445,9 +441,7 @@ export default function QuizCreate(props) {
           }
         )
         .then((res) => {
-          //stuff
           // console.log(res);
-          // console.log("image sent");
           return;
         })
         .catch((err) => {
