@@ -310,9 +310,9 @@ export default function PlatformCreator(props) {
     const new_state = copyState();
     new_state.sortBy = e.target.value;
     new_state.quizzes.sort((f, s) => {
-      if (new_state.sortBy === "dd") return f.createdAt < s.createdAt;
-      if (new_state.sortBy === "da") return f.createdAt > s.createdAt;
-      return f.quiz_name > s.quiz_name;
+      if (new_state.sortBy === "dd") return f.createdAt < s.createdAt ? 1 : -1;
+      if (new_state.sortBy === "da") return f.createdAt > s.createdAt ? 1 : -1;
+      return f.quiz_name > s.quiz_name ? 1 : -1;
     });
     setState(new_state);
   };
