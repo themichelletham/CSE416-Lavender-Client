@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   box: {
     backgroundColor: "#F9F9FF",
+    marginBottom: "5%"
   },
   Opt: {
     display: "inline-block",
@@ -86,6 +87,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     marginLeft: 80,
     fontSize: 22,
+  },
+  icon: {
+    paddignLeft: 10,
+    maxHeight: "300px",
+    maxWidth: "950px",
   },
 }));
 
