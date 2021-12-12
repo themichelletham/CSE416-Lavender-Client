@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     float: "center",
     marginLeft: theme.spacing(0),
-    marginTop: theme.spacing(18),
+    marginTop: theme.spacing(10),
     marginBottom: theme.spacing(1),
     height: theme.spacing(22),
     width: theme.spacing(22),
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   username: {
     display: "inline-flex",
-    marginTop: theme.spacing(42),
+    marginTop: theme.spacing(35),
     align: "center",
   },
   pointsContainer: {
