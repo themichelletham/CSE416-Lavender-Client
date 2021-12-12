@@ -31,7 +31,7 @@ function Home(props) {
 
   return (
     <Box className="homePage">
-      <Sidebar className={classes.drawer} user_id={props.user_id} platform_id={props.platform_id} />
+      <Sidebar className={classes.drawer} user_id={props.user_id} platform_id={props.platform_id} onCreatePlatformCallback={props.onCreatePlatform}/>
       <Search keyword={keyword} />
     </Box>
   );

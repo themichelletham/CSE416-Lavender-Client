@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { unstable_batchedUpdates } from 'react-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
@@ -361,12 +362,15 @@ export default function QuizCreate(props) {
         withCredentials: true,
       })
       .then((res) => {
-        setState(parseToState(res));
-        let seconds = res.data.quiz.time_limit;
-        if (seconds !== null && seconds !== 0) {
-          setMinutes(Math.round(seconds / 60));
-          setSeconds(seconds % 60);
-        }
+        unstable_batchedUpdates(() => {
+          setState(parseToState(res));
+          let seconds = res.data.quiz.time_limit;
+          if (seconds !== null && seconds !== 0) {
+            setMinutes(Math.round(seconds / 60));
+            setSeconds(seconds % 60);
+          }
+        });
+        // setPreviewSource(res.data.icon_photo);
       })
       .catch((err) => {
         console.log(err);

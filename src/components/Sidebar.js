@@ -72,10 +72,7 @@ export default function Sidebar(props) {
       )
       .then((res) => {
         if (res.status == 201) {
-          console.log("ahHh");
-          console.log(res.data);
           setPlatformId(res.data.platform_id);
-          console.log(platformId);
           history.push("/platform/" + res.data.platform_id + "/creator");
         }
       })
@@ -102,7 +99,6 @@ export default function Sidebar(props) {
       .catch((err) => {
         console.log("GET USERS Sidebar: ", err);
       });
-
       axios.get(`${constants.API_PATH}/platform/${platformId}`, {
         params: {
           platform_id: platformId,
@@ -134,7 +130,7 @@ export default function Sidebar(props) {
               <ListItem
                 button
                 key={"Create Platform"}
-                onClick={platformId ? onViewPlatform : onCreatePlatform}
+                onClick={platformId ? onViewPlatform : props.onCreatePlatformCallback}
               >
                 <ListItemIcon>
                   <AddCircleOutlineIcon />

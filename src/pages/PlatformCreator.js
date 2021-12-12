@@ -248,6 +248,7 @@ export default function PlatformCreator(props) {
       )
       .then((res) => {
         // Go to Home Page
+        props.onDeletePlatformCallback();
         history.push("/");
       })
       .catch((err) => {
@@ -347,7 +348,6 @@ export default function PlatformCreator(props) {
 
   const onDeleteQuiz = (e, index) => {
     e.preventDefault();
-    console.log(`Deleting Quiz index ${index}`);
     let new_state = copyState();
     axios
       .delete(`${constants.API_PATH}/quiz/${state.quizzes[index].quiz_id}`)
@@ -357,8 +357,6 @@ export default function PlatformCreator(props) {
         setState(new_state);
         setQuizDialog(false);
         setSelectedQuiz(null);
-
-        console.log(`deleted quiz ${state.quizzes[index].quiz_id}`);
       })
       .catch((err) => {
         console.log(err);
