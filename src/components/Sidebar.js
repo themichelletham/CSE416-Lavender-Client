@@ -136,7 +136,7 @@ export default function Sidebar(props) {
             {topTen.map((user, index) => (
               <ListItem
                 button
-                key={"View Leaderboard User"}
+                key={index}
                 onClick={(e) => onViewLeaderProfile(e, user.user_id)}
               >
                 <ListItemText primary={index + 1 + ".\t" + user.username} />
