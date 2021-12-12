@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   pleaderboard: {
 
-    width: 220,
+    width: "85%",
     borderRadius: "15%",
     backgroundColor: "#FFFFFF",
     margin: "5%",

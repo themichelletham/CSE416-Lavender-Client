@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   box: {
     backgroundColor: "#F9F9FF",
+    marginBottom: "5%"
   },
   noBorder: {
     border: "none",
@@ -72,8 +73,8 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     paddignLeft: 10,
-    maxHeight: "200px",
-    maxWidth: "920px",
+    maxHeight: "300px",
+    maxWidth: "950px",
   },
 }));
 

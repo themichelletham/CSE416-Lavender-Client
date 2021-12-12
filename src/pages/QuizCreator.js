@@ -94,6 +94,7 @@ const useStyles = makeStyles((theme) => ({
   },
   box: {
     backgroundColor: "#F9F9FF",
+    marginBottom: "5%"
   },
   editThumbnail: {
     display: "inline-block",
@@ -103,8 +104,8 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     paddignLeft: 10,
-    maxHeight: "50%",
-    maxWidth: "100%",
+    maxHeight: "300px",
+    maxWidth: "950px",
   },
 }));
 
