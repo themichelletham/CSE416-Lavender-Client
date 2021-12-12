@@ -44,7 +44,7 @@ export default function Sidebar(props) {
   const classes = useStyles();
   const history = useHistory();
 
-  const [platformId, setPlatformId] = useState([]);
+  //const [platformId, setPlatformId] = useState([]);
   const [topTen, setTopTen] = useState([]);
 
   const onViewProfile = (e) => {
@@ -99,18 +99,18 @@ export default function Sidebar(props) {
       .catch((err) => {
         console.log("GET USERS Sidebar: ", err);
       });
-      axios.get(`${constants.API_PATH}/platform/${platformId}`, {
-        params: {
-          platform_id: platformId,
-        }
-      }).then(res => {
-        if (res.data.platforms.length === 0) {
-          setPlatformId(null);
-        }
-      }).catch(err => {
-        setPlatformId(null);
-        console.log('GET PLATFORM Sidebar: ', err);
-      })
+      //axios.get(`${constants.API_PATH}/platform/${props.platform_id}`, {
+      //  params: {
+      //    platform_id: platformId,
+      //  }
+      //}).then(res => {
+      //  if (res.data.platforms.length === 0) {
+      //    setPlatformId(null);
+      //  }
+      //}).catch(err => {
+      //  setPlatformId(null);
+      //  console.log('GET PLATFORM Sidebar: ', err);
+      //})
   }, []);
   return (
     <Box className={classes.mainbox}>
@@ -130,13 +130,13 @@ export default function Sidebar(props) {
               <ListItem
                 button
                 key={"Create Platform"}
-                onClick={platformId ? onViewPlatform : props.onCreatePlatformCallback}
+                onClick={props.platform_id ? onViewPlatform : props.onCreatePlatformCallback}
               >
                 <ListItemIcon>
                   <AddCircleOutlineIcon />
                 </ListItemIcon>
                 <ListItemText>
-                  {platformId ? "View Platform" : "Create Platform"}
+                  {props.platform_id ? "View Platform" : "Create Platform"}
                 </ListItemText>
               </ListItem>
             )}
