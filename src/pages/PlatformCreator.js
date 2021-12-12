@@ -17,10 +17,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import {
-  BrowserRouter as Router,
-  Route,
   Link,
-  Switch,
   useHistory,
 } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
@@ -32,9 +29,8 @@ import PlatformProfile from "../components/PlatformProfile.js";
 import PlatformLead from "../components/PlatformLead.js";
 import SearchBar from "material-ui-search-bar";
 import { styled } from "@mui/material/styles";
-import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-import { purple, grey } from "@mui/material/colors";
+import { createTheme } from "@material-ui/core/styles";
+import { grey } from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";

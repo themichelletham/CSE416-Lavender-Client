@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, styled } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Box, Button, FormControl, InputBase, Grid } from "@mui/material";
 import { useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "flex-start",
     width: theme.spacing(120),
-    //overflowX: "hidden",
   },
   Opt: {
     display: "inline-block",
@@ -49,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   questions: {
-    //display: "flex",
     width: "100%",
   },
   answer: {
@@ -146,7 +144,6 @@ export default function QuizResult(props) {
         )
         .then((res) => {
           let s = parseToState(res.data);
-          //s.selected_answers = s.questions.map(q => -1);
           setState(s);
           setPreviewSource(res.data.quiz.icon_photo);
         })
@@ -155,7 +152,6 @@ export default function QuizResult(props) {
         });
     } else {
       let s = parseToState(props.location.state);
-      //s.selected_answers = s.questions.map(q => -1);
       setState(s);
     }
   }, []);
