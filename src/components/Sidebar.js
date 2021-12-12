@@ -55,32 +55,6 @@ export default function Sidebar(props) {
     history.push(`/platform/${props.platform_id}`);
   };
 
-  const onCreatePlatform = (e) => {
-    e.preventDefault();
-    axios
-      .post(
-        `${constants.API_PATH}/platform`,
-        {
-          platform_fields: {
-            platform_name: "Untitled Platform",
-            user_id: props.user_id,
-          },
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        if (res.status == 201) {
-          setPlatformId(res.data.platform_id);
-          history.push("/platform/" + res.data.platform_id + "/creator");
-        }
-      })
-      .catch((err) => {
-        console.log("Sidebar Create Platform Button: ", err);
-      });
-  };
-
   const onViewLeaderProfile = (e, user_id) => {
     e.preventDefault();
     history.push(`/profile/${user_id}`);
