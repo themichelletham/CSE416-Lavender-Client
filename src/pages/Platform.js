@@ -1,15 +1,13 @@
 import { Button, Card, CardContent, CardMedia } from "@material-ui/core";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
 import { Box, Grid } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import * as constants from "../components/constants";
-import { BrowserRouter as Router, Link, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PlatformLead from "../components/PlatformLead.js";
-import PlatformCreator from "./PlatformCreator.js";
 import PlatformProfile from "../components/PlatformProfile.js";
 import { createTheme } from "@material-ui/core/styles";
 import SearchBar from "material-ui-search-bar";
@@ -18,7 +16,7 @@ import { purple, grey } from "@mui/material/colors";
 import Banner from "../images/banner.png";
 
 const ttheme = createTheme();
-ttheme.spacing(1); // `${8 * 2}px` = '16px'
+ttheme.spacing(1);
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText("#7519BD"),
   backgroundColor: "#7519BD",

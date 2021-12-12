@@ -7,7 +7,6 @@ import {
   InputBase,
   Input,
   Switch,
-  TextField,
   Typography,
 } from "@mui/material";
 import { useHistory, useLocation, Redirect } from "react-router-dom";
@@ -15,11 +14,8 @@ import axios from "axios";
 import * as constants from "../components/constants";
 import Questions from "../components/Questions";
 import Answers from "../components/Answers";
-import { DoorBack, Login } from "@mui/icons-material";
-import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
+import { createTheme } from "@material-ui/core/styles";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import CircleIcon from "@mui/icons-material/CircleOutlined";
 import Alert from "@mui/material/Alert";
 
 const useStyles = makeStyles((theme) => ({
@@ -58,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
     margin: "5%",
     paddingLeft: "15%",
     paddingRight: "15%",
-    //paddingBottom: "2%",
     paddingTop: "2%",
   },
   time: {
@@ -110,7 +105,6 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "50%",
     maxWidth: "100%",
   },
-  //toolbar: theme.mixins.toolbar,
 }));
 
 export default function QuizCreate(props) {
@@ -143,7 +137,7 @@ export default function QuizCreate(props) {
   const location = useLocation();
   const history = useHistory();
   const theme = createTheme();
-  theme.spacing(1); // `${8 * 2}px` = '16px'
+  theme.spacing(1);
 
   const style = {
     backgroundColor: "#ACACE1",
@@ -233,7 +227,7 @@ export default function QuizCreate(props) {
         }
       )
       .then((res) => {
-        // TODO: DO something after udpate
+        
       })
       .catch((err) => {
         console.log("PUT on Save: ", err);
@@ -259,7 +253,7 @@ export default function QuizCreate(props) {
         }
       )
       .then((res) => {
-        // TODO: DO something after udpate
+        
       })
       .catch((err) => {
         console.log("PUT on Save: ", err);
@@ -309,10 +303,6 @@ export default function QuizCreate(props) {
 
   const onAnswerChange = (e, q_k, a_k) => {
     let new_state = copyState();
-    //new_correct_answers[q_k][0] = a_k;
-    //if ( new_answers[q_k][a_k] === new_correct_answers[q_k][0]){
-    //  new_correct_answers[q_k][0] = e.target.value;
-    //}
     new_state.answers[q_k][a_k] = e.target.value;
     setState(new_state);
   };
@@ -323,8 +313,6 @@ export default function QuizCreate(props) {
     setState(new_state);
   };
 
-  //adds/changes correct answer
-  //this list will be used to compare with the other answers in the list to see which is correct
   const makeCorrect = (e, q_k, a_k) => {
     let new_state = copyState();
     new_state.correct_answers[q_k] = [a_k];
@@ -356,7 +344,6 @@ export default function QuizCreate(props) {
           ca.push(i);
         }
       }
-      //ans_list.filter(ans_obj => ans_obj.is_correct).map(ans_objb => ans_objb.answer_text)
       return ca;
     });
     return {
@@ -380,7 +367,6 @@ export default function QuizCreate(props) {
           setMinutes(Math.round(seconds / 60));
           setSeconds(seconds % 60);
         }
-        // setPreviewSource(res.data.icon_photo);
       })
       .catch((err) => {
         console.log(err);
@@ -441,7 +427,6 @@ export default function QuizCreate(props) {
           }
         )
         .then((res) => {
-          // console.log(res);
           return;
         })
         .catch((err) => {

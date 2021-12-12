@@ -10,13 +10,6 @@ ttheme.spacing(1);
 
 const useStyles = makeStyles((theme) => ({
   homePage: {
-    /*display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    width: "90%",
-    height: "90%",
-    flexGrow: 8,
-    left: 10*/
     width: '100%',
     height: '100%',
     display: "flex",
@@ -24,23 +17,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     flexGrow: 1,
     overflowX:"hidden",
-    overflowY:"hidden"
-    //width: theme.spacing(100),
-    //height: theme.spacing(100),
+    overflowY:"hidden",
   },
-  /*gridContainer: {
-    //marginTop: '2%',
-    //marginLeft: '10%',
-    //width: '90%',
-    //display: 'absolute',
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    marginLeft: "5%",
-    width: "80vw",
-  },
-  gridItem: {
-    display: "inline-block",
-  },*/
 }));
 
 function Home(props) {

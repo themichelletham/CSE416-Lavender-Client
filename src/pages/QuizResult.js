@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "flex-start",
     width: theme.spacing(120),
-    //overflowX: "hidden",
   },
   Opt: {
     display: "inline-block",
@@ -56,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   questions: {
-    //display: "flex",
     width: "100%",
   },
   answer: {
@@ -155,7 +153,6 @@ export default function QuizResult(props) {
         )
         .then((res) => {
           let s = parseToState(res.data);
-          //s.selected_answers = s.questions.map(q => -1);
           setState(s);
           const time_limit = res.data.duration;
           if (time_limit) {

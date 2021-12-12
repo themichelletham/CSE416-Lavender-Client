@@ -5,18 +5,15 @@ import PointCard from "../components/PointCard";
 import {
   Button,
   Box,
-  Grid,
   Typography,
-  ImageListItem,
   TextField,
 } from "@mui/material";
 import { makeStyles, Tooltip } from "@material-ui/core";
-import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { ThemeProvider } from "@material-ui/styles";
 import * as constants from "../components/constants";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
@@ -43,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     float: "center",
-    //marginTop: 10,
     marginLeft: theme.spacing(0),
     marginTop: theme.spacing(18),
     marginBottom: theme.spacing(1),

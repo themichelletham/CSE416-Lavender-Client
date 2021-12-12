@@ -207,7 +207,6 @@ export default function QuizTake(props) {
 
   useEffect(() => {
     fetchQuiz();
-    //startQuiz();
   }, []);
 
   const onSelect = (e, q_k, a_k) => {
