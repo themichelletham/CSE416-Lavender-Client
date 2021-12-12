@@ -72,7 +72,7 @@ export default function NavBar() {
   const history = useHistory();
 
   const onCreatePlatform = (e) => {
-    e.preventDefault();
+    if(e) e.preventDefault();
     axios
       .post(
         `${constants.API_PATH}/platform`,
@@ -88,12 +88,18 @@ export default function NavBar() {
       )
       .then((res) => {
         if (res.status === 201) {
+          setState({...state, user: {...state.user, platform_id: res.data.platform_id }})
           history.push("/platform/" + res.data.platform_id + "/creator");
         }
       })
       .catch((err) => {
         console.log("Sidebar Create Platform Button: ", err);
       });
+  };
+
+  const onDeletePlatform = () => {
+    console.log('called')
+    setState({...state, user: {...state.user, platform_id: null }});
   };
 
   const onViewPlatform = (e) => {
@@ -293,6 +299,7 @@ export default function NavBar() {
                 user_id={state.user && state.user.user_id}
                 platform_id={state.user && state.user.platform_id}
                 keyword={keyword}
+                onCreatePlatform={onCreatePlatform}
                 {...props}
               />
             )}
@@ -326,6 +333,7 @@ export default function NavBar() {
             render={(props) => (
               <PlatformCreator
                 user_id={state.user && state.user.user_id}
+                onDeletePlatformCallback={onDeletePlatform}
                 {...props}
               />
             )}

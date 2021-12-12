@@ -242,7 +242,7 @@ export default function QuizTake(props) {
             user_id: props.user_id,
             platform_id: state.platform_id,
             selected_answers: state.selected_answers.slice(0),
-            duration: timeLimit - (minutes * 60 + seconds),
+            duration: timeLimit?timeLimit - (minutes * 60 + seconds):null,
           }
         )
         .then((res) => {
