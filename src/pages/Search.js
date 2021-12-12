@@ -144,7 +144,7 @@ function Search(props) {
                     height="140"
                     width="200"
                     image={
-                      platform.icon_photo === ""
+                      platform.icon_photo === "" || platform.icon_photo === null
                         ? PlatformIcon
                         : platform.icon_photo
                     }

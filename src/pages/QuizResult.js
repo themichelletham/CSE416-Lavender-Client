@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button, FormControl, InputBase, Grid } from "@mui/material";
+import { makeStyles, styled } from "@material-ui/core/styles";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputBase,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
 import * as constants from "../components/constants";
@@ -89,7 +96,9 @@ export default function QuizResult(props) {
     answers: [],
     selected_answers: [],
   });
+  const [time, setTime] = useState(null);
   const [previewSource, setPreviewSource] = useState();
+  const [displayUnanswered, setDisplayUnanswered] = useState(false);
 
   const copyState = () => {
     let ret = {};
@@ -145,6 +154,10 @@ export default function QuizResult(props) {
         .then((res) => {
           let s = parseToState(res.data);
           setState(s);
+          const time_limit = res.data.duration;
+          if (time_limit) {
+            setTime(time_limit);
+          }
           setPreviewSource(res.data.quiz.icon_photo);
         })
         .catch((err) => {
@@ -152,6 +165,13 @@ export default function QuizResult(props) {
         });
     } else {
       let s = parseToState(props.location.state);
+      setDisplayUnanswered(!props.location.state.answered_all_questions);
+
+      const time_limit = props.location.state.duration;
+      if (time_limit) {
+        setTime(Math.floor(time_limit / 60) + ":" + (time_limit % 60));
+      }
+      //s.selected_answers = s.questions.map(q => -1);
       setState(s);
     }
   }, []);
@@ -183,7 +203,21 @@ export default function QuizResult(props) {
       <h1>{state.platform_title}</h1>
       <img className={classes.icon} src={previewSource} />
       <Box className={classes.Opt} mt={3}>
-        <div className={classes.duration}>Duration: INF</div>
+        <div className={classes.duration}>Duration:</div>
+        <Box className={classes.timeContainer}>
+          {time !== null ? (
+            <Box className={classes.time}>
+              <Typography>{`${time}`}</Typography>
+            </Box>
+          ) : (
+            <Typography>INF</Typography>
+          )}
+        </Box>
+        <Box>
+          {displayUnanswered
+            ? "Not all questions have been answered (Correct answers are shown)"
+            : ""}
+        </Box>
       </Box>
       <FormControl className={classes.quizform}>
         <InputBase

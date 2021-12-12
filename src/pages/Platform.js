@@ -27,15 +27,14 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 const useStyles = makeStyles((theme) => ({
   PlatformContainer: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     flexGrow: 1,
-    overflowX:"hidden",
-    overflowY:"hidden"
-    
+    overflowX: "hidden",
+    overflowY: "hidden",
   },
   hContainer: {
     display: "flex",
@@ -76,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: ttheme.spacing(1),
   },
   editPlat: {
-    marginLeft: "70%"
+    marginLeft: "70%",
     //marginBottom: ttheme.spacing(10),
   },
   search: {
@@ -233,7 +232,10 @@ export default function Platform(props) {
                             height="140"
                             width="200"
                             image={
-                              quiz.icon_photo === "" ? Banner : quiz.icon_photo
+                              (quiz.icon_photo === "") |
+                              (quiz.icon_photo === null)
+                                ? Banner
+                                : quiz.icon_photo
                             }
                           />
                           <CardContent className={classes.quiz}>

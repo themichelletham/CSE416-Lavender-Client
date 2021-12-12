@@ -111,6 +111,7 @@ export default function QuizTake(props) {
   });
   const [minutes, setMinutes] = useState(null);
   const [seconds, setSeconds] = useState(null);
+  const [timeLimit, setTimeLimit] = useState(null);
   const [previewSource, setPreviewSource] = useState();
   const classes = useStyles();
   const history = useHistory();
@@ -170,6 +171,7 @@ export default function QuizTake(props) {
           s.selected_answers = s.questions.map((q) => -1);
           setState(s);
           let time_limit = res.data.quiz.time_limit;
+          setTimeLimit(time_limit);
           if (time_limit !== null && time_limit !== 0) {
             setMinutes(Math.floor(time_limit / 60));
             setSeconds(time_limit % 60);
@@ -240,7 +242,7 @@ export default function QuizTake(props) {
             user_id: props.user_id,
             platform_id: state.platform_id,
             selected_answers: state.selected_answers.slice(0),
-            duration: null,
+            duration: timeLimit - (minutes * 60 + seconds),
           }
         )
         .then((res) => {
@@ -256,7 +258,7 @@ export default function QuizTake(props) {
           {
             platform_id: state.platform_id,
             selected_answers: state.selected_answers.slice(0),
-            duration: null,
+            duration: timeLimit - (minutes * 60 + seconds),
           }
         )
         .then((res) => {
@@ -266,6 +268,8 @@ export default function QuizTake(props) {
             questions: res.data.questions,
             answers: res.data.answers,
             selected_answers: res.data.selected_answers,
+            duration: res.data.duration,
+            answered_all_questions: res.data.answered_all_questions,
           });
         });
     }
