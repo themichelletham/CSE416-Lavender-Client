@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 import * as constants from "../components/constants";
@@ -16,14 +16,11 @@ import {
   Input,
   Grid,
   Tooltip,
-  Typography
+  Typography,
 } from "@mui/material";
-import {
-  Link,
-  useHistory,
-} from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -52,23 +49,23 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const InputButton = styled("input")({
-  backgroundColor: "#8A8AEE",
-  "&:hover": {
-    backgroundColor: "#7373DF",
-  },
-});
+// const InputButton = styled("input")({
+//   backgroundColor: "#8A8AEE",
+//   "&:hover": {
+//     backgroundColor: "#7373DF",
+//   },
+// });
 
 const useStyles = makeStyles((theme) => ({
   PlatformCreatorContainer: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     display: "flex-start",
     flexDirection: "column",
     alignItems: "center",
     flexGrow: 1,
-    overflowX:"hidden",
-    overflowY:"hidden"
+    overflowX: "hidden",
+    overflowY: "hidden",
   },
   hContainer: {
     display: "flex",
@@ -76,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
     //width: "90%",
     flexGrow: 1,
     justifyContent: "center",
-    marginLeft: "5%"
+    marginLeft: "5%",
   },
   header: {
     display: "flex",
@@ -88,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 5,
   },
   container: {
-    display: "flex",
+    // display: "flex",
     flexGrow: 1,
     width: "100%",
     //left: 1,
@@ -100,20 +97,20 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     paddingLeft: "71%",
     alignItems: "left",*/
-    width: "100%", 
+    width: "100%",
     paddingLeft: "71%",
     marginBottom: theme.spacing(0.1),
   },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    width: "98%",
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 5,
-    borderBottom: "0.2em solid #dcdce3",
-  },
+  // header: {
+  //   display: "flex",
+  //   flexDirection: "row",
+  //   width: "98%",
+  //   flexGrow: 1,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   padding: 5,
+  //   borderBottom: "0.2em solid #dcdce3",
+  // },
   search: {
     border: 1,
     borderColor: grey,
@@ -170,18 +167,14 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(25),
     height: theme.spacing(15),
   },
-  createQuiz: {
-    width: theme.spacing(25),
-    height: theme.spacing(15),
-  },
   card: {
     width: theme.spacing(24),
     height: "100%",
   },
-  platName: { 
-    marginLeft: "22%", 
+  platName: {
+    marginLeft: "22%",
     //zIndex: 'tooltip'
-  }
+  },
 }));
 
 const style = {
@@ -461,7 +454,6 @@ export default function PlatformCreator(props) {
     }
   };
   const [open, setOpen] = React.useState(false);
-  const [usernameExist, setUsernameExist] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -471,18 +463,19 @@ export default function PlatformCreator(props) {
   };
   const handleSaveEditName = () => {
     axios
-      .put(`${constants.API_PATH}/platforms/${props.match.params.platform_id}/creator`, {
-        platform_fields: { platform_name: state.platform_name },
-      })
+      .put(
+        `${constants.API_PATH}/platforms/${props.match.params.platform_id}/creator`,
+        {
+          platform_fields: { platform_name: state.platform_name },
+        }
+      )
       .then((res) => {
         setOpen(false);
       })
       .catch((err) => {
         console.log("PUT on Save: ", err);
-        setUsernameExist(true);
       });
   };
-
 
   return redirect ? (
     <Redirect to={`/platform/${props.match.params.platform_id}`} />
@@ -491,13 +484,24 @@ export default function PlatformCreator(props) {
       <PlatformProfile
         platform_icon={url === "" ? tempImage : url}
         banner={bannerUrl === "" ? tempBanner : bannerUrl}
-        platform_name={state.platform_name ? (
+        platform_name={
+          state.platform_name ? (
             <>
               <Typography variant="h4" align="center" mb={1}>
                 {state.platform_name}
               </Typography>
               <Tooltip title="Edit Platform Name" placement="top">
-                <IconButton onClick={handleClickOpen} style={{maxWidth: '200px', maxHeight: '50px', minWidth: '30px', minHeight: '30px'}}><EditIcon fontSize="medium" /></IconButton>
+                <IconButton
+                  onClick={handleClickOpen}
+                  style={{
+                    maxWidth: "200px",
+                    maxHeight: "50px",
+                    minWidth: "30px",
+                    minHeight: "30px",
+                  }}
+                >
+                  <EditIcon fontSize="medium" />
+                </IconButton>
               </Tooltip>
               <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Edit Platform Name</DialogTitle>
@@ -524,7 +528,8 @@ export default function PlatformCreator(props) {
                 {state.platform_name}
               </Typography>
             </>
-          )}
+          )
+        }
       />
       <Box className={classes.hContainer}>
         <Box className={classes.container}>

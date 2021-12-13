@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, styled } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
   Button,
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   box: {
     backgroundColor: "#F9F9FF",
-    marginBottom: "5%"
+    marginBottom: "5%",
   },
   Opt: {
     display: "inline-block",
@@ -167,7 +167,7 @@ export default function QuizTake(props) {
           console.log("QuizTaking History: ", err);
         });
     }
-    if (history_res && history_res.status == 200) {
+    if (history_res && history_res.status === 200) {
       setState({ redirect: true });
     } else {
       await axios
@@ -248,7 +248,7 @@ export default function QuizTake(props) {
             user_id: props.user_id,
             platform_id: state.platform_id,
             selected_answers: state.selected_answers.slice(0),
-            duration: timeLimit?timeLimit - (minutes * 60 + seconds):null,
+            duration: timeLimit ? timeLimit - (minutes * 60 + seconds) : null,
           }
         )
         .then((res) => {
@@ -286,7 +286,7 @@ export default function QuizTake(props) {
   ) : (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_name}</h1>
-      <img className={classes.icon} src={previewSource} />
+      <img className={classes.icon} src={previewSource} alt="" />
       <Box className={classes.Opt} mt={3}>
         <Box className={classes.duration}>
           <Typography>Duration: </Typography>
