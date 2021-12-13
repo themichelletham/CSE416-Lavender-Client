@@ -41,6 +41,7 @@ import Banner from "../images/banner.png";
 
 const theme = createTheme();
 theme.spacing(1); // `${8 * 2}px` = '16px'
+
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText("#ACACE1"),
   backgroundColor: "#ACACE1",
@@ -48,13 +49,6 @@ const ColorButton = styled(Button)(({ theme }) => ({
     backgroundColor: "#8A8AEE",
   },
 }));
-
-// const InputButton = styled("input")({
-//   backgroundColor: "#8A8AEE",
-//   "&:hover": {
-//     backgroundColor: "#7373DF",
-//   },
-// });
 
 const useStyles = makeStyles((theme) => ({
   PlatformCreatorContainer: {
@@ -99,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "left",*/
     width: "100%",
     paddingLeft: "71%",
-    marginBottom: theme.spacing(0.1),
+    marginBottom: theme.spacing(3),
   },
   // header: {
   //   display: "flex",
@@ -541,6 +535,28 @@ export default function PlatformCreator(props) {
       />
       <Box className={classes.hContainer}>
         <Box className={classes.container}>
+        <Box className={classes.Opt} ml={3} mr={1} mt={3}>
+            <ColorButton
+              size="small"
+              variant="contained"
+              style={style}
+              onClick={onSave}
+              disableElevation
+            >
+              Save Platform
+            </ColorButton>
+            <ColorButton
+              size="small"
+              style={style}
+              variant="contained"
+              onClick={(e) => {
+                handleDeletePlatformOpen();
+              }}
+              disableElevation
+            >
+              Delete Platform
+            </ColorButton>
+          </Box>
           <Box className={classes.editThumbnail}>
             Banner:
             <Input
@@ -593,28 +609,6 @@ export default function PlatformCreator(props) {
               <MenuItem value="dd">Date Newest</MenuItem>
               <MenuItem value="t">Title</MenuItem>
             </Select>
-          </Box>
-          <Box className={classes.Opt} ml={3} mr={1} mt={3}>
-            <ColorButton
-              size="small"
-              variant="contained"
-              style={style}
-              onClick={onSave}
-              disableElevation
-            >
-              Save Platform
-            </ColorButton>
-            <ColorButton
-              size="small"
-              style={style}
-              variant="contained"
-              onClick={(e) => {
-                handleDeletePlatformOpen();
-              }}
-              disableElevation
-            >
-              Delete Platform
-            </ColorButton>
           </Box>
           <Dialog open={platformDialog} onClose={handleDeletePlatformClose}>
             <DialogTitle>Delete Platform {state.platform_name}</DialogTitle>
