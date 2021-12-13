@@ -9,6 +9,7 @@ import { List, ListItem, ListItemText, ListItemIcon } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import BadgeIcon from '@mui/icons-material/Badge';
 import Profile from "../pages/Profile";
 import * as constants from "../components/constants";
 import PlatformCreator from "../pages/PlatformCreator";
@@ -43,8 +44,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Sidebar(props) {
   const classes = useStyles();
   const history = useHistory();
-
-  //const [platformId, setPlatformId] = useState([]);
   const [topTen, setTopTen] = useState([]);
 
   const onViewProfile = (e) => {
@@ -73,18 +72,6 @@ export default function Sidebar(props) {
       .catch((err) => {
         console.log("GET USERS Sidebar: ", err);
       });
-      //axios.get(`${constants.API_PATH}/platform/${props.platform_id}`, {
-      //  params: {
-      //    platform_id: platformId,
-      //  }
-      //}).then(res => {
-      //  if (res.data.platforms.length === 0) {
-      //    setPlatformId(null);
-      //  }
-      //}).catch(err => {
-      //  setPlatformId(null);
-      //  console.log('GET PLATFORM Sidebar: ', err);
-      //})
   }, []);
   return (
     <Box className={classes.mainbox}>
@@ -107,7 +94,7 @@ export default function Sidebar(props) {
                 onClick={props.platform_id ? onViewPlatform : props.onCreatePlatformCallback}
               >
                 <ListItemIcon>
-                  <AddCircleOutlineIcon />
+                  {props.platform_id ? <BadgeIcon /> : <AddCircleOutlineIcon />}
                 </ListItemIcon>
                 <ListItemText>
                   {props.platform_id ? "View Platform" : "Create Platform"}
