@@ -10,11 +10,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   questionText: {
-<<<<<<< Updated upstream
     textAlign: "inline-block",
-=======
-    textAlign: 'inline-block',
->>>>>>> Stashed changes
     marginTop: theme.spacing(5),
     width: theme.spacing(95),
     backgroundColor: "#FFFFFF",
