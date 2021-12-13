@@ -627,24 +627,6 @@ export default function PlatformCreator(props) {
               </Button>
             </DialogActions>
           </Dialog>
-          <FormControl className={classes.editPlatform}>
-            <InputBase
-              className={classes.title}
-              inputProps={{
-                min: 800,
-                style: {
-                  textAlign: "center",
-                  fontSize: 22,
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                  marginTop: 10,
-                  fullWidth: "true",
-                },
-                /*value={state.platform_name}
-              onChange={onTitleChange}*/
-              }}
-            />
-          </FormControl>
           <Box>
             <Grid container spacing={3} className={classes.gridContainer}>
               {props.user_id ? (
