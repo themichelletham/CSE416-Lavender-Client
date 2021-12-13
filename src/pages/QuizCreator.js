@@ -44,17 +44,19 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   timeContainer: {
+    minWidth: "40%",
+    maxWidth: "80%",
     display: "flex",
-    borderRadius: "20%",
+    borderRadius: "5%",
     alignItems: "center",
     justifyContent: "center",
     flexGrow: 1,
     fontSize: 16,
     fontWeight: "bold",
     backgroundColor: "#acace1",
-    margin: "5%",
-    paddingLeft: "15%",
-    paddingRight: "15%",
+    //margin: theme.spacing(1),
+    paddingLeft: "5%",
+    paddingRight: "5%",
     paddingTop: "2%",
   },
   time: {
@@ -63,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
   timeInput: {
     display: "flex",
-    width: "1.5rem",
+    width: "3rem",
     alignItems: "center",
     align: "right",
     margin: 0,
@@ -195,8 +197,8 @@ export default function QuizCreate(props) {
 
   const onDurationToggle = (e) => {
     if (e.target.checked) {
-      setMinutes(60);
-      setSeconds(0);
+      setMinutes("00");
+      setSeconds("00");
     } else {
       setMinutes(null);
       setSeconds(null);
@@ -473,7 +475,7 @@ export default function QuizCreate(props) {
       </Box>
       <Box className={classes.Opt} mt={3}>
         <Box className={classes.duration}>
-          <Typography>Duration: </Typography>
+          <Typography>Duration:</Typography>&nbsp;
           <Box className={classes.timeContainer}>
             {hasDuration !== null ? (
               <Box className={classes.time}>

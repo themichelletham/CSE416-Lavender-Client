@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core";
 import Alert from "@mui/material/Alert";
 import { Card, CardContent, CardMedia } from "@material-ui/core";
 import {
+  TextField,
   Box,
   Button,
   FormControl,
@@ -15,12 +16,14 @@ import {
   Input,
   Grid,
   Tooltip,
+  Typography
 } from "@mui/material";
 import {
   Link,
   useHistory,
 } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
+import EditIcon from '@mui/icons-material/Edit';
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -175,6 +178,10 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(24),
     height: "100%",
   },
+  platName: { 
+    marginLeft: "22%", 
+    //zIndex: 'tooltip'
+  }
 }));
 
 const style = {
@@ -453,6 +460,29 @@ export default function PlatformCreator(props) {
         });
     }
   };
+  const [open, setOpen] = React.useState(false);
+  const [usernameExist, setUsernameExist] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleSaveEditName = () => {
+    axios
+      .put(`${constants.API_PATH}/platforms/${props.match.params.platform_id}/creator`, {
+        platform_fields: { platform_name: state.platform_name },
+      })
+      .then((res) => {
+        setOpen(false);
+      })
+      .catch((err) => {
+        console.log("PUT on Save: ", err);
+        setUsernameExist(true);
+      });
+  };
+
 
   return redirect ? (
     <Redirect to={`/platform/${props.match.params.platform_id}`} />
@@ -461,6 +491,40 @@ export default function PlatformCreator(props) {
       <PlatformProfile
         platform_icon={url === "" ? tempImage : url}
         banner={bannerUrl === "" ? tempBanner : bannerUrl}
+        platform_name={state.platform_name ? (
+            <>
+              <Typography variant="h4" align="center" mb={1}>
+                {state.platform_name}
+              </Typography>
+              <Tooltip title="Edit Platform Name" placement="top">
+                <IconButton onClick={handleClickOpen} style={{maxWidth: '200px', maxHeight: '50px', minWidth: '30px', minHeight: '30px'}}><EditIcon fontSize="medium" /></IconButton>
+              </Tooltip>
+              <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Edit Platform Name</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="platform_name"
+                    label="Platform Name"
+                    type="platform_name"
+                    fullWidth
+                    variant="standard"
+                    onChange={onTitleChange}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleSaveEditName}>Done</Button>
+                </DialogActions>
+              </Dialog>
+            </>
+          ) : (
+            <>
+              <Typography variant="h5" align="center" mb={1}>
+                {state.platform_name}
+              </Typography>
+            </>
+          )}
       />
       <Box className={classes.hContainer}>
         <Box className={classes.container}>
@@ -570,9 +634,9 @@ export default function PlatformCreator(props) {
                   marginTop: 10,
                   fullWidth: "true",
                 },
+                /*value={state.platform_name}
+              onChange={onTitleChange}*/
               }}
-              value={state.platform_name}
-              onChange={onTitleChange}
             />
           </FormControl>
           <Box>
