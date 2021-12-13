@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { unstable_batchedUpdates } from 'react-dom';
+import { unstable_batchedUpdates } from "react-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
   },
   box: {
     backgroundColor: "#F9F9FF",
-    marginBottom: "5%"
+    marginBottom: "5%",
   },
   editThumbnail: {
     display: "inline-block",
@@ -214,6 +214,7 @@ export default function QuizCreate(props) {
   };
 
   const onSave = (e) => {
+    if (e) e.preventDefault();
     const totalSeconds = minutes * 60 + seconds;
     axios
       .put(
@@ -228,9 +229,7 @@ export default function QuizCreate(props) {
           withCredentials: true,
         }
       )
-      .then((res) => {
-        
-      })
+      .then((res) => {})
       .catch((err) => {
         console.log("PUT on Save: ", err);
       });
@@ -254,9 +253,7 @@ export default function QuizCreate(props) {
           answers_fields: answers_fields,
         }
       )
-      .then((res) => {
-        
-      })
+      .then((res) => {})
       .catch((err) => {
         console.log("PUT on Save: ", err);
       });
