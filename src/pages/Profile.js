@@ -96,6 +96,7 @@ export default function Profile(props) {
       })
       .then((res) => {
         setOpen(false);
+        props.usernameChangeCB(state.user.username);
       })
       .catch((err) => {
         console.log("PUT on Save: ", err);

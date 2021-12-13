@@ -72,7 +72,7 @@ export default function NavBar() {
   const history = useHistory();
 
   const onCreatePlatform = (e) => {
-    if(e) e.preventDefault();
+    if (e) e.preventDefault();
     axios
       .post(
         `${constants.API_PATH}/platform`,
@@ -88,7 +88,7 @@ export default function NavBar() {
       )
       .then((res) => {
         if (res.status === 201) {
-          setState({...state, user: {...state.user, platform_id: res.data.platform_id }})
+          setState({ ...state, user: { ...state.user, platform_id: res.data.platform_id } })
           history.push("/platform/" + res.data.platform_id + "/creator");
         }
       })
@@ -99,7 +99,7 @@ export default function NavBar() {
 
   const onDeletePlatform = () => {
     console.log('called')
-    setState({...state, user: {...state.user, platform_id: null }});
+    setState({ ...state, user: { ...state.user, platform_id: null } });
   };
 
   const onViewPlatform = (e) => {
@@ -114,6 +114,10 @@ export default function NavBar() {
   const onViewProfile = (e) => {
     e.preventDefault();
     history.push(`/profile/${state.user.user_id}`);
+  };
+
+  const handleSaveEditName = (username) => {
+    setState({ ...state, user: { ...state.user, username: username } });
   };
 
   const resetKeyword = () => {
@@ -267,9 +271,9 @@ export default function NavBar() {
             <MenuItem
               onClick={
                 (handleCloseProfileMenu,
-                state.user && state.user.platform_id
-                  ? onViewPlatform
-                  : onCreatePlatform)
+                  state.user && state.user.platform_id
+                    ? onViewPlatform
+                    : onCreatePlatform)
               }
             >
               {" "}
@@ -369,7 +373,7 @@ export default function NavBar() {
           <Route path="/login/success" component={LoginSucess} />
           <Route
             path="/profile/:user_id"
-            render={(props) => <Profile user={state.user} {...props} />}
+            render={(props) => <Profile user={state.user} usernameChangeCB={handleSaveEditName} {...props} />}
           />
         </Switch>
       </Box>
