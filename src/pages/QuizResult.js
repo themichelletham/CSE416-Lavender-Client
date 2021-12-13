@@ -178,6 +178,41 @@ export default function QuizResult(props) {
     );
   };
 
+  const quesMap = (question, q_key) => {
+    let v = "show-correct";
+    if (state.selected_answers[q_key] === -1 || !state.answers[q_key][state.selected_answers[q_key]].is_correct) v = "show-incorrect"
+    return (
+      <div className={classes.questions} key={q_key}>
+        <Questions q_key={q_key} q_text={question} variant={v} readOnly />
+        <Grid direction="row" container>
+          <Grid direction="column" container item sm={6}>
+            {state.answers[q_key]
+              .slice(
+                0,
+                parseInt((state.answers[q_key].length + 1) / 2, 10)
+              )
+              .map((ans, a_key) =>
+                ansMap(ans.answer_text, q_key, a_key)
+              )}
+          </Grid>
+          <Grid direction="column" container item sm={6}>
+            {state.answers[q_key]
+              .slice(
+                parseInt((state.answers[q_key].length + 1) / 2, 10)
+              )
+              .map((ans, a_key) =>
+                ansMap(
+                  ans.answer_text,
+                  q_key,
+                  a_key +
+                  parseInt((state.answers[q_key].length + 1) / 2, 10)
+                )
+              )}
+          </Grid>
+        </Grid>
+      </div>);
+  };
+
   const onReturn = (e) => {
     history.push(`/platform/${state.platform_id}`);
   };
@@ -221,38 +256,7 @@ export default function QuizResult(props) {
         />
         <Box className={classes.box}>
           <div className={classes.quizbody} />
-          {state.questions &&
-            state.questions.map((question, q_key) => (
-              <div className={classes.questions} key={q_key}>
-                <Questions q_key={q_key} q_text={question} readOnly />
-                <Grid direction="row" container>
-                  <Grid direction="column" container item sm={6}>
-                    {state.answers[q_key]
-                      .slice(
-                        0,
-                        parseInt((state.answers[q_key].length + 1) / 2, 10)
-                      )
-                      .map((ans, a_key) =>
-                        ansMap(ans.answer_text, q_key, a_key)
-                      )}
-                  </Grid>
-                  <Grid direction="column" container item sm={6}>
-                    {state.answers[q_key]
-                      .slice(
-                        parseInt((state.answers[q_key].length + 1) / 2, 10)
-                      )
-                      .map((ans, a_key) =>
-                        ansMap(
-                          ans.answer_text,
-                          q_key,
-                          a_key +
-                            parseInt((state.answers[q_key].length + 1) / 2, 10)
-                        )
-                      )}
-                  </Grid>
-                </Grid>
-              </div>
-            ))}
+          {state.questions && state.questions.map(quesMap)}
           <div className={classes.quizbody}>
             <Button
               style={returnStyle}
