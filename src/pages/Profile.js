@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
 import PointCard from "../components/PointCard";
-import {
-  Button,
-  Box,
-  Typography,
-  TextField,
-} from "@mui/material";
+import { Button, Box, Typography, TextField } from "@mui/material";
 import { makeStyles, Tooltip } from "@material-ui/core";
 import { createTheme } from "@material-ui/core/styles";
 import Dialog from "@mui/material/Dialog";
@@ -113,7 +108,7 @@ export default function Profile(props) {
     new_state.user = { ...data.user };
     const points_arr = [];
     for (let i = 0; i < data.points.length; ++i) {
-      if (i % 2 == 0) points_arr.push([{ ...data.points[i] }]);
+      if (i % 2 === 0) points_arr.push([{ ...data.points[i] }]);
       else points_arr[parseInt(i / 2)].push({ ...data.points[i] });
     }
     new_state.points = points_arr;
@@ -127,7 +122,7 @@ export default function Profile(props) {
         console.log("Profile: ", err);
       })
       .then((res) => {
-        if (res.status == 200) {
+        if (res.status === 200) {
           const new_state = parseToState(res.data);
           setState(new_state);
         }
@@ -137,7 +132,11 @@ export default function Profile(props) {
   return (
     <Box className={classes.profilePage} align="center">
       <Box className={classes.banner} />
-      <img className={classes.icon} src={state.user && state.user.picture} />
+      <img
+        className={classes.icon}
+        src={state.user && state.user.picture}
+        alt=""
+      />
       <Box className={classes.username}>
         {state.user &&
         props.user &&
@@ -165,7 +164,7 @@ export default function Profile(props) {
                   onChange={onUsernameChange}
                 />
               </DialogContent>
-              {usernameExist == true ? (
+              {usernameExist === true ? (
                 <Alert severity="error">Username is already taken</Alert>
               ) : (
                 <p></p>

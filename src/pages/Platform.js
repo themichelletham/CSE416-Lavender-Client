@@ -4,7 +4,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Box, Grid } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import * as constants from "../components/constants";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PlatformLead from "../components/PlatformLead.js";
@@ -54,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "0.2em solid #dcdce3",
   },
   container: {
-    display: "flex",
     flexGrow: 1,
     width: "100%",
     left: 1,
@@ -97,7 +96,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Platform(props) {
   const classes = useStyles();
-  const history = useHistory();
   const [state, setState] = useState({
     platform_name: "Untitled Platform",
     user_id: null,
@@ -145,7 +143,7 @@ export default function Platform(props) {
   };
 
   const search = (e) => {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
       fetchPlatformData(e.target.value);
     }
   };

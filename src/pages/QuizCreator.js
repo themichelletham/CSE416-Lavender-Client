@@ -10,7 +10,7 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
-import { useHistory, useLocation, Redirect } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import * as constants from "../components/constants";
 import Questions from "../components/Questions";
@@ -44,19 +44,17 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   timeContainer: {
-    minWidth: "10%",
-    maxWidth: "50%",
     display: "flex",
-    borderRadius: "5%",
+    borderRadius: "20%",
     alignItems: "center",
     justifyContent: "center",
     flexGrow: 1,
     fontSize: 16,
     fontWeight: "bold",
     backgroundColor: "#acace1",
-    padding: "1%",
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
+    margin: "5%",
+    paddingLeft: "15%",
+    paddingRight: "15%",
     paddingTop: "2%",
   },
   time: {
@@ -65,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
   timeInput: {
     display: "flex",
-    width: "3rem",
+    width: "1.5rem",
     alignItems: "center",
     align: "right",
     margin: 0,
@@ -122,7 +120,6 @@ export default function QuizCreate(props) {
   });
   const [minutes, setMinutes] = useState(null);
   const [seconds, setSeconds] = useState(null);
-  const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
   const [previewSource, setPreviewSource] = useState("");
   const [cloudinaryErr, setCloudinaryErr] = useState("");
@@ -138,7 +135,6 @@ export default function QuizCreate(props) {
   };
 
   const classes = useStyles();
-  const location = useLocation();
   const history = useHistory();
   const theme = createTheme();
   theme.spacing(1);
@@ -197,8 +193,8 @@ export default function QuizCreate(props) {
 
   const onDurationToggle = (e) => {
     if (e.target.checked) {
-      setMinutes("00");
-      setSeconds("00");
+      setMinutes(60);
+      setSeconds(0);
     } else {
       setMinutes(null);
       setSeconds(null);
@@ -385,7 +381,6 @@ export default function QuizCreate(props) {
       setCloudinaryErr("File size too large (Max file size: 10485760 bytes)");
       return;
     }
-    setImage(file);
     previewFile(file);
   };
 
@@ -445,7 +440,11 @@ export default function QuizCreate(props) {
   ) : (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_name}</h1>
-      <img className={classes.icon} src={url === "" ? previewSource : url} />
+      <img
+        className={classes.icon}
+        src={url === "" ? previewSource : url}
+        alt=""
+      />
       <Box className={classes.editThumbnail}>
         <Input
           size="small"
@@ -475,7 +474,7 @@ export default function QuizCreate(props) {
       </Box>
       <Box className={classes.Opt} mt={3}>
         <Box className={classes.duration}>
-          <Typography>Duration:</Typography>&nbsp;
+          <Typography>Duration: </Typography>
           <Box className={classes.timeContainer}>
             {hasDuration !== null ? (
               <Box className={classes.time}>

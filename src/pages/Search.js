@@ -96,7 +96,7 @@ function Search(props) {
                 className={classes.gridItem}
                 key={quiz.quiz_id}
                 xs={3}
-                md={3.5}
+                md={3}
               >
                 <Button onClick={(e) => onNavigateQuiz(e, quiz.quiz_id)}>
                   <Card className={classes.card}>
@@ -133,7 +133,7 @@ function Search(props) {
               className={classes.gridItem}
               key={platform.platform_id}
               xs={3}
-              md={3.5}
+              md={3}
             >
               <Button
                 onClick={(e) => onNavigatePlatform(e, platform.platform_id)}

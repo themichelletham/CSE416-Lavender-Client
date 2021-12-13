@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, styled } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
   Button,
@@ -8,7 +8,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import * as constants from "../components/constants";
 import Questions from "../components/Questions";
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   box: {
     backgroundColor: "#F9F9FF",
-    marginBottom: "5%"
+    marginBottom: "5%",
   },
   noBorder: {
     border: "none",
@@ -100,24 +100,7 @@ export default function QuizResult(props) {
   const [time, setTime] = useState(null);
   const [previewSource, setPreviewSource] = useState();
   const [displayUnanswered, setDisplayUnanswered] = useState(false);
-
-  const copyState = () => {
-    let ret = {};
-    ret.platform_id = state.platform_id;
-    ret.platform_title = state.platform_title;
-    ret.quiz_title = state.quiz_title;
-    ret.questions = state.questions.slice(0);
-    ret.answers = state.answers.map((answer_list) =>
-      answer_list.map((ans) => {
-        return { ...ans };
-      })
-    );
-    ret.selected_answers = state.selected_answers.slice(0);
-    return ret;
-  };
-
   const classes = useStyles();
-  const location = useLocation();
   const history = useHistory();
 
   const parseToState = (data) => {
@@ -180,7 +163,7 @@ export default function QuizResult(props) {
   const ansMap = (ans, q_key, a_key) => {
     let v = "show-neutral";
     if (state.answers[q_key][a_key].is_correct) v = "show-correct";
-    else if (state.selected_answers[q_key] == a_key) v = "show-incorrect";
+    else if (state.selected_answers[q_key] === a_key) v = "show-incorrect";
     return (
       <div classname={classes.answer} key={a_key}>
         <Answers
@@ -202,7 +185,7 @@ export default function QuizResult(props) {
   return (
     <Box className={classes.QuizContainer}>
       <h1>{state.platform_title}</h1>
-      <img className={classes.icon} src={previewSource} />
+      <img className={classes.icon} src={previewSource} alt="" />
       <Box className={classes.Opt} mt={3}>
         <div className={classes.duration}>Duration:</div>
         <Box className={classes.timeContainer}>
