@@ -470,11 +470,12 @@ export default function PlatformCreator(props) {
         }
       )
       .then((res) => {
-        setOpen(false);
+        
       })
       .catch((err) => {
         console.log("PUT on Save: ", err);
       });
+    setOpen(false);
   };
 
   return redirect ? (
