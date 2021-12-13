@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   timeContainer: {
-    minWidth: "40%",
-    maxWidth: "80%",
+    minWidth: "10%",
+    maxWidth: "50%",
     display: "flex",
     borderRadius: "5%",
     alignItems: "center",
@@ -54,9 +54,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     fontWeight: "bold",
     backgroundColor: "#acace1",
-    //margin: theme.spacing(1),
-    paddingLeft: "5%",
-    paddingRight: "5%",
+    padding: "1%",
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
     paddingTop: "2%",
   },
   time: {
