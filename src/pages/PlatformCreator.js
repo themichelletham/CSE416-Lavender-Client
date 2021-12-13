@@ -193,7 +193,7 @@ export default function PlatformCreator(props) {
     topFiveUsers: [],
     sortBy: "dd",
   });
-
+  const [tempPlatformName, setTempPlatformName] = useState("");
   const [selectedQuiz, setSelectedQuiz] = useState();
   const [quizDialog, setQuizDialog] = useState(false);
   const [platformDialog, setPlatformDialog] = useState(false);
@@ -264,10 +264,18 @@ export default function PlatformCreator(props) {
     setPlatformDialog(false);
   };
 
-  const onTitleChange = (e) => {
-    let new_state = copyState();
-    new_state.platform_name = e.target.value;
-    setState(new_state);
+  const onTitleChange = () => {
+    if (tempPlatformName) {
+      let new_state = copyState();
+      new_state.platform_name = tempPlatformName;
+      setState(new_state);
+    }
+  };
+
+  const onTempNameChange = (e) => {
+    if (e.target.value !== null || e.target.value !== "") {
+      setTempPlatformName(e.target.value);
+    }
   };
 
   const fetchPlatformData = (keyword) => {
@@ -462,19 +470,18 @@ export default function PlatformCreator(props) {
     setOpen(false);
   };
   const handleSaveEditName = () => {
-    axios
-      .put(
-        `${constants.API_PATH}/platforms/${props.match.params.platform_id}/creator`,
-        {
-          platform_fields: { platform_name: state.platform_name },
-        }
-      )
-      .then((res) => {
-        
-      })
-      .catch((err) => {
-        console.log("PUT on Save: ", err);
-      });
+    onTitleChange();
+    // axios
+    //   .put(
+    //     `${constants.API_PATH}/platforms/${props.match.params.platform_id}/creator`,
+    //     {
+    //       platform_fields: { platform_name: state.platform_name },
+    //     }
+    //   )
+    //   .then((res) => {})
+    //   .catch((err) => {
+    //     console.log("PUT on Save: ", err);
+    //   });
     setOpen(false);
   };
 
@@ -515,7 +522,7 @@ export default function PlatformCreator(props) {
                     type="platform_name"
                     fullWidth
                     variant="standard"
-                    onChange={onTitleChange}
+                    onChange={onTempNameChange}
                   />
                 </DialogContent>
                 <DialogActions>
