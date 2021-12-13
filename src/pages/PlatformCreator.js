@@ -171,8 +171,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const style = {
-  backgroundColor: "#ACACE1",
+const Sstyle = {
+  backgroundColor: "#9D68E0",
+  marginLeft: theme.spacing(0.5),
+  marginBottom: theme.spacing(0.1),
+  color: "black",
+};
+
+const Dstyle = {
+  backgroundColor: "#D16B6B",
   marginLeft: theme.spacing(0.5),
   marginBottom: theme.spacing(0.1),
   color: "black",
@@ -535,28 +542,6 @@ export default function PlatformCreator(props) {
       />
       <Box className={classes.hContainer}>
         <Box className={classes.container}>
-        <Box className={classes.Opt} ml={3} mr={1} mt={3}>
-            <ColorButton
-              size="small"
-              variant="contained"
-              style={style}
-              onClick={onSave}
-              disableElevation
-            >
-              Save Platform
-            </ColorButton>
-            <ColorButton
-              size="small"
-              style={style}
-              variant="contained"
-              onClick={(e) => {
-                handleDeletePlatformOpen();
-              }}
-              disableElevation
-            >
-              Delete Platform
-            </ColorButton>
-          </Box>
           <Box className={classes.editThumbnail}>
             Banner:
             <Input
@@ -591,6 +576,28 @@ export default function PlatformCreator(props) {
             >
               Upload
             </Button>
+          </Box>
+          <Box className={classes.Opt} ml={3} mr={1} mt={3}>
+            <ColorButton
+              size="small"
+              variant="contained"
+              style={Sstyle}
+              onClick={onSave}
+              disableElevation
+            >
+              Save Platform
+            </ColorButton>
+            <ColorButton
+              size="small"
+              style={Dstyle}
+              variant="contained"
+              onClick={(e) => {
+                handleDeletePlatformOpen();
+              }}
+              disableElevation
+            >
+              Delete Platform
+            </ColorButton>
           </Box>
           <Box className={classes.header}>
             <SearchBar
